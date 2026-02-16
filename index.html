@@ -47,6 +47,26 @@ body {
 /* ===== UTILITY ===== */
 .container { max-width: 480px; margin: 0 auto; padding: 0 20px; }
 
+/* Layout wrappers (active on desktop via media queries) */
+.hero-text-area { }
+.pain-grid-wrap { }
+.feature-layout { }
+.feature-visual { }
+.testimonial-grid { }
+.cta-buttons-row { }
+
+/* Process steps: vertical by default, horizontal on desktop via media query */
+@media (max-width: 768px) {
+  .process-steps-horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .process-steps-horizontal .process-step {
+    flex-direction: row;
+  }
+}
+
 /* ===== ANIMATIONS ===== */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(40px); }
@@ -1331,8 +1351,10 @@ body {
 .floating-cta {
   position: fixed;
   bottom: 0;
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  width: 100%;
+  max-width: 480px;
   padding: 10px 16px;
   padding-bottom: max(10px, env(safe-area-inset-bottom));
   background: rgba(255,255,255,0.97);
@@ -1341,13 +1363,10 @@ body {
   z-index: 100;
   display: flex;
   gap: 8px;
-  max-width: 480px;
-  margin: 0 auto;
-  transform: translateY(100%);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .floating-cta.visible {
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0);
 }
 .floating-btn-primary {
   flex: 2;
@@ -1971,17 +1990,188 @@ body {
 }
 
 /* ===== RESPONSIVE ===== */
+
+/* Tablet (481px ~ 768px) */
 @media (min-width: 481px) {
-  body {
-    background: var(--gray-100);
-  }
-  .hero, .pain-section, .solution-intro, .feature-section,
+  .container { max-width: 680px; padding: 0 32px; }
+
+  .hero { padding: 80px 32px 100px; }
+  .hero-content { max-width: 560px; }
+  .hero h1 { font-size: 42px; }
+  .hero-sub { font-size: 18px; }
+  .hero-phone { width: 300px; height: 580px; }
+
+  .section-title { font-size: 32px; }
+  .feature-title { font-size: 30px; }
+
+  .pain-section, .solution-intro, .feature-section,
   .handover-section, .comparison-section, .process-section,
-  .testimonial-section, .stats-banner, .cta-section, .footer {
-    max-width: 480px;
-    margin-left: auto;
-    margin-right: auto;
+  .testimonial-section, .cta-section { padding: 90px 32px; }
+
+  .stats-banner { padding: 60px 32px; }
+  .stat-number { font-size: 42px; }
+
+  .cta-title { font-size: 34px; }
+
+  .floating-cta { max-width: 680px; padding: 12px 24px; }
+}
+
+/* Desktop (769px ~) */
+@media (min-width: 769px) {
+  .container { max-width: 960px; padding: 0 40px; }
+
+  /* Hero: side by side */
+  .hero { padding: 100px 40px 120px; }
+  .hero-content { max-width: 900px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 60px; }
+  .hero-text-area { flex: 1; min-width: 320px; text-align: left; }
+  .hero h1 { font-size: 48px; }
+  .hero-sub { font-size: 18px; }
+  .hero-badge { margin-bottom: 24px; }
+  .hero-phone { margin: 0; flex-shrink: 0; }
+  .hero-cta-group { width: 100%; max-width: 400px; }
+  .hero-trust { justify-content: flex-start; }
+
+  /* Pain cards: 2 columns */
+  .pain-grid-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
   }
+  .pain-grid-wrap .pain-card { margin-bottom: 0; }
+
+  .pain-section, .solution-intro, .feature-section,
+  .handover-section, .comparison-section, .process-section,
+  .testimonial-section, .cta-section { padding: 100px 40px; }
+
+  .solution-intro .big-text { font-size: 40px; }
+  .solution-intro .sub-text { font-size: 17px; }
+
+  /* Feature sections: side by side */
+  .feature-layout {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+  }
+  .feature-layout > .feature-visual { flex: 1; min-width: 0; }
+  .feature-layout > .feature-points { flex: 1; min-width: 280px; padding-top: 20px; }
+  .feature-title { font-size: 34px; }
+  .feature-subtitle { font-size: 16px; }
+
+  /* Handover: wider cards */
+  .handover-compare { gap: 20px; }
+  .compare-card { padding: 30px 24px; }
+  .compare-list li { font-size: 14px; }
+
+  /* Comparison table: wider */
+  .comp-cell { padding: 18px 16px; font-size: 14px; }
+  .comp-cell.label { font-size: 14px; }
+
+  /* Process: horizontal layout */
+  .process-steps-horizontal {
+    display: flex;
+    gap: 32px;
+  }
+  .process-steps-horizontal .process-step {
+    flex: 1;
+    flex-direction: column;
+    text-align: center;
+    gap: 0;
+    padding: 0;
+  }
+  .process-steps-horizontal .step-indicator {
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .process-steps-horizontal .step-line {
+    display: none;
+  }
+  .process-steps-horizontal .step-content {
+    padding-top: 0;
+  }
+  .process-steps-horizontal .step-title { font-size: 20px; }
+  .process-steps-horizontal .step-desc { font-size: 14px; }
+
+  /* Testimonials: 3 columns */
+  .testimonial-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+  .testimonial-grid .testimonial-card { margin-bottom: 0; }
+
+  /* Stats: 4 columns */
+  .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .stat-number { font-size: 48px; }
+  .stat-desc { font-size: 14px; }
+
+  .stats-banner { padding: 70px 40px; }
+
+  /* CTA */
+  .cta-title { font-size: 40px; }
+  .cta-desc { font-size: 17px; }
+  .cta-benefits {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .cta-benefit { flex: 1; min-width: 200px; }
+  .cta-buttons-row {
+    display: flex;
+    gap: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .cta-buttons-row .btn-cta-large,
+  .cta-buttons-row .btn-secondary { flex: 1; margin-bottom: 0; }
+
+  /* Floating CTA */
+  .floating-cta { max-width: 700px; padding: 14px 28px; border-radius: 20px 20px 0 0; }
+
+  /* Footer */
+  .footer { padding: 50px 40px; }
+  .footer-logo { font-size: 26px; }
+  .footer-desc { font-size: 13px; }
+
+  /* Compare V2: side by side */
+  .v2-compare-layout {
+    display: flex;
+    gap: 28px;
+    align-items: stretch;
+  }
+  .v2-compare-layout > .v2-pc-wrap { flex: 1.2; margin-bottom: 0; }
+  .v2-compare-layout > .v2-phone-wrap { flex: 0.8; }
+  .v2-vs-divider-desktop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 4px;
+  }
+  .v2-vs-divider-desktop .v2-vs-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(180deg, transparent, var(--gray-300), transparent);
+  }
+  .v2-vs-divider-desktop .v2-vs-badge {
+    width: 44px; height: 44px; font-size: 13px;
+  }
+}
+
+/* Large desktop (1200px+) */
+@media (min-width: 1200px) {
+  .container { max-width: 1120px; }
+  .hero-content { max-width: 1040px; gap: 80px; }
+  .hero h1 { font-size: 56px; }
+  .hero-sub { font-size: 20px; }
+  .hero-phone { width: 320px; height: 620px; border-radius: 40px; }
+
+  .section-title { font-size: 40px; }
+  .feature-title { font-size: 38px; }
+
+  .testimonial-grid .testimonial-card { padding: 32px 28px; }
+  .testimonial-text { font-size: 15px; }
 }
 </style>
 </head>
@@ -1991,6 +2181,7 @@ body {
 <section class="hero">
   <div class="hero-grid"></div>
   <div class="hero-content">
+    <div class="hero-text-area">
     <div class="hero-badge">치과위생사 전용 구매 시스템</div>
     <h1>
       주문은 <span class="highlight">30초</span>면 끝.<br>
@@ -2001,6 +2192,7 @@ body {
       <strong>우리 치과 제품만 모아서</strong> 터치 한 번에 주문.<br>
       재구매·통계·인수인계까지 한 곳에서.
     </p>
+    </div>
 
     <!-- Phone Mockup -->
     <div class="hero-phone">
@@ -2099,6 +2291,7 @@ body {
       <div class="section-desc">전화하고, 검색하고, 비교하느라 시간 낭비하고 있지 않나요?</div>
     </div>
 
+    <div class="pain-grid-wrap">
     <div class="pain-card animate-on-scroll">
       <div class="pain-icon">📞</div>
       <div class="pain-title">전화·문자 주문</div>
@@ -2126,6 +2319,7 @@ body {
       <div class="pain-desc">얼마 썼는지 모르니 재고 관리도, 비용 절감도 불가능.</div>
       <div class="pain-quote">재료비 물어보면 영수증 일일이 찾아요</div>
     </div>
+    </div>
   </div>
 </section>
 
@@ -2152,6 +2346,8 @@ body {
       <div class="feature-subtitle">자주 쓰는 제품만 등록. 매번 검색할 필요 없이 터치 한 번이면 끝.</div>
     </div>
 
+    <div class="feature-layout">
+    <div class="feature-visual">
     <div class="compare-v2 animate-on-scroll">
 
       <!-- ① PC Shopping Mall -->
@@ -2370,6 +2566,7 @@ body {
         </div>
       </div>
     </div>
+    </div>
 
     <div class="feature-points animate-on-scroll">
       <div class="feature-point">
@@ -2385,6 +2582,7 @@ body {
         <div class="feature-point-text"><strong>팀 전체 공유</strong> — 원장님·위생사 동일 리스트</div>
       </div>
     </div>
+    </div>
   </div>
 </section>
 
@@ -2397,6 +2595,8 @@ body {
       <div class="feature-subtitle">지난 주문 그대로 터치 한 번에 재주문. 검색·입력 시간 제로.</div>
     </div>
 
+    <div class="feature-layout">
+    <div class="feature-visual">
     <div class="feature-mockup animate-on-scroll">
       <div class="mockup-header">
         <div class="mockup-header-icon">🔄</div>
@@ -2429,6 +2629,7 @@ body {
         </div>
       </div>
     </div>
+    </div>
 
     <div class="feature-points animate-on-scroll">
       <div class="feature-point">
@@ -2444,6 +2645,7 @@ body {
         <div class="feature-point-text"><strong>수량 변경 간편</strong> — 재주문 후 수량만 수정</div>
       </div>
     </div>
+    </div>
   </div>
 </section>
 
@@ -2456,6 +2658,8 @@ body {
       <div class="feature-subtitle">월별·카테고리별 구매 데이터 자동 정리. 보고도 비용 관리도 즉시.</div>
     </div>
 
+    <div class="feature-layout">
+    <div class="feature-visual">
     <div class="feature-mockup animate-on-scroll">
       <div class="mockup-header">
         <div class="mockup-header-icon">📊</div>
@@ -2508,6 +2712,7 @@ body {
         </div>
       </div>
     </div>
+    </div>
 
     <div class="feature-points animate-on-scroll">
       <div class="feature-point">
@@ -2522,6 +2727,7 @@ body {
         <div class="feature-point-icon">✓</div>
         <div class="feature-point-text"><strong>카테고리별 분석</strong> — 비용 흐름 한눈에</div>
       </div>
+    </div>
     </div>
   </div>
 </section>
@@ -2639,7 +2845,7 @@ body {
       <div class="section-desc">복잡한 설정 없이 바로 시작.</div>
     </div>
 
-    <div class="process-steps">
+    <div class="process-steps process-steps-horizontal">
       <div class="process-step animate-on-scroll">
         <div class="step-indicator">
           <div class="step-number">1</div>
@@ -2685,6 +2891,7 @@ body {
       <div class="section-title">먼저 사용해본<br><span class="em">치과위생사</span>들의 반응</div>
     </div>
 
+    <div class="testimonial-grid">
     <div class="testimonial-card animate-on-scroll">
       <div class="testimonial-stars">★★★★★</div>
       <div class="testimonial-text">전화할 필요 없어졌어요. 점심시간에 터치 몇 번이면 주문 끝!</div>
@@ -2719,6 +2926,7 @@ body {
           <div class="testimonial-role">부산 · 8년차</div>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </section>
@@ -2777,8 +2985,10 @@ body {
         </div>
       </div>
 
+      <div class="cta-buttons-row">
       <a href="https://dendeal.kr" class="btn-cta-large" target="_blank">무료로 시작하기</a>
       <a href="https://pf.kakao.com/_MYKhX/chat" class="btn-secondary" target="_blank">카카오톡 상담 문의하기</a>
+      </div>
       <div class="cta-note">* 가입 후 1분 내 바로 사용 가능</div>
     </div>
   </div>
