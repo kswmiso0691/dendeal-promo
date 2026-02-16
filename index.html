@@ -42,6 +42,8 @@ body {
   background: var(--white);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* ===== UTILITY ===== */
@@ -54,6 +56,89 @@ body {
 .feature-visual { }
 .testimonial-grid { }
 .cta-buttons-row { }
+
+/* Small phones (360px 이하) - 글씨 넘침 방지 */
+@media (max-width: 360px) {
+  .hero h1 { font-size: 28px; }
+  .hero-sub { font-size: 14px; }
+  .hero-badge { font-size: 11px; padding: 6px 12px; }
+  .hero-phone { width: 220px; height: 440px; border-radius: 28px; }
+  .hero-phone::before { width: 100px; height: 24px; }
+
+  .section-title { font-size: 22px; }
+  .section-desc { font-size: 13px; }
+  .section-label { font-size: 11px; }
+
+  .feature-title { font-size: 21px; }
+  .feature-subtitle { font-size: 13px; }
+  .feature-number { width: 36px; height: 36px; font-size: 15px; }
+
+  .pain-title { font-size: 15px; }
+  .pain-desc { font-size: 13px; }
+  .pain-quote { font-size: 12px; }
+  .pain-icon { font-size: 26px; }
+  .pain-card { padding: 22px 18px; }
+
+  .solution-intro .big-text { font-size: 24px; }
+  .solution-intro .sub-text { font-size: 13px; }
+  .solution-arrow { width: 48px; height: 48px; font-size: 22px; }
+
+  .compare-emoji { font-size: 28px; }
+  .compare-label { font-size: 11px; }
+  .compare-list li { font-size: 11px; }
+  .compare-card { padding: 16px 12px; }
+
+  .comp-cell { padding: 10px 6px; font-size: 10px; }
+  .comp-cell.label { font-size: 10px; }
+  .comp-cell .check, .comp-cell .cross { font-size: 13px; }
+
+  .step-title { font-size: 15px; }
+  .step-desc { font-size: 12px; }
+  .step-number { width: 36px; height: 36px; font-size: 14px; border-radius: 10px; }
+
+  .testimonial-text { font-size: 13px; }
+  .testimonial-card { padding: 22px 18px; }
+  .testimonial-card::before { font-size: 30px; }
+
+  .stat-number { font-size: 28px; }
+  .stat-number .unit { font-size: 16px; }
+  .stat-desc { font-size: 11px; }
+
+  .cta-badge { font-size: 11px; padding: 6px 12px; }
+  .cta-title { font-size: 24px; }
+  .cta-desc { font-size: 13px; }
+  .cta-benefit { font-size: 13px; padding: 12px 12px; }
+  .btn-cta-large { font-size: 15px; padding: 16px; }
+  .btn-secondary { font-size: 14px; padding: 14px; }
+
+  .v2-time-val { font-size: 16px; }
+  .v2-time-label { font-size: 9px; }
+  .v2-time-icon { font-size: 18px; }
+  .v2-vs-badge { width: 40px; height: 40px; font-size: 12px; }
+  .v2-label { font-size: 11px; }
+
+  .floating-btn-primary { font-size: 12px; }
+  .floating-btn-kakao { font-size: 11px; }
+  .floating-btn-call { font-size: 11px; }
+
+  .footer-logo { font-size: 18px; }
+}
+
+/* Medium phones (361px ~ 400px) */
+@media (min-width: 361px) and (max-width: 400px) {
+  .hero h1 { font-size: 32px; }
+  .hero-sub { font-size: 15px; }
+
+  .section-title { font-size: 25px; }
+  .feature-title { font-size: 23px; }
+  .solution-intro .big-text { font-size: 28px; }
+
+  .stat-number { font-size: 32px; }
+  .cta-title { font-size: 27px; }
+
+  .comp-cell { padding: 12px 8px; font-size: 11px; }
+  .comp-cell.label { font-size: 11px; }
+}
 
 /* Process steps: vertical by default, horizontal on desktop via media query */
 @media (max-width: 768px) {
