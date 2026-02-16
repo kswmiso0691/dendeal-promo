@@ -1,0 +1,2852 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>덴딜 - 치과위생사를 위한 스마트 구매 시스템</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Pretendard:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #0066FF;
+  --primary-dark: #0052CC;
+  --primary-light: #E8F0FE;
+  --accent: #00D4AA;
+  --accent-warm: #FF6B35;
+  --dark: #0A0E27;
+  --dark-sub: #1A1F3A;
+  --gray-900: #111827;
+  --gray-700: #374151;
+  --gray-500: #6B7280;
+  --gray-300: #D1D5DB;
+  --gray-100: #F3F4F6;
+  --gray-50: #F9FAFB;
+  --white: #FFFFFF;
+  --gradient-hero: linear-gradient(135deg, #0A0E27 0%, #1a237e 50%, #0066FF 100%);
+  --gradient-accent: linear-gradient(135deg, #0066FF, #00D4AA);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+  --shadow-xl: 0 25px 60px rgba(0,0,0,0.15);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-lg: 24px;
+}
+
+body {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--gray-900);
+  background: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== UTILITY ===== */
+.container { max-width: 480px; margin: 0 auto; padding: 0 20px; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideLeft {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes ripple {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+  background: var(--gradient-hero);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 60px 20px 80px;
+  text-align: center;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -30%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0,212,170,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float 8s ease-in-out infinite;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0,102,255,0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite 2s;
+}
+
+/* Grid pattern overlay */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 440px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 100px;
+  padding: 8px 18px;
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 28px;
+  animation: fadeUp 0.8s ease-out;
+  letter-spacing: 0.5px;
+}
+.hero-badge::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.hero h1 {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.25;
+  margin-bottom: 10px;
+  animation: fadeUp 0.8s ease-out 0.2s both;
+  letter-spacing: -1px;
+}
+.hero h1 .highlight {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 16px;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.7;
+  margin-bottom: 36px;
+  animation: fadeUp 0.8s ease-out 0.4s both;
+  font-weight: 300;
+}
+.hero-sub strong {
+  color: rgba(255,255,255,0.95);
+  font-weight: 600;
+}
+
+/* Phone Mockup in Hero */
+.hero-phone {
+  width: 260px;
+  height: 520px;
+  background: #111;
+  border-radius: 36px;
+  margin: 0 auto 30px;
+  position: relative;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4), inset 0 0 0 2px rgba(255,255,255,0.1);
+  animation: fadeUp 1s ease-out 0.6s both;
+  overflow: hidden;
+}
+.hero-phone::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 28px;
+  background: #111;
+  border-radius: 0 0 18px 18px;
+  z-index: 5;
+}
+.phone-screen {
+  position: absolute;
+  inset: 4px;
+  border-radius: 32px;
+  background: var(--white);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.phone-header {
+  background: var(--primary);
+  padding: 36px 16px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.phone-header-logo {
+  width: 28px;
+  height: 28px;
+  background: var(--white);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 12px;
+  color: var(--primary);
+}
+.phone-header-title {
+  color: var(--white);
+  font-weight: 700;
+  font-size: 15px;
+}
+.phone-search {
+  margin: 10px 12px;
+  background: var(--gray-100);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 11px;
+  color: var(--gray-500);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.phone-search::before {
+  content: '🔍';
+  font-size: 12px;
+}
+.phone-categories {
+  display: flex;
+  gap: 6px;
+  padding: 6px 12px;
+  overflow: hidden;
+}
+.phone-cat {
+  flex-shrink: 0;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.phone-cat.active {
+  background: var(--primary);
+  color: white;
+}
+.phone-cat:not(.active) {
+  background: var(--gray-100);
+  color: var(--gray-700);
+}
+.phone-products {
+  flex: 1;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.phone-product {
+  display: flex;
+  gap: 10px;
+  padding: 8px;
+  background: var(--gray-50);
+  border-radius: 10px;
+  align-items: center;
+}
+.phone-product-img {
+  width: 44px;
+  height: 44px;
+  background: var(--gray-200);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #e8f0fe, #dbeafe);
+}
+.phone-product-info {
+  flex: 1;
+  min-width: 0;
+}
+.phone-product-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 2px;
+}
+.phone-product-price {
+  font-size: 10px;
+  color: var(--primary);
+  font-weight: 700;
+}
+.phone-product-btn {
+  width: 28px;
+  height: 28px;
+  background: var(--primary);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  font-weight: 300;
+  flex-shrink: 0;
+}
+.phone-nav {
+  display: flex;
+  border-top: 1px solid var(--gray-100);
+  padding: 8px 0 12px;
+}
+.phone-nav-item {
+  flex: 1;
+  text-align: center;
+  font-size: 8px;
+  color: var(--gray-500);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.phone-nav-item.active { color: var(--primary); }
+.phone-nav-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.hero-cta-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: fadeUp 0.8s ease-out 0.8s both;
+}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 32px;
+  background: var(--gradient-accent);
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: all 0.3s;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgba(0,102,255,0.3);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0,102,255,0.4);
+}
+.hero-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  animation: fadeUp 0.8s ease-out 1s both;
+  margin-top: 8px;
+}
+.hero-trust-dot {
+  width: 4px;
+  height: 4px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+}
+
+/* ===== PAIN SECTION ===== */
+.pain-section {
+  padding: 80px 20px;
+  background: var(--gray-50);
+}
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+.section-label::before {
+  content: '';
+  width: 20px;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 1px;
+}
+.section-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--gray-900);
+  line-height: 1.3;
+  margin-bottom: 14px;
+  letter-spacing: -0.5px;
+}
+.section-title .em {
+  color: var(--primary);
+}
+.section-desc {
+  font-size: 15px;
+  color: var(--gray-500);
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+.pain-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(0,0,0,0.04);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.pain-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #FF4D4D;
+  border-radius: 0 4px 4px 0;
+}
+.pain-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.pain-icon {
+  font-size: 32px;
+  margin-bottom: 14px;
+}
+.pain-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 8px;
+}
+.pain-desc {
+  font-size: 14px;
+  color: var(--gray-500);
+  line-height: 1.65;
+}
+.pain-quote {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: #FFF5F5;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #CC3333;
+  font-style: italic;
+  line-height: 1.6;
+}
+.pain-quote::before {
+  content: '"';
+  font-size: 20px;
+  font-weight: 800;
+  margin-right: 2px;
+}
+
+/* ===== SOLUTION INTRO ===== */
+.solution-intro {
+  padding: 80px 20px;
+  background: var(--white);
+  text-align: center;
+}
+.solution-arrow {
+  width: 60px;
+  height: 60px;
+  background: var(--gradient-accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  font-size: 28px;
+  color: white;
+  box-shadow: 0 8px 30px rgba(0,102,255,0.25);
+  animation: pulse 2s infinite;
+}
+.solution-intro .big-text {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--gray-900);
+  line-height: 1.3;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+.solution-intro .big-text .accent {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.solution-intro .sub-text {
+  font-size: 15px;
+  color: var(--gray-500);
+  line-height: 1.7;
+}
+
+/* ===== FEATURE SECTIONS ===== */
+.feature-section {
+  padding: 70px 20px;
+  position: relative;
+}
+.feature-section:nth-child(even) {
+  background: var(--gray-50);
+}
+
+.feature-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--gradient-accent);
+  border-radius: 14px;
+  font-size: 18px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 18px;
+  box-shadow: 0 6px 20px rgba(0,102,255,0.2);
+}
+
+.feature-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--gray-900);
+  line-height: 1.3;
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+.feature-title .em {
+  color: var(--primary);
+}
+.feature-subtitle {
+  font-size: 14px;
+  color: var(--gray-500);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+/* Feature Mockup Cards */
+.feature-mockup {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 24px;
+  border: 1px solid rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+
+.mockup-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.mockup-header-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--primary-light);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.mockup-header-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+/* Favorites mockup */
+.fav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.fav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--gray-50);
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+.fav-item:hover {
+  background: var(--primary-light);
+}
+.fav-item-icon {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #e8f0fe, #dbeafe);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.fav-item-info { flex: 1; }
+.fav-item-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 2px;
+}
+.fav-item-detail {
+  font-size: 11px;
+  color: var(--gray-500);
+}
+.fav-item-action {
+  padding: 6px 14px;
+  background: var(--primary);
+  color: white;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Reorder mockup */
+.reorder-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+.reorder-timeline::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--gray-200);
+}
+.reorder-item {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  position: relative;
+}
+.reorder-dot {
+  width: 42px;
+  height: 42px;
+  background: var(--white);
+  border: 3px solid var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.reorder-info {
+  flex: 1;
+  padding-top: 4px;
+}
+.reorder-date {
+  font-size: 11px;
+  color: var(--gray-500);
+  margin-bottom: 4px;
+}
+.reorder-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 6px;
+}
+.reorder-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Stats mockup */
+.stats-chart {
+  margin-bottom: 20px;
+}
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 120px;
+  padding: 0 10px;
+}
+.chart-bar-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.chart-bar {
+  width: 100%;
+  max-width: 36px;
+  border-radius: 6px 6px 0 0;
+  background: var(--primary);
+  transition: height 1s ease-out;
+  position: relative;
+}
+.chart-bar.accent {
+  background: var(--accent);
+}
+.chart-bar-label {
+  font-size: 10px;
+  color: var(--gray-500);
+  font-weight: 500;
+}
+.stats-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.stats-card {
+  background: var(--gray-50);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+.stats-card-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 2px;
+}
+.stats-card-label {
+  font-size: 11px;
+  color: var(--gray-500);
+  font-weight: 500;
+}
+
+/* Feature bullet points */
+.feature-points {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.feature-point {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.feature-point-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--primary-light);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.feature-point-text {
+  font-size: 14px;
+  color: var(--gray-700);
+  line-height: 1.6;
+}
+.feature-point-text strong {
+  color: var(--gray-900);
+  font-weight: 700;
+}
+
+/* ===== HANDOVER SECTION ===== */
+.handover-section {
+  padding: 70px 20px;
+  background: linear-gradient(180deg, #f0f4ff 0%, var(--white) 100%);
+}
+
+.handover-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.compare-card {
+  border-radius: var(--radius);
+  padding: 22px 16px;
+  text-align: center;
+}
+.compare-card.before {
+  background: #FFF5F5;
+  border: 1px solid #FFE0E0;
+}
+.compare-card.after {
+  background: #F0FFF4;
+  border: 1px solid #C6F6D5;
+}
+.compare-emoji {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+.compare-label {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+.compare-card.before .compare-label { color: #CC3333; }
+.compare-card.after .compare-label { color: #22863A; }
+.compare-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.compare-list li {
+  font-size: 12px;
+  color: var(--gray-700);
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.compare-card.before .compare-list li::before {
+  content: '✕';
+  color: #FF4D4D;
+  font-weight: 700;
+  font-size: 10px;
+}
+.compare-card.after .compare-list li::before {
+  content: '✓';
+  color: #22863A;
+  font-weight: 700;
+  font-size: 10px;
+}
+
+/* ===== COMPARISON TABLE ===== */
+.comparison-section {
+  padding: 70px 20px;
+  background: var(--white);
+}
+.comparison-table {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--gray-100);
+}
+.comp-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  border-bottom: 1px solid var(--gray-100);
+}
+.comp-row:last-child { border-bottom: none; }
+.comp-row.header {
+  background: var(--dark);
+}
+.comp-cell {
+  padding: 14px 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.comp-cell.label {
+  justify-content: flex-start;
+  font-weight: 600;
+  color: var(--gray-700);
+  background: var(--gray-50);
+  font-size: 12px;
+}
+.comp-row.header .comp-cell {
+  color: rgba(255,255,255,0.6);
+  font-size: 11px;
+  font-weight: 600;
+}
+.comp-row.header .comp-cell.dendeal {
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 13px;
+}
+.comp-cell .check {
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 16px;
+}
+.comp-cell .cross {
+  color: var(--gray-300);
+  font-size: 16px;
+}
+.comp-cell.highlight {
+  background: rgba(0,102,255,0.04);
+}
+
+/* ===== PROCESS SECTION ===== */
+.process-section {
+  padding: 70px 20px;
+  background: var(--dark);
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+.process-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -100px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(0,212,170,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.process-section .section-label {
+  color: var(--accent);
+}
+.process-section .section-label::before {
+  background: var(--accent);
+}
+.process-section .section-title {
+  color: var(--white);
+}
+.process-section .section-desc {
+  color: rgba(255,255,255,0.5);
+}
+
+.process-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+.process-step {
+  display: flex;
+  gap: 18px;
+  padding: 20px 0;
+  position: relative;
+}
+.step-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+.step-number {
+  width: 44px;
+  height: 44px;
+  background: var(--gradient-accent);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 16px;
+  color: white;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.step-line {
+  width: 2px;
+  flex: 1;
+  background: rgba(255,255,255,0.1);
+  margin-top: 4px;
+}
+.process-step:last-child .step-line { display: none; }
+.step-content {
+  padding-top: 6px;
+  flex: 1;
+}
+.step-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.step-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+}
+.step-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  padding: 4px 10px;
+  background: rgba(0,212,170,0.15);
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ===== TESTIMONIALS ===== */
+.testimonial-section {
+  padding: 70px 20px;
+  background: var(--gray-50);
+}
+.testimonial-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(0,0,0,0.04);
+  position: relative;
+}
+.testimonial-card::before {
+  content: '❝';
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 40px;
+  color: var(--primary-light);
+  line-height: 1;
+}
+.testimonial-stars {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 12px;
+  color: #FFB800;
+  font-size: 14px;
+}
+.testimonial-text {
+  font-size: 14px;
+  color: var(--gray-700);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.testimonial-avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--gradient-accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+}
+.testimonial-info {}
+.testimonial-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+.testimonial-role {
+  font-size: 11px;
+  color: var(--gray-500);
+}
+
+/* ===== STATS BANNER ===== */
+.stats-banner {
+  padding: 50px 20px;
+  background: var(--gradient-hero);
+  text-align: center;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.stat-item {
+  padding: 20px 10px;
+}
+.stat-number {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-number .unit {
+  font-size: 20px;
+  font-weight: 600;
+}
+.stat-desc {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 400;
+}
+
+/* ===== CTA SECTION ===== */
+.cta-section {
+  padding: 80px 20px;
+  background: var(--white);
+  text-align: center;
+}
+.cta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #FFF8E1;
+  border: 1px solid #FFE082;
+  border-radius: 100px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #F57F17;
+  margin-bottom: 20px;
+}
+.cta-title {
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--gray-900);
+  line-height: 1.3;
+  margin-bottom: 14px;
+  letter-spacing: -0.5px;
+}
+.cta-title .accent {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.cta-desc {
+  font-size: 15px;
+  color: var(--gray-500);
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.cta-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 32px;
+  text-align: left;
+}
+.cta-benefit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--gray-50);
+  border-radius: 12px;
+  font-size: 14px;
+  color: var(--gray-700);
+  font-weight: 500;
+}
+.cta-benefit-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--primary-light);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.btn-cta-large {
+  display: block;
+  width: 100%;
+  padding: 18px;
+  background: var(--gradient-accent);
+  color: white;
+  font-weight: 800;
+  font-size: 17px;
+  border-radius: 14px;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0,102,255,0.3);
+  transition: all 0.3s;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+.btn-cta-large:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0,102,255,0.4);
+}
+.btn-secondary {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  background: var(--white);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 15px;
+  border: 2px solid var(--primary);
+  border-radius: 14px;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background: var(--primary-light);
+}
+
+.cta-note {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--gray-400);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  padding: 40px 20px;
+  background: var(--dark);
+  text-align: center;
+}
+.footer-logo {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--white);
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+.footer-desc {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.footer-link {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-link:hover { color: var(--white); }
+.footer-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  margin-bottom: 20px;
+}
+.footer-copy {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+}
+
+/* ===== FLOATING CTA ===== */
+.floating-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 16px;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(0,0,0,0.06);
+  z-index: 100;
+  display: flex;
+  gap: 8px;
+  max-width: 480px;
+  margin: 0 auto;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.floating-cta.visible {
+  transform: translateY(0);
+}
+.floating-btn-primary {
+  flex: 2;
+  padding: 13px 8px;
+  background: var(--gradient-accent);
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 12px;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1.3;
+}
+.floating-btn-kakao {
+  flex: 1.2;
+  padding: 13px 8px;
+  background: #FEE500;
+  color: #3C1E1E;
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 12px;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.floating-btn-call {
+  flex: 1;
+  padding: 13px 8px;
+  background: var(--gray-100);
+  color: var(--gray-700);
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 12px;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* ===== COMPARE MOCKUP V2 ===== */
+.compare-v2 {
+  margin-bottom: 28px;
+}
+
+/* -- PC Mockup (Full Width) -- */
+.v2-pc-wrap {
+  margin-bottom: 16px;
+}
+.v2-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  padding: 8px 14px;
+  border-radius: 10px;
+}
+.v2-label.bad {
+  background: #FFF0F0;
+  color: #CC3333;
+  border: 1px solid #FFD6D6;
+}
+.v2-label.good {
+  background: #EDFFF6;
+  color: #0A8F4F;
+  border: 1px solid #B8F0D0;
+}
+.v2-label-icon {
+  font-size: 18px;
+}
+
+/* PC Browser Frame */
+.v2-browser {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  border: 1px solid #ddd;
+}
+.v2-browser-bar {
+  background: #F0F0F0;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid #ddd;
+}
+.v2-dots {
+  display: flex;
+  gap: 5px;
+}
+.v2-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.v2-dot.r { background: #FF5F57; }
+.v2-dot.y { background: #FFBD2E; }
+.v2-dot.g { background: #28C840; }
+.v2-url {
+  flex: 1;
+  background: #fff;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 10px;
+  color: #999;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.v2-browser-body {
+  padding: 0;
+}
+
+/* Top mega menu */
+.v2-mega-nav {
+  background: #333;
+  display: flex;
+  gap: 0;
+  overflow: hidden;
+}
+.v2-mega-item {
+  padding: 8px 10px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.7);
+  white-space: nowrap;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+.v2-mega-item:first-child {
+  background: #555;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Promo banner */
+.v2-promo {
+  background: linear-gradient(135deg, #FF4500, #FF8C00, #FFD700);
+  padding: 14px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.v2-promo::before {
+  content: '★ SALE ★ SALE ★ SALE ★ SALE ★';
+  position: absolute;
+  top: 2px;
+  left: 0;
+  right: 0;
+  font-size: 7px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 4px;
+}
+.v2-promo-text {
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.v2-promo-sub {
+  font-size: 9px;
+  color: rgba(255,255,255,0.8);
+  margin-top: 2px;
+}
+
+/* Content area */
+.v2-content {
+  display: flex;
+  gap: 0;
+}
+.v2-sidebar {
+  width: 120px;
+  background: #FAFAFA;
+  border-right: 1px solid #eee;
+  flex-shrink: 0;
+}
+.v2-side-title {
+  padding: 8px 10px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #333;
+  background: #F0F0F0;
+  border-bottom: 1px solid #e0e0e0;
+}
+.v2-side-item {
+  padding: 6px 10px;
+  font-size: 9px;
+  color: #666;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+}
+.v2-side-item.active {
+  background: #FFF8F0;
+  color: #E65100;
+  font-weight: 700;
+  border-left: 3px solid #FF6D00;
+}
+.v2-side-count {
+  font-size: 8px;
+  color: #bbb;
+}
+.v2-side-sub {
+  padding: 4px 10px 4px 20px;
+  font-size: 8px;
+  color: #aaa;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+/* Product grid */
+.v2-products {
+  flex: 1;
+  padding: 10px;
+}
+.v2-sort-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+.v2-sort-item {
+  font-size: 9px;
+  color: #999;
+}
+.v2-sort-item.active {
+  color: #333;
+  font-weight: 700;
+}
+.v2-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+.v2-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.v2-card-img {
+  width: 100%;
+  aspect-ratio: 1;
+  background: linear-gradient(145deg, #f5f5f5, #ececec);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  position: relative;
+}
+.v2-card-img .v2-badge-sale {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  background: #FF3B30;
+  color: #fff;
+  font-size: 7px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+.v2-card-info {
+  padding: 6px;
+}
+.v2-card-name {
+  font-size: 8px;
+  color: #333;
+  line-height: 1.3;
+  height: 21px;
+  overflow: hidden;
+  margin-bottom: 3px;
+}
+.v2-card-price {
+  font-size: 10px;
+  color: #E53E3E;
+  font-weight: 800;
+}
+.v2-card-original {
+  font-size: 7px;
+  color: #bbb;
+  text-decoration: line-through;
+  margin-left: 3px;
+}
+.v2-card-review {
+  font-size: 7px;
+  color: #aaa;
+  margin-top: 2px;
+}
+
+/* Pagination */
+.v2-pagi {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+.v2-page {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: #999;
+  background: #f5f5f5;
+}
+.v2-page.active {
+  background: #333;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* PC Red overlay */
+.v2-browser-overlay {
+  position: relative;
+}
+.v2-browser-overlay::after {
+  content: '😵 복잡한 카테고리 · 수천개 제품 · 매번 처음부터 검색';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(0deg, rgba(180,30,30,0.95) 0%, rgba(180,30,30,0.7) 70%, transparent 100%);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  padding: 30px 16px 14px;
+  letter-spacing: -0.3px;
+}
+
+/* === VS Divider === */
+.v2-vs-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 20px 0;
+}
+.v2-vs-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gray-300), transparent);
+}
+.v2-vs-badge {
+  width: 48px;
+  height: 48px;
+  background: var(--dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--accent);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  flex-shrink: 0;
+  letter-spacing: 1px;
+}
+
+/* === App Mockup V2 === */
+.v2-phone-wrap {
+  display: flex;
+  justify-content: center;
+}
+.v2-phone {
+  width: 280px;
+  background: #1a1a1a;
+  border-radius: 40px;
+  padding: 6px;
+  box-shadow: 0 20px 60px rgba(0,102,255,0.15), 0 8px 30px rgba(0,0,0,0.15);
+  position: relative;
+}
+.v2-phone::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 22px;
+  background: #1a1a1a;
+  border-radius: 0 0 14px 14px;
+  z-index: 5;
+}
+.v2-phone-glow {
+  position: absolute;
+  inset: -3px;
+  border-radius: 43px;
+  border: 2px solid rgba(0,212,170,0.35);
+  pointer-events: none;
+}
+.v2-screen {
+  background: #fff;
+  border-radius: 34px;
+  overflow: hidden;
+}
+.v2-status {
+  background: var(--primary);
+  padding: 10px 20px 2px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: rgba(255,255,255,0.8);
+  font-weight: 600;
+}
+.v2-app-header {
+  background: var(--primary);
+  padding: 4px 18px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.v2-app-logo {
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 14px;
+  color: var(--primary);
+}
+.v2-app-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #fff;
+}
+.v2-app-search {
+  margin: 12px 16px 8px;
+  background: var(--gray-100);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.v2-app-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 4px 16px 10px;
+}
+.v2-atab {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.v2-atab.active {
+  background: var(--primary);
+  color: #fff;
+}
+.v2-atab:not(.active) {
+  background: var(--gray-100);
+  color: var(--gray-500);
+}
+.v2-fav-header {
+  padding: 2px 18px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gray-700);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.v2-fav-list {
+  padding: 0 16px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.v2-fav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #F5F8FF;
+  border-radius: 14px;
+  border: 1px solid #E8EEFF;
+}
+.v2-fav-emoji {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #E8F0FE, #DBEAFE);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.v2-fav-info {
+  flex: 1;
+  min-width: 0;
+}
+.v2-fav-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 2px;
+}
+.v2-fav-meta {
+  font-size: 10px;
+  color: var(--gray-500);
+}
+.v2-fav-right {
+  text-align: right;
+  flex-shrink: 0;
+}
+.v2-fav-price {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+.v2-fav-add {
+  width: 28px;
+  height: 28px;
+  background: var(--primary);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+  margin-left: auto;
+}
+.v2-app-nav {
+  display: flex;
+  border-top: 1px solid var(--gray-100);
+  padding: 8px 0 14px;
+}
+.v2-nav-item {
+  flex: 1;
+  text-align: center;
+  font-size: 9px;
+  color: var(--gray-400);
+}
+.v2-nav-item.active { color: var(--primary); font-weight: 700; }
+.v2-nav-item-icon {
+  font-size: 14px;
+  margin-bottom: 1px;
+}
+
+/* App green overlay */
+.v2-phone-overlay {
+  position: relative;
+}
+.v2-phone-overlay::after {
+  content: '✨ 즐겨찾기에서 터치 한 번이면 끝!';
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  right: 14px;
+  background: linear-gradient(135deg, rgba(0,102,255,0.93), rgba(0,180,140,0.93));
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,102,255,0.3);
+}
+
+/* Time comparison row */
+.v2-time-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+.v2-time-card {
+  border-radius: 14px;
+  padding: 14px 10px;
+  text-align: center;
+}
+.v2-time-card.slow {
+  background: #FFF5F5;
+  border: 1.5px solid #FFD6D6;
+}
+.v2-time-card.fast {
+  background: #F0FFF4;
+  border: 1.5px solid #B8F0D0;
+}
+.v2-time-icon {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+.v2-time-val {
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 2px;
+}
+.v2-time-card.slow .v2-time-val { color: #CC3333; }
+.v2-time-card.fast .v2-time-val { color: #0A8F4F; }
+.v2-time-label {
+  font-size: 10px;
+  color: var(--gray-500);
+  line-height: 1.4;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (min-width: 481px) {
+  body {
+    background: var(--gray-100);
+  }
+  .hero, .pain-section, .solution-intro, .feature-section,
+  .handover-section, .comparison-section, .process-section,
+  .testimonial-section, .stats-banner, .cta-section, .footer {
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">치과위생사 전용 구매 시스템</div>
+    <h1>
+      주문은 <span class="highlight">30초</span>면 끝.<br>
+      관리는 <span class="highlight">덴딜</span>이 합니다.
+    </h1>
+    <p class="hero-sub">
+      전화·문자·복잡한 쇼핑몰은 이제 그만.<br>
+      <strong>우리 치과 제품만 모아서</strong> 터치 한 번에 주문.<br>
+      재구매·통계·인수인계까지 한 곳에서.
+    </p>
+
+    <!-- Phone Mockup -->
+    <div class="hero-phone">
+      <div class="phone-screen">
+        <div class="phone-header">
+          <div class="phone-header-logo">D</div>
+          <div class="phone-header-title">덴딜</div>
+        </div>
+        <div class="phone-search">즐겨찾기 제품 검색</div>
+        <div class="phone-categories">
+          <span class="phone-cat active">즐겨찾기</span>
+          <span class="phone-cat">소모품</span>
+          <span class="phone-cat">마취제</span>
+          <span class="phone-cat">위생용품</span>
+        </div>
+        <div class="phone-products">
+          <div class="phone-product">
+            <div class="phone-product-img">🧤</div>
+            <div class="phone-product-info">
+              <div class="phone-product-name">니트릴 글러브 M사이즈</div>
+              <div class="phone-product-price">₩18,000</div>
+            </div>
+            <div class="phone-product-btn">+</div>
+          </div>
+          <div class="phone-product">
+            <div class="phone-product-img">😷</div>
+            <div class="phone-product-info">
+              <div class="phone-product-name">덴탈마스크 ASTM Lv2</div>
+              <div class="phone-product-price">₩12,000</div>
+            </div>
+            <div class="phone-product-btn">+</div>
+          </div>
+          <div class="phone-product">
+            <div class="phone-product-img">💉</div>
+            <div class="phone-product-info">
+              <div class="phone-product-name">리도카인 2% 1:100,000</div>
+              <div class="phone-product-price">₩25,000</div>
+            </div>
+            <div class="phone-product-btn">+</div>
+          </div>
+          <div class="phone-product">
+            <div class="phone-product-img">🩹</div>
+            <div class="phone-product-info">
+              <div class="phone-product-name">거즈 4×4 멸균 (200매)</div>
+              <div class="phone-product-price">₩8,500</div>
+            </div>
+            <div class="phone-product-btn">+</div>
+          </div>
+        </div>
+        <div class="phone-nav">
+          <div class="phone-nav-item active">
+            <div class="phone-nav-icon">🏠</div>
+            홈
+          </div>
+          <div class="phone-nav-item">
+            <div class="phone-nav-icon">⭐</div>
+            즐겨찾기
+          </div>
+          <div class="phone-nav-item">
+            <div class="phone-nav-icon">🔄</div>
+            재주문
+          </div>
+          <div class="phone-nav-item">
+            <div class="phone-nav-icon">📊</div>
+            통계
+          </div>
+          <div class="phone-nav-item">
+            <div class="phone-nav-icon">👤</div>
+            MY
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-cta-group">
+      <a href="https://dendeal.kr" class="btn-primary" target="_blank">
+        무료로 시작하기 →
+      </a>
+    </div>
+    <div class="hero-trust">
+      <span>가입비 무료</span>
+      <span class="hero-trust-dot"></span>
+      <span>월 이용료 없음</span>
+      <span class="hero-trust-dot"></span>
+      <span>즉시 사용 가능</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAIN POINTS ===== -->
+<section class="pain-section">
+  <div class="container">
+    <div class="animate-on-scroll">
+      <div class="section-label">치과위생사의 현실</div>
+      <div class="section-title">재료 주문, 아직도<br><span class="em">이렇게</span> 하고 계신가요?</div>
+      <div class="section-desc">전화하고, 검색하고, 비교하느라 시간 낭비하고 있지 않나요?</div>
+    </div>
+
+    <div class="pain-card animate-on-scroll">
+      <div class="pain-icon">📞</div>
+      <div class="pain-title">전화·문자 주문</div>
+      <div class="pain-desc">영업사원 연결, 제품 확인, 수량 체크. 한 번 주문에 10분 이상.</div>
+      <div class="pain-quote">진료 끝나면 6시라 전화도 못 해요</div>
+    </div>
+
+    <div class="pain-card animate-on-scroll">
+      <div class="pain-icon">🌐</div>
+      <div class="pain-title">복잡한 쇼핑몰</div>
+      <div class="pain-desc">수천 개 제품. 우리 치과 제품 찾기 어렵고, 매번 처음부터.</div>
+      <div class="pain-quote">제품이 너무 많아서 뭐가 뭔지 모르겠어요</div>
+    </div>
+
+    <div class="pain-card animate-on-scroll">
+      <div class="pain-icon">📋</div>
+      <div class="pain-title">인수인계 불가</div>
+      <div class="pain-desc">담당자 바뀌면 주문처, 가격, 주기 전부 처음부터 파악.</div>
+      <div class="pain-quote">전임자 퇴사 후 주문 내역이 하나도 없어요</div>
+    </div>
+
+    <div class="pain-card animate-on-scroll">
+      <div class="pain-icon">📊</div>
+      <div class="pain-title">구매 관리 불가</div>
+      <div class="pain-desc">얼마 썼는지 모르니 재고 관리도, 비용 절감도 불가능.</div>
+      <div class="pain-quote">재료비 물어보면 영수증 일일이 찾아요</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SOLUTION INTRO ===== -->
+<section class="solution-intro">
+  <div class="container animate-on-scroll">
+    <div class="solution-arrow">↓</div>
+    <div class="big-text">
+      그래서 만들었습니다.<br>
+      <span class="accent">덴딜</span>
+    </div>
+    <div class="sub-text">
+      복잡한 건 빼고, <strong>편한 것만</strong> 넣었습니다.
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE 1: 즐겨찾기 ===== -->
+<section class="feature-section">
+  <div class="container">
+    <div class="animate-on-scroll">
+      <div class="feature-number">1</div>
+      <div class="feature-title"><span class="em">즐겨찾기</span>로<br>우리 치과 전용 리스트</div>
+      <div class="feature-subtitle">자주 쓰는 제품만 등록. 매번 검색할 필요 없이 터치 한 번이면 끝.</div>
+    </div>
+
+    <div class="compare-v2 animate-on-scroll">
+
+      <!-- ① PC Shopping Mall -->
+      <div class="v2-pc-wrap">
+        <div class="v2-label bad">
+          <span class="v2-label-icon">😰</span> 타사 온라인 쇼핑몰 (PC)
+        </div>
+        <div class="v2-browser v2-browser-overlay">
+          <div class="v2-browser-bar">
+            <div class="v2-dots"><div class="v2-dot r"></div><div class="v2-dot y"></div><div class="v2-dot g"></div></div>
+            <div class="v2-url">https://www.dental-mall.co.kr/category/supplies?page=1&sort=popular</div>
+          </div>
+          <div class="v2-browser-body">
+            <div class="v2-mega-nav">
+              <div class="v2-mega-item">전체</div>
+              <div class="v2-mega-item">소모품</div>
+              <div class="v2-mega-item">마취제</div>
+              <div class="v2-mega-item">위생용품</div>
+              <div class="v2-mega-item">소독제</div>
+              <div class="v2-mega-item">진료재료</div>
+              <div class="v2-mega-item">기구</div>
+              <div class="v2-mega-item">장비</div>
+            </div>
+            <div class="v2-promo">
+              <div class="v2-promo-text">🔥 2월 대규모 할인전 최대 40% OFF</div>
+              <div class="v2-promo-sub">장갑·마스크 초특가 + 사은품 증정!</div>
+            </div>
+            <div class="v2-content">
+              <div class="v2-sidebar">
+                <div class="v2-side-title">📂 카테고리</div>
+                <div class="v2-side-item">글러브/장갑 <span class="v2-side-count">1,247</span></div>
+                <div class="v2-side-item active">┗ 니트릴 <span class="v2-side-count">834</span></div>
+                <div class="v2-side-sub">┗ 파우더프리</div>
+                <div class="v2-side-sub">┗ 파우더</div>
+                <div class="v2-side-sub">┗ 컬러장갑</div>
+                <div class="v2-side-item">마스크류 <span class="v2-side-count">956</span></div>
+                <div class="v2-side-item">마취제 <span class="v2-side-count">1,823</span></div>
+                <div class="v2-side-item">소독제 <span class="v2-side-count">782</span></div>
+                <div class="v2-side-item">석션팁 <span class="v2-side-count">643</span></div>
+                <div class="v2-side-item">거즈/탈지면 <span class="v2-side-count">521</span></div>
+                <div class="v2-side-item">주사기/바늘 <span class="v2-side-count">412</span></div>
+                <div class="v2-side-item">일회용컵 <span class="v2-side-count">189</span></div>
+              </div>
+              <div class="v2-products">
+                <div class="v2-sort-bar">
+                  <div class="v2-sort-item active">인기순</div>
+                  <div class="v2-sort-item">|</div>
+                  <div class="v2-sort-item">낮은가격순</div>
+                  <div class="v2-sort-item">|</div>
+                  <div class="v2-sort-item">리뷰많은순</div>
+                  <div class="v2-sort-item">|</div>
+                  <div class="v2-sort-item">최신순</div>
+                </div>
+                <div class="v2-grid">
+                  <div class="v2-card">
+                    <div class="v2-card-img">🧤<span class="v2-badge-sale">30%</span></div>
+                    <div class="v2-card-info">
+                      <div class="v2-card-name">A사 니트릴 글러브 M 파우더프리 100매</div>
+                      <div class="v2-card-price">₩13,860 <span class="v2-card-original">₩19,800</span></div>
+                      <div class="v2-card-review">★ 4.3 (128)</div>
+                    </div>
+                  </div>
+                  <div class="v2-card">
+                    <div class="v2-card-img">😷</div>
+                    <div class="v2-card-info">
+                      <div class="v2-card-name">B사 덴탈마스크 4겹 ASTM Lv2 50매입</div>
+                      <div class="v2-card-price">₩14,500</div>
+                      <div class="v2-card-review">★ 4.5 (89)</div>
+                    </div>
+                  </div>
+                  <div class="v2-card">
+                    <div class="v2-card-img">💉<span class="v2-badge-sale">15%</span></div>
+                    <div class="v2-card-info">
+                      <div class="v2-card-name">C사 리도카인 HCl 2% 에피네프린 1:100,000</div>
+                      <div class="v2-card-price">₩22,100 <span class="v2-card-original">₩26,000</span></div>
+                      <div class="v2-card-review">★ 4.7 (256)</div>
+                    </div>
+                  </div>
+                  <div class="v2-card">
+                    <div class="v2-card-img">🧴</div>
+                    <div class="v2-card-info">
+                      <div class="v2-card-name">D사 표면소독제 스프레이 500ml 의료기관용</div>
+                      <div class="v2-card-price">₩15,000</div>
+                      <div class="v2-card-review">★ 4.1 (67)</div>
+                    </div>
+                  </div>
+                  <div class="v2-card">
+                    <div class="v2-card-img">🩹</div>
+                    <div class="v2-card-info">
+                      <div class="v2-card-name">E사 멸균거즈 4×4inch 200매 개별포장</div>
+                      <div class="v2-card-price">₩9,800</div>
+                      <div class="v2-card-review">★ 4.0 (42)</div>
+                    </div>
+                  </div>
+                  <div class="v2-card">
+                    <div class="v2-card-img">🫧</div>
+                    <div class="v2-card-info">
+                      <div class="v2-card-name">F사 석션팁 일회용 100개입 화이트</div>
+                      <div class="v2-card-price">₩6,500</div>
+                      <div class="v2-card-review">★ 3.9 (31)</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="v2-pagi">
+                  <div class="v2-page active">1</div>
+                  <div class="v2-page">2</div>
+                  <div class="v2-page">3</div>
+                  <div class="v2-page">4</div>
+                  <div class="v2-page">···</div>
+                  <div class="v2-page">47</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ② VS Divider -->
+      <div class="v2-vs-divider">
+        <div class="v2-vs-line"></div>
+        <div class="v2-vs-badge">VS</div>
+        <div class="v2-vs-line"></div>
+      </div>
+
+      <!-- ③ Dendeal App -->
+      <div class="v2-label good">
+        <span class="v2-label-icon">😊</span> 덴딜 앱 — 즐겨찾기
+      </div>
+      <div class="v2-phone-wrap">
+        <div class="v2-phone v2-phone-overlay">
+          <div class="v2-phone-glow"></div>
+          <div class="v2-screen">
+            <div class="v2-status">
+              <span>9:41</span>
+              <span>●●● WiFi 🔋</span>
+            </div>
+            <div class="v2-app-header">
+              <div class="v2-app-logo">D</div>
+              <div class="v2-app-title">덴딜</div>
+            </div>
+            <div class="v2-app-search">🔍 즐겨찾기 제품 검색</div>
+            <div class="v2-app-tabs">
+              <div class="v2-atab active">⭐ 즐겨찾기</div>
+              <div class="v2-atab">소모품</div>
+              <div class="v2-atab">마취제</div>
+            </div>
+            <div class="v2-fav-header">⭐ 우리치과 즐겨찾기 (4)</div>
+            <div class="v2-fav-list">
+              <div class="v2-fav-item">
+                <div class="v2-fav-emoji">🧤</div>
+                <div class="v2-fav-info">
+                  <div class="v2-fav-name">니트릴 글러브 M</div>
+                  <div class="v2-fav-meta">장갑 · 월 10박스 사용</div>
+                </div>
+                <div class="v2-fav-right">
+                  <div class="v2-fav-price">₩18,000</div>
+                  <div class="v2-fav-add">+</div>
+                </div>
+              </div>
+              <div class="v2-fav-item">
+                <div class="v2-fav-emoji">😷</div>
+                <div class="v2-fav-info">
+                  <div class="v2-fav-name">덴탈마스크 ASTM Lv2</div>
+                  <div class="v2-fav-meta">마스크 · 월 8박스 사용</div>
+                </div>
+                <div class="v2-fav-right">
+                  <div class="v2-fav-price">₩12,000</div>
+                  <div class="v2-fav-add">+</div>
+                </div>
+              </div>
+              <div class="v2-fav-item">
+                <div class="v2-fav-emoji">💉</div>
+                <div class="v2-fav-info">
+                  <div class="v2-fav-name">리도카인 2% 1:100,000</div>
+                  <div class="v2-fav-meta">마취제 · 월 5박스 사용</div>
+                </div>
+                <div class="v2-fav-right">
+                  <div class="v2-fav-price">₩25,000</div>
+                  <div class="v2-fav-add">+</div>
+                </div>
+              </div>
+              <div class="v2-fav-item">
+                <div class="v2-fav-emoji">🩹</div>
+                <div class="v2-fav-info">
+                  <div class="v2-fav-name">멸균거즈 4×4 (200매)</div>
+                  <div class="v2-fav-meta">거즈 · 월 6팩 사용</div>
+                </div>
+                <div class="v2-fav-right">
+                  <div class="v2-fav-price">₩8,500</div>
+                  <div class="v2-fav-add">+</div>
+                </div>
+              </div>
+            </div>
+            <div class="v2-app-nav">
+              <div class="v2-nav-item"><div class="v2-nav-item-icon">🏠</div>홈</div>
+              <div class="v2-nav-item active"><div class="v2-nav-item-icon">⭐</div>즐겨찾기</div>
+              <div class="v2-nav-item"><div class="v2-nav-item-icon">🔄</div>재주문</div>
+              <div class="v2-nav-item"><div class="v2-nav-item-icon">📊</div>통계</div>
+              <div class="v2-nav-item"><div class="v2-nav-item-icon">👤</div>MY</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ④ Time Compare -->
+      <div class="v2-time-compare">
+        <div class="v2-time-card slow">
+          <div class="v2-time-icon">⏳</div>
+          <div class="v2-time-val">10~15분</div>
+          <div class="v2-time-label">검색 → 비교 → 장바구니 → 주문</div>
+        </div>
+        <div class="v2-time-card fast">
+          <div class="v2-time-icon">⚡</div>
+          <div class="v2-time-val">30초</div>
+          <div class="v2-time-label">즐겨찾기 → 담기 → 주문 끝!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-points animate-on-scroll">
+      <div class="feature-point">
+        <div class="feature-point-icon">✓</div>
+        <div class="feature-point-text"><strong>검색 시간 제로</strong> — 한 번 등록, 계속 사용</div>
+      </div>
+      <div class="feature-point">
+        <div class="feature-point-icon">✓</div>
+        <div class="feature-point-text"><strong>치과별 맞춤 리스트</strong> — 우리 치과 제품만 표시</div>
+      </div>
+      <div class="feature-point">
+        <div class="feature-point-icon">✓</div>
+        <div class="feature-point-text"><strong>팀 전체 공유</strong> — 원장님·위생사 동일 리스트</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE 2: 간편 재구매 ===== -->
+<section class="feature-section">
+  <div class="container">
+    <div class="animate-on-scroll">
+      <div class="feature-number">2</div>
+      <div class="feature-title"><span class="em">원터치 재구매</span>로<br>주문 시간 90% 단축</div>
+      <div class="feature-subtitle">지난 주문 그대로 터치 한 번에 재주문. 검색·입력 시간 제로.</div>
+    </div>
+
+    <div class="feature-mockup animate-on-scroll">
+      <div class="mockup-header">
+        <div class="mockup-header-icon">🔄</div>
+        <div class="mockup-header-text">최근 주문 내역</div>
+      </div>
+      <div class="reorder-timeline">
+        <div class="reorder-item">
+          <div class="reorder-dot">📦</div>
+          <div class="reorder-info">
+            <div class="reorder-date">2025.02.10 · 총 ₩285,000</div>
+            <div class="reorder-name">니트릴 글러브 외 4건</div>
+            <div class="reorder-btn">🔄 동일 재주문</div>
+          </div>
+        </div>
+        <div class="reorder-item">
+          <div class="reorder-dot">📦</div>
+          <div class="reorder-info">
+            <div class="reorder-date">2025.01.28 · 총 ₩180,000</div>
+            <div class="reorder-name">마취제 + 주사바늘 세트</div>
+            <div class="reorder-btn">🔄 동일 재주문</div>
+          </div>
+        </div>
+        <div class="reorder-item">
+          <div class="reorder-dot">📦</div>
+          <div class="reorder-info">
+            <div class="reorder-date">2025.01.15 · 총 ₩96,000</div>
+            <div class="reorder-name">덴탈마스크 8박스 + 석션팁</div>
+            <div class="reorder-btn">🔄 동일 재주문</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-points animate-on-scroll">
+      <div class="feature-point">
+        <div class="feature-point-icon">✓</div>
+        <div class="feature-point-text"><strong>주문 히스토리 보관</strong> — 과거 주문 언제든 확인</div>
+      </div>
+      <div class="feature-point">
+        <div class="feature-point-icon">✓</div>
+        <div class="feature-point-text"><strong>원터치 재주문</strong> — 동일 주문 30초 완료</div>
+      </div>
+      <div class="feature-point">
+        <div class="feature-point-icon">✓</div>
+        <div class="feature-point-text"><strong>수량 변경 간편</strong> — 재주문 후 수량만 수정</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE 3: 구매 통계 ===== -->
+<section class="feature-section">
+  <div class="container">
+    <div class="animate-on-scroll">
+      <div class="feature-number">3</div>
+      <div class="feature-title"><span class="em">구매 통계</span>로<br>비용을 한눈에 관리</div>
+      <div class="feature-subtitle">월별·카테고리별 구매 데이터 자동 정리. 보고도 비용 관리도 즉시.</div>
+    </div>
+
+    <div class="feature-mockup animate-on-scroll">
+      <div class="mockup-header">
+        <div class="mockup-header-icon">📊</div>
+        <div class="mockup-header-text">2025년 월별 구매 현황</div>
+      </div>
+      <div class="stats-chart">
+        <div class="chart-bars">
+          <div class="chart-bar-group">
+            <div class="chart-bar" style="height:50px;"></div>
+            <div class="chart-bar-label">9월</div>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-bar" style="height:70px;"></div>
+            <div class="chart-bar-label">10월</div>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-bar" style="height:60px;"></div>
+            <div class="chart-bar-label">11월</div>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-bar" style="height:90px;"></div>
+            <div class="chart-bar-label">12월</div>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-bar" style="height:80px;"></div>
+            <div class="chart-bar-label">1월</div>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-bar accent" style="height:65px;"></div>
+            <div class="chart-bar-label">2월</div>
+          </div>
+        </div>
+      </div>
+      <div class="stats-summary">
+        <div class="stats-card">
+          <div class="stats-card-value">₩2.4M</div>
+          <div class="stats-card-label">이번 달 구매액</div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-card-value">-12%</div>
+          <div class="stats-card-label">전월 대비</div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-card-value">47건</div>
+          <div class="stats-card-label">총 주문 건수</div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-card-value">Top 5</div>
+          <div class="stats-card-label">다빈도 구매 제품</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-points animate-on-scroll">
+      <div class="feature-point">
+        <div class="feature-point-icon">✓</div>
+        <div class="feature-point-text"><strong>자동 통계</strong> — 엑셀 작업 불필요</div>
+      </div>
+      <div class="feature-point">
+        <div class="feature-point-icon">✓</div>
+        <div class="feature-point-text"><strong>즉시 보고</strong> — 1초면 현황 파악</div>
+      </div>
+      <div class="feature-point">
+        <div class="feature-point-icon">✓</div>
+        <div class="feature-point-text"><strong>카테고리별 분석</strong> — 비용 흐름 한눈에</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE 4: 인수인계 ===== -->
+<section class="handover-section">
+  <div class="container">
+    <div class="animate-on-scroll">
+      <div class="feature-number">4</div>
+      <div class="feature-title"><span class="em">완벽한 인수인계</span><br>걱정 없는 담당자 교체</div>
+      <div class="feature-subtitle">모든 기록이 시스템에 남아있어 새 담당자도 첫날부터 업무 가능.</div>
+    </div>
+
+    <div class="handover-compare animate-on-scroll">
+      <div class="compare-card before">
+        <div class="compare-emoji">😰</div>
+        <div class="compare-label">BEFORE</div>
+        <ul class="compare-list">
+          <li>주문 내역 파악 불가</li>
+          <li>거래처 연락처 분실</li>
+          <li>가격 정보 없음</li>
+          <li>구매 주기 몰라 혼란</li>
+        </ul>
+      </div>
+      <div class="compare-card after">
+        <div class="compare-emoji">😊</div>
+        <div class="compare-label">AFTER</div>
+        <ul class="compare-list">
+          <li>전체 주문 히스토리</li>
+          <li>거래처 자동 관리</li>
+          <li>가격 비교 즉시 가능</li>
+          <li>재주문 알림 자동화</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-points animate-on-scroll">
+      <div class="feature-point">
+        <div class="feature-point-icon">✓</div>
+        <div class="feature-point-text"><strong>즉시 인수인계</strong> — 권한 부여만 하면 끝</div>
+      </div>
+      <div class="feature-point">
+        <div class="feature-point-icon">✓</div>
+        <div class="feature-point-text"><strong>데이터 영구 보관</strong> — 퇴사해도 기록은 남음</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMPARISON TABLE ===== -->
+<section class="comparison-section">
+  <div class="container">
+    <div class="animate-on-scroll">
+      <div class="section-label">비교</div>
+      <div class="section-title">기존 방식 vs <span class="em">덴딜</span></div>
+      <div class="section-desc" style="margin-bottom:24px;">한눈에 보는 차이점</div>
+    </div>
+
+    <div class="comparison-table animate-on-scroll">
+      <div class="comp-row header">
+        <div class="comp-cell label" style="background:var(--dark);color:rgba(255,255,255,0.4);">기능</div>
+        <div class="comp-cell" style="font-size:11px;">기존 방식</div>
+        <div class="comp-cell dendeal">덴딜</div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-cell label">주문 방식</div>
+        <div class="comp-cell">전화/문자</div>
+        <div class="comp-cell highlight"><span class="check">✓</span> 앱 터치</div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-cell label">주문 소요시간</div>
+        <div class="comp-cell">10~15분</div>
+        <div class="comp-cell highlight"><span class="check">✓</span> 30초</div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-cell label">즐겨찾기</div>
+        <div class="comp-cell"><span class="cross">✕</span></div>
+        <div class="comp-cell highlight"><span class="check">✓</span></div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-cell label">재구매</div>
+        <div class="comp-cell">처음부터</div>
+        <div class="comp-cell highlight"><span class="check">✓</span> 원터치</div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-cell label">구매 통계</div>
+        <div class="comp-cell"><span class="cross">✕</span></div>
+        <div class="comp-cell highlight"><span class="check">✓</span> 자동</div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-cell label">인수인계</div>
+        <div class="comp-cell">수동 정리</div>
+        <div class="comp-cell highlight"><span class="check">✓</span> 자동</div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-cell label">24시간 주문</div>
+        <div class="comp-cell"><span class="cross">✕</span></div>
+        <div class="comp-cell highlight"><span class="check">✓</span></div>
+      </div>
+      <div class="comp-row">
+        <div class="comp-cell label">가격</div>
+        <div class="comp-cell">변동적</div>
+        <div class="comp-cell highlight"><span class="check">✓</span> 투명</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROCESS ===== -->
+<section class="process-section">
+  <div class="container">
+    <div class="animate-on-scroll">
+      <div class="section-label">시작하기</div>
+      <div class="section-title">3분이면 충분합니다</div>
+      <div class="section-desc">복잡한 설정 없이 바로 시작.</div>
+    </div>
+
+    <div class="process-steps">
+      <div class="process-step animate-on-scroll">
+        <div class="step-indicator">
+          <div class="step-number">1</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <div class="step-title">회원가입</div>
+          <div class="step-desc">치과명, 연락처만 입력. 서류 절차 없음.</div>
+          <div class="step-time">⏱ 1분</div>
+        </div>
+      </div>
+      <div class="process-step animate-on-scroll">
+        <div class="step-indicator">
+          <div class="step-number">2</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <div class="step-title">즐겨찾기 등록</div>
+          <div class="step-desc">자주 쓰는 제품 추가. 한 번만 등록하면 끝.</div>
+          <div class="step-time">⏱ 1분</div>
+        </div>
+      </div>
+      <div class="process-step animate-on-scroll">
+        <div class="step-indicator">
+          <div class="step-number">3</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <div class="step-title">주문 시작!</div>
+          <div class="step-desc">즐겨찾기 → 담기 → 주문 완료. 기록은 자동 저장.</div>
+          <div class="step-time">⏱ 30초</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="testimonial-section">
+  <div class="container">
+    <div class="animate-on-scroll">
+      <div class="section-label">실제 후기</div>
+      <div class="section-title">먼저 사용해본<br><span class="em">치과위생사</span>들의 반응</div>
+    </div>
+
+    <div class="testimonial-card animate-on-scroll">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">전화할 필요 없어졌어요. 점심시간에 터치 몇 번이면 주문 끝!</div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">김</div>
+        <div class="testimonial-info">
+          <div class="testimonial-name">김○○ 치과위생사</div>
+          <div class="testimonial-role">서울 · 5년차</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card animate-on-scroll">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">전임자 퇴사 후 막막했는데, 주문 기록이 다 남아있어서 바로 업무 파악됐어요.</div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">박</div>
+        <div class="testimonial-info">
+          <div class="testimonial-name">박○○ 치과위생사</div>
+          <div class="testimonial-role">경기 · 3년차</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card animate-on-scroll">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">재료비 물어보면 통계 화면 보여드리면 끝. 영수증 찾을 필요 없어요.</div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">이</div>
+        <div class="testimonial-info">
+          <div class="testimonial-name">이○○ 실장</div>
+          <div class="testimonial-role">부산 · 8년차</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATS BANNER ===== -->
+<section class="stats-banner">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item animate-on-scroll">
+        <div class="stat-number">30<span class="unit">초</span></div>
+        <div class="stat-desc">평균 주문 소요시간</div>
+      </div>
+      <div class="stat-item animate-on-scroll">
+        <div class="stat-number">90<span class="unit">%</span></div>
+        <div class="stat-desc">주문 시간 단축</div>
+      </div>
+      <div class="stat-item animate-on-scroll">
+        <div class="stat-number">24<span class="unit">시간</span></div>
+        <div class="stat-desc">언제든 주문 가능</div>
+      </div>
+      <div class="stat-item animate-on-scroll">
+        <div class="stat-number">0<span class="unit">원</span></div>
+        <div class="stat-desc">월 이용료</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section">
+  <div class="container">
+    <div class="animate-on-scroll">
+      <div class="cta-badge">🎁 지금 가입하면 혜택 제공</div>
+      <div class="cta-title">
+        <span class="accent">편한 주문</span>,<br>
+        지금 바로 시작하세요.
+      </div>
+      <div class="cta-desc">가입비 무료. 월 이용료 무료.<br>치과위생사 전용 구매 시스템.</div>
+
+      <div class="cta-benefits">
+        <div class="cta-benefit">
+          <div class="cta-benefit-icon">💰</div>
+          가입비·이용료 완전 무료
+        </div>
+        <div class="cta-benefit">
+          <div class="cta-benefit-icon">⚡</div>
+          가입 즉시 주문 가능
+        </div>
+        <div class="cta-benefit">
+          <div class="cta-benefit-icon">🎯</div>
+          즐겨찾기 세팅 무료 지원
+        </div>
+        <div class="cta-benefit">
+          <div class="cta-benefit-icon">📞</div>
+          전담 고객지원
+        </div>
+      </div>
+
+      <a href="https://dendeal.kr" class="btn-cta-large" target="_blank">무료로 시작하기</a>
+      <a href="https://pf.kakao.com/_MYKhX/chat" class="btn-secondary" target="_blank">카카오톡 상담 문의하기</a>
+      <div class="cta-note">* 가입 후 1분 내 바로 사용 가능</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-logo">DENDEAL</div>
+    <div class="footer-desc">치과위생사를 위한 스마트 구매 플랫폼<br>덴딜 | dendeal.kr</div>
+    <div class="footer-links">
+      <a href="#" class="footer-link">이용약관</a>
+      <a href="#" class="footer-link">개인정보처리방침</a>
+      <a href="#" class="footer-link">고객센터</a>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-copy">© 2025 DENDEAL. All rights reserved.</div>
+  </div>
+</footer>
+
+<!-- ===== FLOATING CTA ===== -->
+<div class="floating-cta" id="floatingCta">
+  <a href="https://dendeal.kr" class="floating-btn-primary" target="_blank">무료로 시작하기</a>
+  <a href="https://pf.kakao.com/_MYKhX/chat" class="floating-btn-kakao" target="_blank">💬 채팅문의</a>
+  <a href="tel:01034400416" class="floating-btn-call">📞 연락하기</a>
+</div>
+
+<script>
+// Scroll animation observer
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+// Floating CTA visibility
+const floatingCta = document.getElementById('floatingCta');
+const heroSection = document.querySelector('.hero');
+
+const floatingObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) {
+      floatingCta.classList.add('visible');
+    } else {
+      floatingCta.classList.remove('visible');
+    }
+  });
+}, { threshold: 0 });
+
+floatingObserver.observe(heroSection);
+
+// Smooth number animation for stats
+function animateValue(element, start, end, duration) {
+  let startTimestamp = null;
+  const step = (timestamp) => {
+    if (!startTimestamp) startTimestamp = timestamp;
+    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    element.textContent = Math.floor(eased * (end - start) + start);
+    if (progress < 1) window.requestAnimationFrame(step);
+  };
+  window.requestAnimationFrame(step);
+}
+</script>
+
+</body>
+</html>
