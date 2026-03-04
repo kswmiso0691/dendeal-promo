@@ -2218,30 +2218,7 @@ body {
   .footer-logo { font-size: 26px; }
   .footer-desc { font-size: 13px; }
 
-  /* Compare V2: side by side */
-  .v2-compare-layout {
-    display: flex;
-    gap: 28px;
-    align-items: stretch;
-  }
-  .v2-compare-layout > .v2-pc-wrap { flex: 1.2; margin-bottom: 0; }
-  .v2-compare-layout > .v2-phone-wrap { flex: 0.8; }
-  .v2-vs-divider-desktop {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 0 4px;
-  }
-  .v2-vs-divider-desktop .v2-vs-line {
-    width: 1px;
-    height: 60px;
-    background: linear-gradient(180deg, transparent, var(--gray-300), transparent);
-  }
-  .v2-vs-divider-desktop .v2-vs-badge {
-    width: 44px; height: 44px; font-size: 13px;
-  }
+  /* Compare V2: handled in new responsive section below */
 }
 
 /* Large desktop (1200px+) */
@@ -2258,9 +2235,177 @@ body {
   .testimonial-grid .testimonial-card { padding: 32px 28px; }
   .testimonial-text { font-size: 15px; }
 }
+
+/* ===== PC / MOBILE UTILITY ===== */
+.desktop-only { display: none !important; }
+.mobile-only { display: block !important; }
+
+@media (min-width: 769px) {
+  .desktop-only { display: block !important; }
+  .desktop-only-flex { display: flex !important; }
+  .mobile-only { display: none !important; }
+}
+
+/* ===== PC NAVIGATION HEADER ===== */
+.pc-header {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  transition: box-shadow 0.3s;
+}
+.pc-header.scrolled {
+  box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+}
+@media (min-width: 769px) {
+  .pc-header { display: block; }
+}
+.pc-header-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pc-header-logo {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--primary);
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+.pc-header-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.pc-header-link {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-700);
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+.pc-header-link:hover {
+  color: var(--primary);
+}
+.pc-header-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  background: var(--gradient-accent);
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(0,102,255,0.25);
+}
+.pc-header-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0,102,255,0.35);
+}
+.pc-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pc-header-kakao {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 18px;
+  background: #FEE500;
+  color: #3C1E1E;
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+.pc-header-kakao:hover {
+  transform: translateY(-1px);
+}
+
+/* PC에서 hero 섹션 상단 여백 (고정 헤더 높이만큼) */
+@media (min-width: 769px) {
+  .hero { padding-top: 130px; }
+  /* PC에서 floating CTA 숨기기 */
+  .floating-cta { display: none !important; }
+}
+
+/* ===== V2 COMPARE - PC 나란히 배치 ===== */
+@media (min-width: 769px) {
+  .v2-compare-layout {
+    display: flex;
+    gap: 28px;
+    align-items: stretch;
+  }
+  .v2-compare-layout > .v2-pc-wrap {
+    flex: 1.2;
+    margin-bottom: 0;
+  }
+  .v2-compare-layout > .v2-vs-phone-area {
+    flex: 0.8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .v2-compare-layout .v2-vs-divider { display: none; }
+  .v2-compare-layout .v2-vs-divider-desktop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+  .v2-compare-layout .v2-vs-divider-desktop .v2-vs-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(180deg, transparent, var(--gray-300), transparent);
+  }
+  .v2-compare-layout .v2-vs-divider-desktop .v2-vs-badge {
+    width: 44px; height: 44px; font-size: 13px;
+  }
+  .v2-compare-layout .v2-time-compare {
+    margin-top: 16px;
+  }
+}
+.v2-vs-divider-desktop { display: none; }
 </style>
 </head>
 <body>
+
+<!-- ===== PC HEADER (데스크톱 전용) ===== -->
+<header class="pc-header" id="pcHeader">
+  <div class="pc-header-inner">
+    <a href="#" class="pc-header-logo">DENDEAL</a>
+    <nav class="pc-header-nav">
+      <a class="pc-header-link" data-scroll="pain-section">현실의 문제</a>
+      <a class="pc-header-link" data-scroll="feature-section-1">핵심 기능</a>
+      <a class="pc-header-link" data-scroll="comparison-section">비교</a>
+      <a class="pc-header-link" data-scroll="testimonial-section">후기</a>
+      <a class="pc-header-link" data-scroll="process-section">시작하기</a>
+    </nav>
+    <div class="pc-header-actions">
+      <a href="https://pf.kakao.com/_MYKhX/chat" class="pc-header-kakao" target="_blank">💬 카카오 상담</a>
+      <a href="https://dendeal.kr" class="pc-header-cta" target="_blank">무료로 시작하기 →</a>
+    </div>
+  </div>
+</header>
 
 <!-- ===== HERO ===== -->
 <section class="hero">
@@ -2368,7 +2513,7 @@ body {
 </section>
 
 <!-- ===== PAIN POINTS ===== -->
-<section class="pain-section">
+<section class="pain-section" id="pain-section">
   <div class="container">
     <div class="animate-on-scroll">
       <div class="section-label">치과위생사의 현실</div>
@@ -2423,7 +2568,7 @@ body {
 </section>
 
 <!-- ===== FEATURE 1: 즐겨찾기 ===== -->
-<section class="feature-section">
+<section class="feature-section" id="feature-section-1">
   <div class="container">
     <div class="animate-on-scroll">
       <div class="feature-number">1</div>
@@ -2434,6 +2579,7 @@ body {
     <div class="feature-layout">
     <div class="feature-visual">
     <div class="compare-v2 animate-on-scroll">
+      <div class="v2-compare-layout">
 
       <!-- ① PC Shopping Mall -->
       <div class="v2-pc-wrap">
@@ -2550,14 +2696,22 @@ body {
         </div>
       </div>
 
-      <!-- ② VS Divider -->
-      <div class="v2-vs-divider">
+      <!-- ② VS Divider (모바일) -->
+      <div class="v2-vs-divider mobile-only">
+        <div class="v2-vs-line"></div>
+        <div class="v2-vs-badge">VS</div>
+        <div class="v2-vs-line"></div>
+      </div>
+
+      <!-- VS Divider (데스크톱) -->
+      <div class="v2-vs-divider-desktop">
         <div class="v2-vs-line"></div>
         <div class="v2-vs-badge">VS</div>
         <div class="v2-vs-line"></div>
       </div>
 
       <!-- ③ Dendeal App -->
+      <div class="v2-vs-phone-area">
       <div class="v2-label good">
         <span class="v2-label-icon">😊</span> 덴딜 앱 — 즐겨찾기
       </div>
@@ -2650,6 +2804,8 @@ body {
           <div class="v2-time-label">즐겨찾기 → 담기 → 주문 끝!</div>
         </div>
       </div>
+      </div><!-- /.v2-vs-phone-area -->
+      </div><!-- /.v2-compare-layout -->
     </div>
     </div>
 
@@ -2863,7 +3019,7 @@ body {
 </section>
 
 <!-- ===== COMPARISON TABLE ===== -->
-<section class="comparison-section">
+<section class="comparison-section" id="comparison-section">
   <div class="container">
     <div class="animate-on-scroll">
       <div class="section-label">비교</div>
@@ -2922,7 +3078,7 @@ body {
 </section>
 
 <!-- ===== PROCESS ===== -->
-<section class="process-section">
+<section class="process-section" id="process-section">
   <div class="container">
     <div class="animate-on-scroll">
       <div class="section-label">시작하기</div>
@@ -2969,7 +3125,7 @@ body {
 </section>
 
 <!-- ===== TESTIMONIALS ===== -->
-<section class="testimonial-section">
+<section class="testimonial-section" id="testimonial-section">
   <div class="container">
     <div class="animate-on-scroll">
       <div class="section-label">실제 후기</div>
@@ -3141,6 +3297,32 @@ function animateValue(element, start, end, duration) {
   };
   window.requestAnimationFrame(step);
 }
+
+// PC Header scroll effect
+const pcHeader = document.getElementById('pcHeader');
+if (pcHeader) {
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      pcHeader.classList.add('scrolled');
+    } else {
+      pcHeader.classList.remove('scrolled');
+    }
+  });
+}
+
+// PC Header nav smooth scroll
+document.querySelectorAll('.pc-header-link[data-scroll]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const targetId = link.getAttribute('data-scroll');
+    const target = document.getElementById(targetId);
+    if (target) {
+      const headerHeight = pcHeader ? pcHeader.offsetHeight : 0;
+      const top = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 10;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
 </script>
 
 </body>
