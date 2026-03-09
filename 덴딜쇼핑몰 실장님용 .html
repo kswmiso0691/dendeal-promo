@@ -825,6 +825,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  position: relative;
+  z-index: 2;
+  background: inherit;
+  padding-top: 8px;
 }
 .feature-point {
   display: flex;
@@ -1168,6 +1172,264 @@ body {
   font-weight: 400;
 }
 
+/* ===== USER GUIDE SECTION ===== */
+.guide-section {
+  padding: 60px 20px;
+  background: var(--gray-50);
+}
+.guide-section .container {
+  max-width: 480px;
+  margin: 0 auto;
+}
+.guide-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+.guide-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(0,0,0,0.05);
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+.guide-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+.guide-card-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: var(--gradient-accent);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 900;
+  color: white;
+  flex-shrink: 0;
+}
+.guide-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 12px 0;
+}
+.guide-card-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--gray-900);
+  line-height: 1.3;
+}
+.guide-card-title .em {
+  color: var(--primary);
+}
+.guide-card-desc {
+  padding: 6px 12px 0;
+  font-size: 11px;
+  color: var(--gray-500);
+  line-height: 1.5;
+}
+.guide-card-img {
+  padding: 10px;
+  margin-top: auto;
+}
+.guide-card-img img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--gray-100);
+}
+/* 화살표 연결 */
+.guide-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 16px;
+  margin-bottom: 6px;
+}
+.guide-flow-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.3;
+}
+.guide-flow-dot.active {
+  opacity: 1;
+  width: 24px;
+  border-radius: 10px;
+}
+.guide-flow-arrow {
+  font-size: 14px;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* ===== PC GUIDE SECTION ===== */
+.guide-section-pc {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .guide-section {
+    display: none;
+  }
+  .guide-section-pc {
+    display: block;
+    padding: 100px 40px;
+    background: linear-gradient(180deg, #F8FAFF 0%, var(--gray-50) 100%);
+  }
+  .guide-pc-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .guide-pc-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  .guide-pc-header .section-label {
+    justify-content: center;
+  }
+  .guide-pc-header .section-title {
+    font-size: 36px;
+  }
+  .guide-pc-header .section-desc {
+    font-size: 17px;
+    margin-bottom: 0;
+  }
+  .guide-pc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    position: relative;
+  }
+  .guide-pc-card {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    border: 1px solid rgba(0,0,0,0.04);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+  }
+  .guide-pc-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 48px rgba(0,102,255,0.12);
+  }
+  .guide-pc-card-top {
+    padding: 24px 20px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .guide-pc-num {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-accent);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 900;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(0,102,255,0.2);
+  }
+  .guide-pc-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--gray-900);
+    line-height: 1.35;
+  }
+  .guide-pc-title .em {
+    color: var(--primary);
+  }
+  .guide-pc-desc {
+    padding: 0 20px;
+    font-size: 14px;
+    color: var(--gray-500);
+    line-height: 1.6;
+  }
+  .guide-pc-img {
+    padding: 16px;
+    margin-top: auto;
+  }
+  .guide-pc-img img {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--gray-100);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  .guide-pc-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0 20px 20px;
+  }
+  .guide-pc-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 4px 10px;
+    background: var(--primary-light);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+  /* Arrow connectors between cards */
+  .guide-pc-grid::before,
+  .guide-pc-grid::after {
+    display: none;
+  }
+  .guide-pc-arrow {
+    display: none;
+  }
+  /* Flow indicator */
+  .guide-pc-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 32px;
+  }
+  .guide-pc-flow-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .guide-pc-flow-num {
+    width: 28px;
+    height: 28px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: white;
+  }
+  .guide-pc-flow-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-700);
+  }
+  .guide-pc-flow-arrow {
+    font-size: 18px;
+    color: var(--gray-300);
+    margin: 0 4px;
+  }
+}
+
 /* ===== CTA SECTION ===== */
 .cta-section {
   padding: 80px 20px;
@@ -1402,7 +1664,10 @@ body {
 
 /* ===== COMPARE MOCKUP V2 ===== */
 .compare-v2 {
-  margin-bottom: 28px;
+  margin-bottom: 36px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
 }
 
 /* -- PC Mockup (Full Width) -- */
@@ -1485,8 +1750,8 @@ body {
   overflow: hidden;
 }
 .v2-mega-item {
-  padding: 8px 10px;
-  font-size: 10px;
+  padding: 6px 8px;
+  font-size: 9px;
   color: rgba(255,255,255,0.7);
   white-space: nowrap;
   border-right: 1px solid rgba(255,255,255,0.08);
@@ -1532,28 +1797,35 @@ body {
 .v2-content {
   display: flex;
   gap: 0;
+  overflow: hidden;
 }
 .v2-sidebar {
-  width: 120px;
+  width: 90px;
   background: #FAFAFA;
   border-right: 1px solid #eee;
   flex-shrink: 0;
+  overflow: hidden;
 }
 .v2-side-title {
-  padding: 8px 10px;
-  font-size: 10px;
+  padding: 6px 8px;
+  font-size: 9px;
   font-weight: 800;
   color: #333;
   background: #F0F0F0;
   border-bottom: 1px solid #e0e0e0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .v2-side-item {
-  padding: 6px 10px;
-  font-size: 9px;
+  padding: 5px 8px;
+  font-size: 8px;
   color: #666;
   border-bottom: 1px solid #f0f0f0;
   display: flex;
   justify-content: space-between;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .v2-side-item.active {
   background: #FFF8F0;
@@ -1562,31 +1834,40 @@ body {
   border-left: 3px solid #FF6D00;
 }
 .v2-side-count {
-  font-size: 8px;
+  font-size: 7px;
   color: #bbb;
+  flex-shrink: 0;
 }
 .v2-side-sub {
-  padding: 4px 10px 4px 20px;
-  font-size: 8px;
+  padding: 3px 8px 3px 16px;
+  font-size: 7px;
   color: #aaa;
   border-bottom: 1px solid #f5f5f5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Product grid */
 .v2-products {
   flex: 1;
-  padding: 10px;
+  min-width: 0;
+  padding: 8px;
+  overflow: hidden;
 }
 .v2-sort-bar {
   display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
-  padding-bottom: 8px;
+  gap: 6px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
   border-bottom: 1px solid #eee;
+  overflow: hidden;
 }
 .v2-sort-item {
-  font-size: 9px;
+  font-size: 8px;
   color: #999;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .v2-sort-item.active {
   color: #333;
@@ -1594,8 +1875,8 @@ body {
 }
 .v2-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
 }
 .v2-card {
   background: #fff;
@@ -1625,7 +1906,7 @@ body {
   border-radius: 3px;
 }
 .v2-card-info {
-  padding: 6px;
+  padding: 5px;
 }
 .v2-card-name {
   font-size: 8px;
@@ -1633,18 +1914,21 @@ body {
   line-height: 1.3;
   height: 21px;
   overflow: hidden;
-  margin-bottom: 3px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 2px;
 }
 .v2-card-price {
-  font-size: 10px;
+  font-size: 9px;
   color: #E53E3E;
   font-weight: 800;
+  white-space: nowrap;
 }
 .v2-card-original {
   font-size: 7px;
   color: #bbb;
   text-decoration: line-through;
-  margin-left: 3px;
+  margin-left: 2px;
 }
 .v2-card-review {
   font-size: 7px;
@@ -1690,11 +1974,13 @@ body {
   right: 0;
   background: linear-gradient(0deg, rgba(180,30,30,0.95) 0%, rgba(180,30,30,0.7) 70%, transparent 100%);
   color: #fff;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   text-align: center;
-  padding: 30px 16px 14px;
+  padding: 28px 12px 12px;
   letter-spacing: -0.3px;
+  line-height: 1.4;
+  z-index: 10;
 }
 
 /* === VS Divider === */
@@ -1756,6 +2042,7 @@ body {
   border-radius: 43px;
   border: 2px solid rgba(0,212,170,0.35);
   pointer-events: none;
+  z-index: 0;
 }
 .v2-screen {
   background: #fff;
@@ -1916,6 +2203,7 @@ body {
 /* App green overlay */
 .v2-phone-overlay {
   position: relative;
+  overflow: hidden;
 }
 .v2-phone-overlay::after {
   content: '✨ 즐겨찾기에서 터치 한 번이면 끝!';
@@ -1931,6 +2219,7 @@ body {
   padding: 10px 12px;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,102,255,0.3);
+  z-index: 3;
 }
 
 /* Time comparison row */
@@ -1971,7 +2260,20 @@ body {
 }
 
 /* ===== RESPONSIVE ===== */
-@media (min-width: 481px) {
+@media (min-width: 481px) and (max-width: 768px) {
+  body {
+    background: var(--gray-100);
+  }
+  .hero, .pain-section, .solution-intro, .feature-section,
+  .handover-section, .comparison-section, .process-section,
+  .testimonial-section, .stats-banner, .cta-section, .footer,
+  .guide-section {
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-width: 769px) {
   body {
     background: var(--gray-100);
   }
@@ -1981,6 +2283,9 @@ body {
     max-width: 480px;
     margin-left: auto;
     margin-right: auto;
+  }
+  .guide-section-pc {
+    max-width: 100%;
   }
 }
 </style>
@@ -2236,22 +2541,6 @@ body {
                       <div class="v2-card-name">D사 표면소독제 스프레이 500ml 의료기관용</div>
                       <div class="v2-card-price">₩15,000</div>
                       <div class="v2-card-review">★ 4.1 (67)</div>
-                    </div>
-                  </div>
-                  <div class="v2-card">
-                    <div class="v2-card-img">🩹</div>
-                    <div class="v2-card-info">
-                      <div class="v2-card-name">E사 멸균거즈 4×4inch 200매 개별포장</div>
-                      <div class="v2-card-price">₩9,800</div>
-                      <div class="v2-card-review">★ 4.0 (42)</div>
-                    </div>
-                  </div>
-                  <div class="v2-card">
-                    <div class="v2-card-img">🫧</div>
-                    <div class="v2-card-info">
-                      <div class="v2-card-name">F사 석션팁 일회용 100개입 화이트</div>
-                      <div class="v2-card-price">₩6,500</div>
-                      <div class="v2-card-review">★ 3.9 (31)</div>
                     </div>
                   </div>
                 </div>
@@ -2742,6 +3031,168 @@ body {
       <div class="stat-item animate-on-scroll">
         <div class="stat-number">0<span class="unit">원</span></div>
         <div class="stat-desc">월 이용료</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USER GUIDE (Mobile) ===== -->
+<section class="guide-section">
+  <div class="container">
+    <div class="animate-on-scroll">
+      <div class="section-label">User Guide</div>
+      <div class="section-title">덴딜 <span class="em">사용설명서</span></div>
+      <div class="section-desc">4단계로 끝나는 간편 주문</div>
+    </div>
+
+    <div class="guide-grid animate-on-scroll">
+      <div class="guide-card">
+        <div class="guide-card-top">
+          <div class="guide-card-num">1</div>
+          <div class="guide-card-title"><span class="em">즐겨찾기</span><br>바로 담기</div>
+        </div>
+        <div class="guide-card-desc">우리 치과 물품만 모아서 터치 한 번에 담기</div>
+        <div class="guide-card-img">
+          <img src="사용설명1번 쇼핑몰구매.JPG" alt="즐겨찾기에서 바로 담기">
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="guide-card-top">
+          <div class="guide-card-num">2</div>
+          <div class="guide-card-title"><span class="em">쇼핑몰</span><br>상품 구매</div>
+        </div>
+        <div class="guide-card-desc">카테고리별 탐색 + 할인 특가 확인</div>
+        <div class="guide-card-img">
+          <img src="사용설명2번 쇼핑몰구매.JPG" alt="쇼핑몰에서 상품 구매">
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="guide-card-top">
+          <div class="guide-card-num">3</div>
+          <div class="guide-card-title"><span class="em">자동 등록</span><br>재구매</div>
+        </div>
+        <div class="guide-card-desc">구매 상품 자동 등록, 원터치 재주문</div>
+        <div class="guide-card-img">
+          <img src="사용설명3번 구매항목 자동등록 재구매시 담기 및 치과에서 사용하는 물품만 정리. 구매상품을 클릭하면 구매한 리스트 있음..JPG" alt="자동등록 재구매">
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="guide-card-top">
+          <div class="guide-card-num">4</div>
+          <div class="guide-card-title"><span class="em">구매 통계</span><br>지출 관리</div>
+        </div>
+        <div class="guide-card-desc">월별 금액·건수 통계 + 엑셀 다운</div>
+        <div class="guide-card-img">
+          <img src="사용설명4번 구매통계관리로 지출 사용 내역 확인.JPG" alt="구매통계 관리">
+        </div>
+      </div>
+    </div>
+
+    <div class="guide-flow animate-on-scroll">
+      <div class="guide-flow-dot active"></div>
+      <div class="guide-flow-arrow">→</div>
+      <div class="guide-flow-dot active"></div>
+      <div class="guide-flow-arrow">→</div>
+      <div class="guide-flow-dot active"></div>
+      <div class="guide-flow-arrow">→</div>
+      <div class="guide-flow-dot active"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USER GUIDE (PC) ===== -->
+<section class="guide-section-pc">
+  <div class="guide-pc-inner">
+    <div class="guide-pc-header">
+      <div class="section-label">User Guide</div>
+      <div class="section-title">덴딜 <span class="em">사용설명서</span></div>
+      <div class="section-desc">4단계로 끝나는 간편 주문, 한눈에 확인하세요.</div>
+    </div>
+
+    <div class="guide-pc-grid">
+      <div class="guide-pc-card">
+        <div class="guide-pc-card-top">
+          <div class="guide-pc-num">1</div>
+          <div class="guide-pc-title"><span class="em">즐겨찾기</span>에서<br>바로 담기</div>
+        </div>
+        <div class="guide-pc-desc">우리 치과에서 사용하는 물품만 즐겨찾기에 등록, 터치 한 번으로 장바구니에 담기</div>
+        <div class="guide-pc-img">
+          <img src="사용설명1번 쇼핑몰구매.JPG" alt="즐겨찾기에서 바로 담기">
+        </div>
+        <div class="guide-pc-tags">
+          <span class="guide-pc-tag">⭐ 즐겨찾기</span>
+          <span class="guide-pc-tag">🛒 바로 담기</span>
+        </div>
+      </div>
+
+      <div class="guide-pc-card">
+        <div class="guide-pc-card-top">
+          <div class="guide-pc-num">2</div>
+          <div class="guide-pc-title"><span class="em">쇼핑몰</span>에서<br>상품 검색·구매</div>
+        </div>
+        <div class="guide-pc-desc">카테고리별 상품 탐색, 최신 상품, 할인 특가까지 덴딜몰에서 한눈에</div>
+        <div class="guide-pc-img">
+          <img src="사용설명2번 쇼핑몰구매.JPG" alt="쇼핑몰에서 상품 구매">
+        </div>
+        <div class="guide-pc-tags">
+          <span class="guide-pc-tag">🔍 상품 검색</span>
+          <span class="guide-pc-tag">🏷️ 한정 특가</span>
+        </div>
+      </div>
+
+      <div class="guide-pc-card">
+        <div class="guide-pc-card-top">
+          <div class="guide-pc-num">3</div>
+          <div class="guide-pc-title"><span class="em">자동 등록</span>으로<br>재구매 간편하게</div>
+        </div>
+        <div class="guide-pc-desc">구매한 상품은 즐겨찾기에 자동 등록, 재구매 시 원터치로 끝</div>
+        <div class="guide-pc-img">
+          <img src="사용설명3번 구매항목 자동등록 재구매시 담기 및 치과에서 사용하는 물품만 정리. 구매상품을 클릭하면 구매한 리스트 있음..JPG" alt="자동등록 재구매">
+        </div>
+        <div class="guide-pc-tags">
+          <span class="guide-pc-tag">🔄 자동 등록</span>
+          <span class="guide-pc-tag">👆 원터치 재구매</span>
+        </div>
+      </div>
+
+      <div class="guide-pc-card">
+        <div class="guide-pc-card-top">
+          <div class="guide-pc-num">4</div>
+          <div class="guide-pc-title"><span class="em">구매 통계</span>로<br>지출 내역 관리</div>
+        </div>
+        <div class="guide-pc-desc">월별 주문 금액·건수, 카테고리별 비율까지 한눈에 확인 + 엑셀 다운</div>
+        <div class="guide-pc-img">
+          <img src="사용설명4번 구매통계관리로 지출 사용 내역 확인.JPG" alt="구매통계 관리">
+        </div>
+        <div class="guide-pc-tags">
+          <span class="guide-pc-tag">📊 월별 통계</span>
+          <span class="guide-pc-tag">📥 엑셀 다운로드</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="guide-pc-flow">
+      <div class="guide-pc-flow-step">
+        <div class="guide-pc-flow-num">1</div>
+        <div class="guide-pc-flow-text">즐겨찾기 담기</div>
+      </div>
+      <div class="guide-pc-flow-arrow">→</div>
+      <div class="guide-pc-flow-step">
+        <div class="guide-pc-flow-num">2</div>
+        <div class="guide-pc-flow-text">쇼핑몰 구매</div>
+      </div>
+      <div class="guide-pc-flow-arrow">→</div>
+      <div class="guide-pc-flow-step">
+        <div class="guide-pc-flow-num">3</div>
+        <div class="guide-pc-flow-text">자동 등록·재구매</div>
+      </div>
+      <div class="guide-pc-flow-arrow">→</div>
+      <div class="guide-pc-flow-step">
+        <div class="guide-pc-flow-num">4</div>
+        <div class="guide-pc-flow-text">통계 관리</div>
       </div>
     </div>
   </div>
