@@ -926,49 +926,86 @@ body {
 }
 
 /* Feature bullet points */
-/* Feature description box */
-.feature-desc-box {
-  background: linear-gradient(135deg, #F0F7FF 0%, #E8F5E9 100%);
-  border: 1px solid #D0E8FF;
-  border-radius: 16px;
-  padding: 24px 20px;
+/* Pros & Cons comparison */
+.pros-cons {
   margin-top: 24px;
   margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
-.feature-desc-box-title {
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--primary);
-  margin-bottom: 12px;
+.pros-cons-card {
+  border-radius: 16px;
+  padding: 20px;
+}
+.pros-cons-card.cons {
+  background: #FFF5F5;
+  border: 1.5px solid #FFD6D6;
+}
+.pros-cons-card.pros {
+  background: #F0FFF4;
+  border: 1.5px solid #B8F0D0;
+}
+.pros-cons-header {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
 }
-.feature-desc-list {
+.pros-cons-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.cons .pros-cons-badge {
+  background: #FFE0E0;
+}
+.pros .pros-cons-badge {
+  background: #D4F5E0;
+}
+.pros-cons-title {
+  font-size: 15px;
+  font-weight: 800;
+}
+.cons .pros-cons-title { color: #CC3333; }
+.pros .pros-cons-title { color: #0A8F4F; }
+.pros-cons-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-.feature-desc-item {
+.pros-cons-item {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 8px;
   font-size: 13px;
-  color: var(--gray-700);
   line-height: 1.5;
 }
-.feature-desc-icon {
-  width: 24px;
-  height: 24px;
-  background: var(--primary);
-  border-radius: 6px;
+.cons .pros-cons-item { color: #7A2020; }
+.pros .pros-cons-item { color: #1A6B3C; }
+.pros-cons-icon {
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-weight: 700;
+}
+.pros-cons-item strong {
+  font-weight: 700;
+}
+.pros-cons-arrow {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  flex-shrink: 0;
-  color: #fff;
-  margin-top: 1px;
+  font-size: 24px;
+  color: var(--primary);
+  font-weight: 900;
 }
 
 .feature-points {
@@ -2859,37 +2896,58 @@ body {
     </div>
     </div>
 
-    <!-- 덴딜 즐겨찾기 기능 소개 -->
-    <div class="feature-desc-box animate-on-scroll">
-      <div class="feature-desc-box-title">⭐ 덴딜 즐겨찾기 기능</div>
-      <div class="feature-desc-list">
-        <div class="feature-desc-item">
-          <div class="feature-desc-icon">1</div>
-          <div>우리 치과에서 사용하는 제품만 <strong>즐겨찾기에 등록</strong>하면, 다음부터 검색 없이 바로 주문할 수 있습니다.</div>
+    <!-- PC쇼핑몰 vs 덴딜 즐겨찾기 비교 -->
+    <div class="pros-cons animate-on-scroll">
+      <div class="pros-cons-card cons">
+        <div class="pros-cons-header">
+          <div class="pros-cons-badge">😰</div>
+          <div class="pros-cons-title">타사 PC 쇼핑몰의 단점</div>
         </div>
-        <div class="feature-desc-item">
-          <div class="feature-desc-icon">2</div>
-          <div>구매한 상품은 <strong>자동으로 즐겨찾기에 추가</strong>되어, 재구매 시 터치 한 번이면 장바구니에 담깁니다.</div>
-        </div>
-        <div class="feature-desc-item">
-          <div class="feature-desc-icon">3</div>
-          <div>원장님·위생사 모두 <strong>같은 즐겨찾기 리스트를 공유</strong>하여, 누가 주문해도 동일한 제품을 주문합니다.</div>
+        <div class="pros-cons-list">
+          <div class="pros-cons-item">
+            <span class="pros-cons-icon">✕</span>
+            <div>수천 개 제품 중 <strong>매번 처음부터 검색</strong>해야 함</div>
+          </div>
+          <div class="pros-cons-item">
+            <span class="pros-cons-icon">✕</span>
+            <div>우리 치과 제품이 어디 있는지 <strong>찾기 어려움</strong></div>
+          </div>
+          <div class="pros-cons-item">
+            <span class="pros-cons-icon">✕</span>
+            <div>담당자 바뀌면 <strong>주문 이력 공유 불가</strong></div>
+          </div>
+          <div class="pros-cons-item">
+            <span class="pros-cons-icon">✕</span>
+            <div>주문 1건에 <strong>10~15분</strong> 소요</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="feature-points animate-on-scroll">
-      <div class="feature-point">
-        <div class="feature-point-icon">✓</div>
-        <div class="feature-point-text"><strong>검색 시간 제로</strong> — 한 번 등록, 계속 사용</div>
-      </div>
-      <div class="feature-point">
-        <div class="feature-point-icon">✓</div>
-        <div class="feature-point-text"><strong>치과별 맞춤 리스트</strong> — 우리 치과 제품만 표시</div>
-      </div>
-      <div class="feature-point">
-        <div class="feature-point-icon">✓</div>
-        <div class="feature-point-text"><strong>팀 전체 공유</strong> — 원장님·위생사 동일 리스트</div>
+      <div class="pros-cons-arrow">↓</div>
+
+      <div class="pros-cons-card pros">
+        <div class="pros-cons-header">
+          <div class="pros-cons-badge">⭐</div>
+          <div class="pros-cons-title">덴딜 즐겨찾기의 장점</div>
+        </div>
+        <div class="pros-cons-list">
+          <div class="pros-cons-item">
+            <span class="pros-cons-icon">✓</span>
+            <div>우리 치과 제품만 등록 → <strong>검색 없이 바로 주문</strong></div>
+          </div>
+          <div class="pros-cons-item">
+            <span class="pros-cons-icon">✓</span>
+            <div>구매 상품 <strong>자동 즐겨찾기 추가</strong>, 재구매 원터치</div>
+          </div>
+          <div class="pros-cons-item">
+            <span class="pros-cons-icon">✓</span>
+            <div>원장님·위생사 <strong>동일 리스트 공유</strong>, 인수인계 걱정 없음</div>
+          </div>
+          <div class="pros-cons-item">
+            <span class="pros-cons-icon">✓</span>
+            <div>즐겨찾기 → 담기 → 주문 끝, <strong>30초면 완료</strong></div>
+          </div>
+        </div>
       </div>
     </div>
     </div>
