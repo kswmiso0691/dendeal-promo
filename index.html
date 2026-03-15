@@ -208,7 +208,7 @@ body {
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(40px);
-  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .animate-on-scroll.visible {
   opacity: 1;
@@ -930,6 +930,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  position: relative;
+  z-index: 1;
 }
 .feature-point {
   display: flex;
@@ -1507,6 +1509,9 @@ body {
 /* ===== COMPARE MOCKUP V2 ===== */
 .compare-v2 {
   margin-bottom: 28px;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
 }
 
 /* -- PC Mockup (Full Width) -- */
