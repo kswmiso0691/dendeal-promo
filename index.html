@@ -1269,6 +1269,17 @@ body {
   gap: 16px;
   margin-top: 8px;
 }
+.usage-guide-3col {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+@media (max-width: 480px) {
+  .usage-guide-3col {
+    grid-template-columns: 1fr;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
 .usage-card {
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.1);
@@ -3255,38 +3266,30 @@ body {
       <div class="section-desc">터치 몇 번이면 주문 완료. 간단합니다.</div>
     </div>
 
-    <div class="usage-guide">
+    <div class="usage-guide usage-guide-3col">
       <div class="usage-card animate-on-scroll">
         <div class="usage-number">1</div>
         <div class="usage-img-wrap">
-          <img src="사용설명1번 쇼핑몰구매.JPG" alt="즐겨찾기에서 바로 담기">
+          <img src="사용설명2번 쇼핑몰구매.JPG" alt="쇼핑몰에서 구매하기">
         </div>
-        <div class="usage-title">즐겨찾기에서 바로 담기</div>
-        <div class="usage-desc">우리 치과 제품만 즐겨찾기에 등록, 터치 한 번으로 장바구니에 담기</div>
+        <div class="usage-title">쇼핑몰에서 먼저 구매</div>
+        <div class="usage-desc">쇼핑몰에서 먼저 구매를 합니다. 30분 뒤에 구매한 내역들이 자동으로 즐겨찾기에 등록됩니다.</div>
       </div>
       <div class="usage-card animate-on-scroll">
         <div class="usage-number">2</div>
         <div class="usage-img-wrap">
-          <img src="사용설명2번 쇼핑몰구매.JPG" alt="장바구니에서 주문하기">
+          <img src="사용설명1번 쇼핑몰구매.JPG" alt="즐겨찾기로 재구매">
         </div>
-        <div class="usage-title">장바구니에서 주문하기</div>
-        <div class="usage-desc">수량 확인 후 주문 버튼 터치, 결제까지 한 번에</div>
+        <div class="usage-title">즐겨찾기로 간편 재구매</div>
+        <div class="usage-desc">즐겨찾기에는 우리 치과에서 사용하는 재료들만 분류할 수 있습니다. 재구매할 때 편하게 사용하세요!</div>
       </div>
       <div class="usage-card animate-on-scroll">
         <div class="usage-number">3</div>
         <div class="usage-img-wrap">
-          <img src="사용설명3번 구매항목 자동등록 재구매시 담기 및 치과에서 사용하는 물품만 정리. 구매상품을 클릭하면 구매한 리스트 있음..JPG" alt="자동등록 재구매">
-        </div>
-        <div class="usage-title">구매항목 자동등록 · 재구매</div>
-        <div class="usage-desc">구매한 상품은 자동 등록, 재구매 시 원터치로 끝</div>
-      </div>
-      <div class="usage-card animate-on-scroll">
-        <div class="usage-number">4</div>
-        <div class="usage-img-wrap">
           <img src="사용설명4번 구매통계관리로 지출 사용 내역 확인.JPG" alt="구매통계 관리">
         </div>
         <div class="usage-title">구매통계 · 지출내역 확인</div>
-        <div class="usage-desc">월별 지출, 품목별 사용량을 한눈에 확인</div>
+        <div class="usage-desc">통계나 재료를 사용한 데이터를 확인하고 싶다면 이용해주세요!</div>
       </div>
     </div>
   </div>
