@@ -926,6 +926,51 @@ body {
 }
 
 /* Feature bullet points */
+/* Feature description box */
+.feature-desc-box {
+  background: linear-gradient(135deg, #F0F7FF 0%, #E8F5E9 100%);
+  border: 1px solid #D0E8FF;
+  border-radius: 16px;
+  padding: 24px 20px;
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+.feature-desc-box-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.feature-desc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.feature-desc-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--gray-700);
+  line-height: 1.5;
+}
+.feature-desc-icon {
+  width: 24px;
+  height: 24px;
+  background: var(--primary);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+  color: #fff;
+  margin-top: 1px;
+}
+
 .feature-points {
   display: flex;
   flex-direction: column;
@@ -2812,6 +2857,25 @@ body {
       </div><!-- /.v2-vs-phone-area -->
       </div><!-- /.v2-compare-layout -->
     </div>
+    </div>
+
+    <!-- 덴딜 즐겨찾기 기능 소개 -->
+    <div class="feature-desc-box animate-on-scroll">
+      <div class="feature-desc-box-title">⭐ 덴딜 즐겨찾기 기능</div>
+      <div class="feature-desc-list">
+        <div class="feature-desc-item">
+          <div class="feature-desc-icon">1</div>
+          <div>우리 치과에서 사용하는 제품만 <strong>즐겨찾기에 등록</strong>하면, 다음부터 검색 없이 바로 주문할 수 있습니다.</div>
+        </div>
+        <div class="feature-desc-item">
+          <div class="feature-desc-icon">2</div>
+          <div>구매한 상품은 <strong>자동으로 즐겨찾기에 추가</strong>되어, 재구매 시 터치 한 번이면 장바구니에 담깁니다.</div>
+        </div>
+        <div class="feature-desc-item">
+          <div class="feature-desc-icon">3</div>
+          <div>원장님·위생사 모두 <strong>같은 즐겨찾기 리스트를 공유</strong>하여, 누가 주문해도 동일한 제품을 주문합니다.</div>
+        </div>
+      </div>
     </div>
 
     <div class="feature-points animate-on-scroll">
