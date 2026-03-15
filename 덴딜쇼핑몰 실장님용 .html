@@ -1159,6 +1159,62 @@ body {
   font-weight: 600;
 }
 
+/* Usage guide cards */
+.usage-guide {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 8px;
+}
+.usage-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+.usage-number {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 28px;
+  height: 28px;
+  background: var(--gradient-accent);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+  z-index: 2;
+}
+.usage-img-wrap {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  background: #1a1a2e;
+}
+.usage-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.usage-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  padding: 12px 12px 4px;
+  line-height: 1.4;
+}
+.usage-desc {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  padding: 0 12px 14px;
+  line-height: 1.5;
+}
+
 /* ===== TESTIMONIALS ===== */
 .testimonial-section {
   padding: 70px 20px;
@@ -3023,48 +3079,47 @@ body {
   </div>
 </section>
 
-<!-- ===== PROCESS ===== -->
+<!-- ===== 이용 방법 ===== -->
 <section class="process-section">
   <div class="container">
     <div class="animate-on-scroll">
-      <div class="section-label">시작하기</div>
-      <div class="section-title">3분이면 충분합니다</div>
-      <div class="section-desc">복잡한 설정 없이 바로 시작.</div>
+      <div class="section-label">이용 방법</div>
+      <div class="section-title">이렇게 사용하세요</div>
+      <div class="section-desc">터치 몇 번이면 주문 완료. 간단합니다.</div>
     </div>
 
-    <div class="process-steps">
-      <div class="process-step animate-on-scroll">
-        <div class="step-indicator">
-          <div class="step-number">1</div>
-          <div class="step-line"></div>
+    <div class="usage-guide">
+      <div class="usage-card animate-on-scroll">
+        <div class="usage-number">1</div>
+        <div class="usage-img-wrap">
+          <img src="사용설명1번 쇼핑몰구매.JPG" alt="즐겨찾기에서 바로 담기">
         </div>
-        <div class="step-content">
-          <div class="step-title">회원가입</div>
-          <div class="step-desc">치과명, 연락처만 입력. 서류 절차 없음.</div>
-          <div class="step-time">⏱ 1분</div>
-        </div>
+        <div class="usage-title">즐겨찾기에서 바로 담기</div>
+        <div class="usage-desc">우리 치과 제품만 즐겨찾기에 등록, 터치 한 번으로 장바구니에 담기</div>
       </div>
-      <div class="process-step animate-on-scroll">
-        <div class="step-indicator">
-          <div class="step-number">2</div>
-          <div class="step-line"></div>
+      <div class="usage-card animate-on-scroll">
+        <div class="usage-number">2</div>
+        <div class="usage-img-wrap">
+          <img src="사용설명2번 쇼핑몰구매.JPG" alt="장바구니에서 주문하기">
         </div>
-        <div class="step-content">
-          <div class="step-title">즐겨찾기 등록</div>
-          <div class="step-desc">자주 쓰는 제품 추가. 한 번만 등록하면 끝.</div>
-          <div class="step-time">⏱ 1분</div>
-        </div>
+        <div class="usage-title">장바구니에서 주문하기</div>
+        <div class="usage-desc">수량 확인 후 주문 버튼 터치, 결제까지 한 번에</div>
       </div>
-      <div class="process-step animate-on-scroll">
-        <div class="step-indicator">
-          <div class="step-number">3</div>
-          <div class="step-line"></div>
+      <div class="usage-card animate-on-scroll">
+        <div class="usage-number">3</div>
+        <div class="usage-img-wrap">
+          <img src="사용설명3번 구매항목 자동등록 재구매시 담기 및 치과에서 사용하는 물품만 정리. 구매상품을 클릭하면 구매한 리스트 있음..JPG" alt="자동등록 재구매">
         </div>
-        <div class="step-content">
-          <div class="step-title">주문 시작!</div>
-          <div class="step-desc">즐겨찾기 → 담기 → 주문 완료. 기록은 자동 저장.</div>
-          <div class="step-time">⏱ 30초</div>
+        <div class="usage-title">구매항목 자동등록 · 재구매</div>
+        <div class="usage-desc">구매한 상품은 자동 등록, 재구매 시 원터치로 끝</div>
+      </div>
+      <div class="usage-card animate-on-scroll">
+        <div class="usage-number">4</div>
+        <div class="usage-img-wrap">
+          <img src="사용설명4번 구매통계관리로 지출 사용 내역 확인.JPG" alt="구매통계 관리">
         </div>
+        <div class="usage-title">구매통계 · 지출내역 확인</div>
+        <div class="usage-desc">월별 지출, 품목별 사용량을 한눈에 확인</div>
       </div>
     </div>
   </div>
