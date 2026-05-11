@@ -427,20 +427,13 @@ async function deleteEntry(id) {
 
 async function saveAll(successMsg) {
   try {
+    // POST = 완전 교체 (PUT은 배열을 병합해서 중복 발생함)
     const res = await fetch(PANTRY_API, {
-      method: 'PUT',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ entries: currentEntries })
     });
-    if (!res.ok) {
-      // POST fallback
-      const r2 = await fetch(PANTRY_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ entries: currentEntries })
-      });
-      if (!r2.ok) throw new Error('HTTP ' + r2.status);
-    }
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     toast(successMsg || '저장됨');
   } catch (err) {
     toast('저장 실패: ' + err.message, 'error');

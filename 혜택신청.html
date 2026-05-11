@@ -540,7 +540,7 @@ body {
 </head>
 <body>
 
-<a href="덴딜쇼핑몰 실장님용 .html" class="back-link" aria-label="뒤로가기">‹</a>
+<a href="promo.html" class="back-link" aria-label="뒤로가기">‹</a>
 
 <!-- ===== HERO ===== -->
 <section class="hero">
@@ -749,15 +749,13 @@ form.addEventListener('submit', async function(e) {
   btn.textContent = '신청 중...';
 
   try {
-    // 1) 현재 basket 가져오기 (없으면 빈 배열)
+    // 1) 현재 basket 가져오기 (없으면 빈 배열로 시작)
     let entries = [];
-    let basketExists = false;
     try {
       const getRes = await fetch(PANTRY_API);
       if (getRes.ok) {
         const cur = await getRes.json();
         entries = Array.isArray(cur.entries) ? cur.entries : [];
-        basketExists = true;
       }
     } catch (e) { /* network or no basket */ }
 
@@ -773,10 +771,9 @@ form.addEventListener('submit', async function(e) {
     };
     entries.push(newEntry);
 
-    // 3) basket 저장
-    const method = basketExists ? 'PUT' : 'POST';
+    // 3) basket 전체 덮어쓰기 (POST = 완전 교체, PUT은 배열을 병합해서 중복 발생함)
     const saveRes = await fetch(PANTRY_API, {
-      method: method,
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ entries: entries })
     });
@@ -785,18 +782,7 @@ form.addEventListener('submit', async function(e) {
       showSuccessModal({ clinic, director, phone });
       form.reset();
     } else {
-      // POST 시도가 실패하면 PUT 시도, PUT 실패하면 POST 시도 (반대 케이스 폴백)
-      const altRes = await fetch(PANTRY_API, {
-        method: basketExists ? 'POST' : 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ entries: entries })
-      });
-      if (altRes.ok) {
-        showSuccessModal({ clinic, director, phone });
-        form.reset();
-      } else {
-        showErrorModal('신청 처리 중 오류가 발생했습니다.<br>잠시 후 다시 시도해주세요.');
-      }
+      showErrorModal('신청 처리 중 오류가 발생했습니다.<br>잠시 후 다시 시도해주세요.');
     }
   } catch (err) {
     showErrorModal(
