@@ -1,0 +1,10 @@
+# Claude 작업 설정
+.claude/
+
+# GitHub Pages는 PHP 미지원 — 로컬 백업용으로만 보관
+*.php
+.htaccess
+_업로드패키지/
+덴딜_자문회원_업로드패키지.zip
+nul
+잘못된부분.JPG

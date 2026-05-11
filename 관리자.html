@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>덴딜 자문회원 관리자</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Noto Sans KR',sans-serif;
+  background:#F3F4F6;
+  color:#111827;
+  -webkit-font-smoothing:antialiased;
+  padding:20px;
+}
+.wrap { max-width:1100px; margin:0 auto; }
+
+/* 로그인 */
+.login-box {
+  max-width:380px;
+  margin:80px auto;
+  background:#fff;
+  border-radius:20px;
+  padding:36px 28px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.08);
+  text-align:center;
+}
+.login-box h1 {
+  font-size:22px; font-weight:900; margin-bottom:8px;
+  background:linear-gradient(135deg,#0066FF,#00D4AA);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.login-box p { font-size:13px; color:#6B7280; margin-bottom:24px; }
+.login-input {
+  width:100%; padding:14px; font-size:15px; font-family:inherit;
+  border:1.5px solid #E5E7EB; border-radius:10px; margin-bottom:12px;
+}
+.login-input:focus { outline:none; border-color:#0066FF; }
+.login-btn {
+  width:100%; padding:14px;
+  background:linear-gradient(135deg,#0066FF,#00D4AA);
+  color:#fff; font-weight:700; font-size:15px;
+  border:none; border-radius:10px; cursor:pointer;
+}
+.login-err {
+  margin-bottom:14px; padding:10px;
+  background:#FFF0F0; color:#CC3333; border-radius:8px;
+  font-size:13px; font-weight:600;
+}
+
+/* 헤더 */
+.top {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:20px; flex-wrap:wrap; gap:10px;
+}
+.top h1 {
+  font-size:22px; font-weight:900;
+  background:linear-gradient(135deg,#0066FF,#00D4AA);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  letter-spacing:-0.3px;
+}
+.top-actions { display:flex; gap:8px; }
+.btn {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:10px 16px; border-radius:10px;
+  font-size:13px; font-weight:700; font-family:inherit;
+  border:none; cursor:pointer; text-decoration:none;
+  transition:all 0.2s;
+}
+.btn-refresh { background:#fff; color:#0066FF; border:1px solid #0066FF; }
+.btn-refresh:hover { background:#E8F0FE; }
+.btn-export { background:#0066FF; color:#fff; }
+.btn-export:hover { background:#0052CC; }
+.btn-logout { background:#fff; color:#374151; border:1px solid #E5E7EB; }
+.btn-logout:hover { background:#F9FAFB; }
+
+/* 통계 */
+.stats {
+  display:grid; grid-template-columns:repeat(6,1fr); gap:10px;
+  margin-bottom:20px;
+}
+.stat {
+  background:#fff; border-radius:14px; padding:16px 12px;
+  text-align:center; border:1px solid #E5E7EB;
+}
+.stat-num { font-size:24px; font-weight:900; line-height:1.1; margin-bottom:4px; }
+.stat-label { font-size:11px; color:#6B7280; font-weight:600; }
+
+/* 알림 */
+.notice {
+  background:#FFFBEB; border:1px solid #FDE68A;
+  color:#92400E; padding:12px 16px; border-radius:10px;
+  font-size:13px; margin-bottom:16px; line-height:1.6;
+}
+.notice.error {
+  background:#FFF0F0; border-color:#FFD6D6; color:#CC3333;
+}
+.loading-box {
+  background:#fff; border-radius:14px; padding:60px 20px;
+  text-align:center; color:#6B7280; font-size:14px;
+}
+
+/* 테이블 */
+.table-wrap {
+  background:#fff; border-radius:16px; overflow:hidden;
+  border:1px solid #E5E7EB;
+  box-shadow:0 1px 3px rgba(0,0,0,0.04);
+  overflow-x:auto;
+}
+table {
+  width:100%; border-collapse:collapse; min-width:900px;
+}
+th, td {
+  padding:14px 12px; text-align:left;
+  font-size:13px; border-bottom:1px solid #F3F4F6;
+  vertical-align:middle;
+}
+th {
+  background:#F9FAFB; font-weight:700; color:#374151;
+  font-size:12px; letter-spacing:0.3px;
+  position:sticky; top:0;
+}
+tr:hover td { background:#F9FAFB; }
+tr.deleted td { opacity:0.4; text-decoration:line-through; }
+
+.cell-no { color:#9CA3AF; font-weight:600; width:50px; }
+.cell-date { color:#6B7280; white-space:nowrap; font-size:12px; }
+.cell-clinic { font-weight:700; }
+.cell-director { font-weight:500; }
+.cell-phone { font-family:'SF Mono','Consolas',monospace; }
+.cell-phone a { color:#0066FF; text-decoration:none; font-weight:600; }
+.cell-phone a:hover { text-decoration:underline; }
+
+.status-select {
+  padding:6px 10px; border-radius:8px;
+  font-size:12px; font-weight:700; font-family:inherit;
+  border:1.5px solid; cursor:pointer;
+  background:#fff;
+}
+
+.memo-input {
+  width:100%; padding:6px 8px;
+  border:1px solid #E5E7EB; border-radius:6px;
+  font-size:12px; font-family:inherit;
+}
+.memo-input:focus { outline:none; border-color:#0066FF; }
+
+.action-btn {
+  padding:6px 10px; font-size:11px; font-weight:700;
+  border-radius:6px; border:none; cursor:pointer; font-family:inherit;
+  white-space:nowrap;
+}
+.action-del { background:#FFF0F0; color:#CC3333; }
+.action-del:hover { background:#CC3333; color:#fff; }
+
+.empty {
+  padding:60px 20px; text-align:center;
+  color:#9CA3AF; font-size:14px;
+}
+.empty-icon { font-size:48px; margin-bottom:12px; }
+
+.toast {
+  position:fixed; bottom:24px; left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:#0A0E27; color:#fff;
+  padding:12px 22px; border-radius:50px;
+  font-size:14px; font-weight:600;
+  box-shadow:0 8px 30px rgba(0,0,0,0.3);
+  opacity:0; transition:all 0.3s;
+  pointer-events:none; z-index:1000;
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.toast.error { background:#CC3333; }
+
+@media (max-width: 720px) {
+  .stats { grid-template-columns:repeat(3,1fr); }
+  .top h1 { font-size:18px; }
+  body { padding:14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div class="wrap" id="loginWrap">
+  <div class="login-box">
+    <h1>덴딜 관리자</h1>
+    <p>자문회원 신청 관리자 페이지</p>
+    <div class="login-err" id="loginErr" style="display:none;"></div>
+    <form onsubmit="return login(event)">
+      <input type="password" id="loginPw" class="login-input" placeholder="관리자 비밀번호" required autofocus>
+      <button type="submit" class="login-btn">로그인</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== ADMIN ===== -->
+<div class="wrap" id="adminWrap" style="display:none;">
+  <div class="top">
+    <h1>덴딜 자문회원 신청 관리</h1>
+    <div class="top-actions">
+      <button class="btn btn-refresh" onclick="loadEntries()">🔄 새로고침</button>
+      <button class="btn btn-export" onclick="exportCSV()">📥 CSV 다운로드</button>
+      <button class="btn btn-logout" onclick="logout()">로그아웃</button>
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div id="noticeArea"></div>
+
+  <div id="contentArea">
+    <div class="loading-box">불러오는 중...</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===========================================================
+// 🔧 Pantry 설정 — 자문회원등록.html 과 동일하게 맞추세요
+const PANTRY_ID = 'de6eb170-ccc2-4ba3-9363-6d2af43169a1';
+const PANTRY_BASKET = 'advisors';
+
+// 관리자 비밀번호 (간단한 클라이언트 측 보호 — 강력한 보안은 아님)
+const ADMIN_PASSWORD = 'dendeal_admin_2025';
+// ===========================================================
+
+const PANTRY_API = 'https://getpantry.cloud/apiv1/pantry/' + PANTRY_ID + '/basket/' + PANTRY_BASKET;
+
+const statusLabels = {
+  pending:   '대기',
+  contacted: '연락완료',
+  approved:  '승인',
+  rejected:  '거절',
+};
+const statusColors = {
+  pending:   '#FFB800',
+  contacted: '#0066FF',
+  approved:  '#22863A',
+  rejected:  '#CC3333',
+};
+
+let currentEntries = [];
+
+// ===== 로그인 =====
+function isLoggedIn() {
+  return sessionStorage.getItem('dendeal_admin') === '1';
+}
+
+function login(e) {
+  e.preventDefault();
+  const pw = document.getElementById('loginPw').value;
+  if (pw === ADMIN_PASSWORD) {
+    sessionStorage.setItem('dendeal_admin', '1');
+    showAdmin();
+  } else {
+    const err = document.getElementById('loginErr');
+    err.textContent = '비밀번호가 일치하지 않습니다.';
+    err.style.display = 'block';
+  }
+  return false;
+}
+
+function logout() {
+  sessionStorage.removeItem('dendeal_admin');
+  location.reload();
+}
+
+function showAdmin() {
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('adminWrap').style.display = 'block';
+  loadEntries();
+}
+
+// ===== 토스트 =====
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  t.className = 'toast show' + (type === 'error' ? ' error' : '');
+  t.textContent = msg;
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+// ===== 데이터 로드 =====
+async function loadEntries() {
+  const content = document.getElementById('contentArea');
+  content.innerHTML = '<div class="loading-box">불러오는 중...</div>';
+
+  if (PANTRY_ID.indexOf('REPLACE_WITH') !== -1) {
+    showNotice('error', '⚠️ Pantry ID가 아직 설정되지 않았습니다. 코드 상단의 PANTRY_ID를 설정해주세요.');
+    content.innerHTML = '';
+    return;
+  }
+
+  try {
+    const res = await fetch(PANTRY_API);
+    if (res.status === 400 || res.status === 404) {
+      // basket이 아직 없음 — 첫 신청이 들어오지 않음
+      currentEntries = [];
+    } else if (res.ok) {
+      const data = await res.json();
+      currentEntries = Array.isArray(data.entries) ? data.entries : [];
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
+    renderTable();
+    renderStats();
+  } catch (err) {
+    showNotice('error', '데이터를 불러오지 못했습니다: ' + err.message);
+    content.innerHTML = '';
+  }
+}
+
+function showNotice(type, msg) {
+  document.getElementById('noticeArea').innerHTML =
+    '<div class="notice ' + (type || '') + '">' + msg + '</div>';
+}
+
+// ===== 통계 =====
+function renderStats() {
+  const counts = { pending: 0, contacted: 0, approved: 0, rejected: 0, today: 0 };
+  const today = new Date().toISOString().slice(0, 10);
+  currentEntries.forEach(e => {
+    const s = e.status || 'pending';
+    if (counts[s] !== undefined) counts[s]++;
+    if ((e.createdAt || '').slice(0, 10) === today) counts.today++;
+  });
+
+  document.getElementById('stats').innerHTML =
+    cell(currentEntries.length, '전체', '#0066FF') +
+    cell(counts.today,     '오늘 접수', '#00D4AA') +
+    cell(counts.pending,   '대기',      '#FFB800') +
+    cell(counts.contacted, '연락완료',  '#0066FF') +
+    cell(counts.approved,  '승인',      '#22863A') +
+    cell(counts.rejected,  '거절',      '#CC3333');
+}
+function cell(num, label, color) {
+  return `<div class="stat"><div class="stat-num" style="color:${color}">${num}</div><div class="stat-label">${label}</div></div>`;
+}
+
+// ===== 테이블 =====
+function renderTable() {
+  const content = document.getElementById('contentArea');
+
+  if (currentEntries.length === 0) {
+    content.innerHTML = '<div class="table-wrap"><div class="empty"><div class="empty-icon">📭</div>아직 접수된 신청이 없습니다.</div></div>';
+    return;
+  }
+
+  // 최신순 정렬
+  const sorted = [...currentEntries].sort((a, b) =>
+    (b.createdAt || '').localeCompare(a.createdAt || '')
+  );
+
+  let html = '<div class="table-wrap"><table><thead><tr>' +
+    '<th>#</th><th>신청일시</th><th>병원명</th><th>원장님</th>' +
+    '<th>연락처</th><th>상태</th><th>메모</th><th></th>' +
+    '</tr></thead><tbody>';
+
+  sorted.forEach((e, idx) => {
+    const id = escapeHtml(e.id || '');
+    const status = e.status || 'pending';
+    const color = statusColors[status] || '#6B7280';
+    const phone = escapeHtml(e.phone || '');
+    const phoneTel = (e.phone || '').replace(/[^0-9+]/g, '');
+    const created = e.createdAt ? formatDate(e.createdAt) : '';
+
+    let statusOpts = '';
+    Object.entries(statusLabels).forEach(([k, label]) => {
+      statusOpts += `<option value="${k}"${status === k ? ' selected' : ''}>${label}</option>`;
+    });
+
+    html += `<tr>
+      <td class="cell-no">${currentEntries.length - idx}</td>
+      <td class="cell-date">${escapeHtml(created)}</td>
+      <td class="cell-clinic">${escapeHtml(e.clinic || '')}</td>
+      <td class="cell-director">${escapeHtml(e.director || '')}</td>
+      <td class="cell-phone"><a href="tel:${escapeHtml(phoneTel)}">${phone}</a></td>
+      <td>
+        <select class="status-select" style="color:${color};border-color:${color};"
+                onchange="updateStatus('${id}', this.value)">
+          ${statusOpts}
+        </select>
+      </td>
+      <td style="min-width:200px;">
+        <input type="text" class="memo-input" value="${escapeHtml(e.memo || '')}"
+               placeholder="메모..."
+               onblur="updateMemo('${id}', this.value)"
+               onkeydown="if(event.key==='Enter'){this.blur();}">
+      </td>
+      <td>
+        <button class="action-btn action-del" onclick="deleteEntry('${id}')">삭제</button>
+      </td>
+    </tr>`;
+  });
+
+  html += '</tbody></table></div>';
+  content.innerHTML = html;
+}
+
+// ===== 업데이트 / 삭제 =====
+async function updateStatus(id, newStatus) {
+  const idx = currentEntries.findIndex(e => e.id === id);
+  if (idx < 0) return;
+  currentEntries[idx].status = newStatus;
+  await saveAll('상태 변경됨');
+  renderStats();
+  renderTable();
+}
+
+async function updateMemo(id, newMemo) {
+  const idx = currentEntries.findIndex(e => e.id === id);
+  if (idx < 0) return;
+  if (currentEntries[idx].memo === newMemo) return;
+  currentEntries[idx].memo = newMemo;
+  await saveAll('메모 저장됨');
+}
+
+async function deleteEntry(id) {
+  if (!confirm('정말 삭제하시겠습니까?')) return;
+  currentEntries = currentEntries.filter(e => e.id !== id);
+  await saveAll('삭제됨');
+  renderStats();
+  renderTable();
+}
+
+async function saveAll(successMsg) {
+  try {
+    const res = await fetch(PANTRY_API, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ entries: currentEntries })
+    });
+    if (!res.ok) {
+      // POST fallback
+      const r2 = await fetch(PANTRY_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ entries: currentEntries })
+      });
+      if (!r2.ok) throw new Error('HTTP ' + r2.status);
+    }
+    toast(successMsg || '저장됨');
+  } catch (err) {
+    toast('저장 실패: ' + err.message, 'error');
+  }
+}
+
+// ===== CSV 다운로드 =====
+function exportCSV() {
+  if (currentEntries.length === 0) {
+    toast('내보낼 데이터가 없습니다', 'error');
+    return;
+  }
+  const rows = [['신청일시', '병원명', '원장님', '연락처', '상태', '메모']];
+  const sorted = [...currentEntries].sort((a, b) =>
+    (b.createdAt || '').localeCompare(a.createdAt || '')
+  );
+  sorted.forEach(e => {
+    rows.push([
+      e.createdAt ? formatDate(e.createdAt) : '',
+      e.clinic || '',
+      e.director || '',
+      e.phone || '',
+      statusLabels[e.status] || e.status || '',
+      e.memo || '',
+    ]);
+  });
+  const csv = '﻿' + rows.map(r =>
+    r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')
+  ).join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'dendeal_advisors_' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ===== 유틸 =====
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function formatDate(iso) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
+  const pad = n => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) +
+         ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+}
+
+// 시작
+if (isLoggedIn()) showAdmin();
+</script>
+
+</body>
+</html>

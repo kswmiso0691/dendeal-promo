@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>덴딜 배너 720x1280 (모바일 스토리)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #e8e8e8;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding: 20px 0;
+}
+
+.banner {
+  width: 720px;
+  height: 1280px;
+  background: linear-gradient(165deg, #0A0E27 0%, #0D1542 50%, #0044BB 100%);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 50px;
+}
+
+/* 배경 글로우 */
+.banner::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px;
+  height: 900px;
+  background: radial-gradient(circle, rgba(0, 102, 255, 0.22) 0%, transparent 60%);
+  border-radius: 50%;
+}
+
+/* 상단 로고 */
+.top-logo {
+  position: absolute;
+  top: 80px;
+  z-index: 2;
+  color: rgba(255,255,255,0.55);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 4px;
+}
+.top-logo strong {
+  color: #00D4AA;
+  font-weight: 900;
+}
+
+.main-title .strike {
+  color: rgba(255,255,255,0.35);
+  text-decoration: line-through;
+  text-decoration-color: rgba(255,80,80,0.7);
+  text-decoration-thickness: 4px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.main-title {
+  color: #fff;
+  font-size: 70px;
+  font-weight: 900;
+  line-height: 1.25;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 2;
+  letter-spacing: -2px;
+}
+
+.main-title em {
+  font-style: normal;
+  color: #00D4AA;
+}
+
+.sub-text {
+  color: rgba(255,255,255,0.6);
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 70px;
+  position: relative;
+  z-index: 2;
+  letter-spacing: -0.3px;
+  line-height: 1.5;
+}
+
+.cta-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #00D4AA, #00BFFF);
+  color: #0A0E27;
+  font-size: 26px;
+  font-weight: 800;
+  padding: 28px 60px;
+  border-radius: 80px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 50px rgba(0, 212, 170, 0.45), 0 0 100px rgba(0, 212, 170, 0.18);
+  letter-spacing: -0.5px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.cta-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 60px rgba(0, 212, 170, 0.6), 0 0 120px rgba(0, 212, 170, 0.28);
+}
+
+/* 하단 로고 */
+.logo {
+  position: absolute;
+  bottom: 70px;
+  z-index: 2;
+  color: rgba(255,255,255,0.3);
+  font-size: 20px;
+  font-weight: 600;
+}
+.logo strong {
+  color: rgba(255,255,255,0.5);
+  font-weight: 800;
+}
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <div class="top-logo"><strong>DENDEAL</strong></div>
+
+  <div class="main-title">
+    <span class="strike">엑셀 정리,<br>재고내역관리,<br>지출보고</span>
+    <em>자동</em>으로<br>됩니다.
+  </div>
+  <div class="sub-text">치과재료 모음 · 지출<br>통계 · 주문을 한 번에</div>
+  <div class="cta-btn">첫 이용자 3만 포인트 →</div>
+  <div class="logo"><strong>덴딜</strong> — 치과 스마트 구매 시스템</div>
+</div>
+
+<button id="downloadBtn" style="
+  margin-top: 30px;
+  padding: 14px 36px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+">고화질 PNG 다운로드</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+document.getElementById('downloadBtn').addEventListener('click', function() {
+  var banner = document.querySelector('.banner');
+  html2canvas(banner, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: '#0A0E27',
+    width: 720,
+    height: 1280
+  }).then(function(canvas) {
+    var link = document.createElement('a');
+    link.download = 'dendeal_banner_720x1280.jpg';
+    link.href = canvas.toDataURL('image/jpeg', 1.0);
+    link.click();
+  });
+});
+</script>
+
+</body>
+</html>

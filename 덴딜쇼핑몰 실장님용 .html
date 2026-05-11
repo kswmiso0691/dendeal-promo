@@ -42,10 +42,96 @@ body {
   background: var(--white);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* ===== UTILITY ===== */
 .container { max-width: 480px; margin: 0 auto; padding: 0 20px; }
+
+/* Small phones (360px 이하) - 글씨 넘침 방지 */
+@media (max-width: 360px) {
+  .hero h1 { font-size: 28px; }
+  .hero-sub { font-size: 14px; }
+  .hero-badge { font-size: 11px; padding: 6px 12px; }
+  .hero-phone { width: 220px; height: 440px; border-radius: 28px; }
+  .hero-phone::before { width: 100px; height: 24px; }
+
+  .section-title { font-size: 22px; }
+  .section-desc { font-size: 13px; }
+  .section-label { font-size: 11px; }
+
+  .feature-title { font-size: 21px; }
+  .feature-subtitle { font-size: 13px; }
+  .feature-number { width: 36px; height: 36px; font-size: 15px; }
+
+  .pain-grid { gap: 8px; }
+  .pain-card { padding: 14px 10px; }
+  .pain-icon { font-size: 22px; margin-bottom: 8px; }
+  .pain-title { font-size: 12.5px; margin-bottom: 4px; }
+  .pain-desc { font-size: 11px; line-height: 1.5; }
+  .pain-quote { font-size: 10px; padding: 6px 8px; margin-top: 8px; }
+
+  .solution-intro .big-text { font-size: 24px; }
+  .solution-intro .sub-text { font-size: 13px; }
+  .solution-arrow { width: 48px; height: 48px; font-size: 22px; }
+
+  .compare-emoji { font-size: 28px; }
+  .compare-label { font-size: 11px; }
+  .compare-list li { font-size: 11px; }
+  .compare-card { padding: 16px 12px; }
+
+  .comp-cell { padding: 10px 6px; font-size: 10px; }
+  .comp-cell.label { font-size: 10px; }
+  .comp-cell .check, .comp-cell .cross { font-size: 13px; }
+
+  .step-title { font-size: 15px; }
+  .step-desc { font-size: 12px; }
+  .step-number { width: 36px; height: 36px; font-size: 14px; border-radius: 10px; }
+
+  .testimonial-text { font-size: 13px; }
+  .testimonial-card { padding: 22px 18px; }
+  .testimonial-card::before { font-size: 30px; }
+
+  .stat-number { font-size: 28px; }
+  .stat-number .unit { font-size: 16px; }
+  .stat-desc { font-size: 11px; }
+
+  .cta-badge { font-size: 11px; padding: 6px 12px; }
+  .cta-title { font-size: 24px; }
+  .cta-desc { font-size: 13px; }
+  .cta-benefit { font-size: 13px; padding: 12px 12px; }
+  .btn-cta-large { font-size: 15px; padding: 16px; }
+  .btn-secondary { font-size: 14px; padding: 14px; }
+
+  .v2-time-val { font-size: 16px; }
+  .v2-time-label { font-size: 9px; }
+  .v2-time-icon { font-size: 18px; }
+  .v2-vs-badge { width: 40px; height: 40px; font-size: 12px; }
+  .v2-label { font-size: 11px; }
+
+  .floating-btn-primary { font-size: 12px; }
+  .floating-btn-kakao { font-size: 11px; }
+  .floating-btn-call { font-size: 11px; }
+
+  .footer-logo { font-size: 18px; }
+}
+
+/* Medium phones (361px ~ 400px) */
+@media (min-width: 361px) and (max-width: 400px) {
+  .hero h1 { font-size: 32px; }
+  .hero-sub { font-size: 15px; }
+
+  .section-title { font-size: 25px; }
+  .feature-title { font-size: 23px; }
+  .solution-intro .big-text { font-size: 28px; }
+
+  .stat-number { font-size: 32px; }
+  .cta-title { font-size: 27px; }
+
+  .comp-cell { padding: 12px 8px; font-size: 11px; }
+  .comp-cell.label { font-size: 11px; }
+}
 
 /* ===== ANIMATIONS ===== */
 @keyframes fadeUp {
@@ -436,6 +522,481 @@ body {
   border-radius: 50%;
 }
 
+/* ===== ANNOUNCEMENT SECTION ===== */
+.notice-section {
+  padding: 50px 20px;
+  background: linear-gradient(165deg, #0A0E27 0%, #1a237e 60%, #0066FF 100%);
+  position: relative;
+  overflow: hidden;
+}
+.notice-section::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0,212,170,0.18) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.notice-section::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0,102,255,0.25) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.notice-inner {
+  position: relative;
+  z-index: 2;
+}
+.notice-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #FFD700, #FF6B35);
+  color: #0A0E27;
+  border-radius: 100px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 20px rgba(255,107,53,0.35);
+  animation: pulse 2s infinite;
+}
+.notice-badge::before {
+  content: '📢';
+  font-size: 14px;
+}
+.notice-title {
+  font-size: 24px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.35;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+.notice-title .em {
+  background: linear-gradient(135deg, #00D4AA, #FFD700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.notice-subtitle {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 22px;
+  font-weight: 500;
+}
+
+.notice-stat-banner {
+  background: linear-gradient(135deg, rgba(0,212,170,0.12), rgba(255,215,0,0.08));
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(0,212,170,0.35);
+  border-radius: 18px;
+  padding: 24px 18px 26px;
+  margin-bottom: 22px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,212,170,0.18), inset 0 0 40px rgba(0,212,170,0.06);
+}
+.notice-stat-banner::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(0,212,170,0.22) 0%, transparent 65%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: statGlow 3.5s ease-in-out infinite;
+}
+@keyframes statGlow {
+  0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+}
+.notice-stat-top {
+  position: relative;
+  z-index: 1;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.65);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.notice-stat-top strong {
+  color: #fff;
+  font-weight: 800;
+}
+.notice-stat-num {
+  position: relative;
+  z-index: 1;
+  font-size: 64px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #00D4AA 0%, #FFD700 60%, #FF6B35 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 6px;
+  letter-spacing: -2px;
+  filter: drop-shadow(0 4px 18px rgba(0,212,170,0.5));
+  animation: statPulse 2.5s ease-in-out infinite;
+}
+@keyframes statPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+.notice-stat-num .plus {
+  font-size: 36px;
+  vertical-align: top;
+  margin-left: 2px;
+  position: relative;
+  top: 6px;
+}
+.notice-stat-label {
+  position: relative;
+  z-index: 1;
+  font-size: 14px;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 1.5;
+}
+.notice-stat-label .ing {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 2px 10px;
+  background: rgba(0,212,170,0.25);
+  border: 1px solid rgba(0,212,170,0.5);
+  border-radius: 100px;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #00D4AA;
+  letter-spacing: 0.3px;
+  vertical-align: 1px;
+}
+
+@media (max-width: 360px) {
+  .notice-stat-num { font-size: 54px; }
+  .notice-stat-num .plus { font-size: 30px; top: 4px; }
+  .notice-stat-label { font-size: 12.5px; }
+  .notice-stat-top { font-size: 11px; }
+}
+
+.notice-intro {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 18px 16px;
+  margin-bottom: 14px;
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.75;
+}
+.notice-intro strong {
+  color: #00D4AA;
+  font-weight: 700;
+}
+.notice-intro .hl {
+  display: inline-block;
+  padding: 1px 8px;
+  background: linear-gradient(135deg, rgba(0,212,170,0.25), rgba(255,215,0,0.18));
+  border: 1px solid rgba(0,212,170,0.4);
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: -0.2px;
+  margin: 0 1px;
+}
+.notice-intro .hl-quote {
+  display: inline-block;
+  padding: 2px 10px;
+  background: linear-gradient(135deg, #FFD700, #FF6B35);
+  color: #0A0E27;
+  border-radius: 100px;
+  font-weight: 900;
+  font-size: 12.5px;
+  letter-spacing: 0.2px;
+  box-shadow: 0 2px 10px rgba(255,107,53,0.35);
+  margin: 0 2px;
+}
+
+/* ===== FEATURE HIGHLIGHTS ===== */
+.notice-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+.notice-feature {
+  background: linear-gradient(165deg, rgba(0,212,170,0.15), rgba(0,102,255,0.1));
+  border: 1.5px solid rgba(0,212,170,0.4);
+  border-radius: 14px;
+  padding: 16px 12px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0,212,170,0.15);
+}
+.notice-feature::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -30%;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(0,212,170,0.3) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.notice-feature-new {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: linear-gradient(135deg, #FF6B35, #FFD700);
+  color: #0A0E27;
+  font-size: 9px;
+  font-weight: 900;
+  padding: 2px 7px;
+  border-radius: 100px;
+  letter-spacing: 0.5px;
+  z-index: 2;
+}
+.notice-feature-icon {
+  font-size: 32px;
+  margin-bottom: 6px;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 2px 8px rgba(0,212,170,0.4));
+}
+.notice-feature-title {
+  font-size: 13.5px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.3;
+  position: relative;
+  z-index: 1;
+  letter-spacing: -0.3px;
+  margin-bottom: 3px;
+}
+.notice-feature-title .em {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #00D4AA;
+  margin-top: 3px;
+  letter-spacing: 0.2px;
+}
+
+@media (max-width: 360px) {
+  .notice-features { gap: 8px; }
+  .notice-feature { padding: 14px 10px; }
+  .notice-feature-icon { font-size: 26px; }
+  .notice-feature-title { font-size: 12px; }
+  .notice-feature-title .em { font-size: 10px; }
+  .notice-intro { font-size: 12.5px; }
+  .notice-intro .hl { font-size: 12px; padding: 1px 6px; }
+}
+
+.notice-block {
+  margin-bottom: 22px;
+}
+.notice-block-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.notice-block-title::before {
+  content: '';
+  width: 4px;
+  height: 16px;
+  background: linear-gradient(180deg, #00D4AA, #0066FF);
+  border-radius: 2px;
+}
+
+.notice-benefits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.notice-benefit {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 14px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.9);
+  font-weight: 600;
+  line-height: 1.4;
+}
+.notice-benefit-check {
+  color: #00D4AA;
+  font-weight: 900;
+  font-size: 14px;
+  flex-shrink: 0;
+  line-height: 1.3;
+}
+
+.notice-target {
+  background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,107,53,0.15));
+  border: 1.5px solid rgba(255,215,0,0.4);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.notice-target-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+.notice-target-text {
+  flex: 1;
+}
+.notice-target-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #FFD700;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+.notice-target-value {
+  font-size: 17px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.3;
+}
+.notice-target-value .num {
+  background: linear-gradient(135deg, #FFD700, #FF6B35);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 22px;
+}
+
+.notice-apply {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 18px 16px;
+  margin-bottom: 18px;
+}
+.notice-apply-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 8px;
+}
+.notice-apply-format {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.6;
+  padding: 12px 14px;
+  background: rgba(0,0,0,0.2);
+  border-left: 3px solid #00D4AA;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.notice-apply-format span {
+  color: #00D4AA;
+}
+.notice-apply-hint {
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.55;
+}
+
+.notice-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.notice-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.notice-btn-primary {
+  background: linear-gradient(135deg, #00D4AA, #0066FF);
+  color: white;
+  box-shadow: 0 8px 28px rgba(0,212,170,0.35);
+}
+.notice-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(0,212,170,0.45);
+}
+.notice-btn-call {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  backdrop-filter: blur(10px);
+}
+.notice-btn-call:hover {
+  background: rgba(255,255,255,0.18);
+}
+
+.notice-closing {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  font-weight: 600;
+  line-height: 1.7;
+  margin-bottom: 18px;
+  padding: 14px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+}
+.notice-closing strong {
+  color: #00D4AA;
+}
+
+.notice-contact {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  line-height: 1.7;
+}
+.notice-contact strong {
+  color: rgba(255,255,255,0.85);
+  font-weight: 700;
+}
+
+.notice-optout {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 10.5px;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.3px;
+}
+
 /* ===== PAIN SECTION ===== */
 .pain-section {
   padding: 80px 20px;
@@ -477,16 +1038,22 @@ body {
   margin-bottom: 40px;
 }
 
+.pain-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
 .pain-card {
   background: var(--white);
   border-radius: var(--radius);
-  padding: 28px 24px;
-  margin-bottom: 16px;
+  padding: 20px 16px;
   box-shadow: var(--shadow-sm);
   border: 1px solid rgba(0,0,0,0.04);
   position: relative;
   overflow: hidden;
   transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
 }
 .pain-card::before {
   content: '';
@@ -503,29 +1070,31 @@ body {
   box-shadow: var(--shadow-md);
 }
 .pain-icon {
-  font-size: 32px;
-  margin-bottom: 14px;
+  font-size: 26px;
+  margin-bottom: 10px;
 }
 .pain-title {
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--gray-900);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
 }
 .pain-desc {
-  font-size: 14px;
+  font-size: 12px;
   color: var(--gray-500);
-  line-height: 1.65;
+  line-height: 1.55;
 }
 .pain-quote {
-  margin-top: 12px;
-  padding: 12px 16px;
+  margin-top: 10px;
+  padding: 8px 10px;
   background: #FFF5F5;
-  border-radius: 10px;
-  font-size: 13px;
+  border-radius: 8px;
+  font-size: 11px;
   color: #CC3333;
   font-style: italic;
-  line-height: 1.6;
+  line-height: 1.5;
+  margin-top: auto;
 }
 .pain-quote::before {
   content: '"';
@@ -1044,9 +1613,21 @@ body {
   font-weight: 600;
 }
 .comp-row.header .comp-cell.dendeal {
-  color: var(--accent);
-  font-weight: 800;
-  font-size: 13px;
+  color: #fff;
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #0066FF, #00D4AA);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+  position: relative;
+}
+.comp-row.header .comp-cell.dendeal::after {
+  content: '⭐';
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: 10px;
+  opacity: 0.9;
 }
 .comp-cell .check {
   color: var(--primary);
@@ -1058,7 +1639,14 @@ body {
   font-size: 16px;
 }
 .comp-cell.highlight {
-  background: rgba(0,102,255,0.04);
+  background: linear-gradient(135deg, rgba(0,102,255,0.06), rgba(0,212,170,0.08));
+  color: var(--gray-900);
+  font-weight: 700;
+  position: relative;
+}
+.comp-cell.highlight .check {
+  color: var(--accent);
+  font-size: 17px;
 }
 
 /* ===== PROCESS SECTION ===== */
@@ -2414,7 +3002,7 @@ body {
   body {
     background: var(--gray-100);
   }
-  .hero, .pain-section, .solution-intro, .feature-section,
+  .hero, .notice-section, .pain-section, .solution-intro, .feature-section,
   .handover-section, .comparison-section, .process-section,
   .testimonial-section, .stats-banner, .cta-section, .footer,
   .guide-section {
@@ -2427,7 +3015,7 @@ body {
   body {
     background: var(--gray-100);
   }
-  .hero, .pain-section, .solution-intro, .feature-section,
+  .hero, .notice-section, .pain-section, .solution-intro, .feature-section,
   .handover-section, .comparison-section, .process-section,
   .testimonial-section, .stats-banner, .cta-section, .footer {
     max-width: 480px;
@@ -2531,8 +3119,8 @@ body {
     </div>
 
     <div class="hero-cta-group">
-      <a href="https://dendealshop.com/shop/couponzone.php" class="btn-primary" target="_blank">
-        10% 할인 쿠폰받고 이용하기 →
+      <a href="자문회원등록.html" class="btn-primary" target="_blank">
+        덴딜 자문 회원 치과 등록하기 →
       </a>
     </div>
     <div class="hero-trust">
@@ -2546,6 +3134,115 @@ body {
 </section>
 
 <!-- ===== PAIN POINTS ===== -->
+<!-- ===== ANNOUNCEMENT: 자문위원 모집 ===== -->
+<section class="notice-section">
+  <div class="container">
+    <div class="notice-inner animate-on-scroll">
+      <div class="notice-badge">덴딜 공식 안내</div>
+      <h2 class="notice-title">
+        치과 <span class="em">자문위원</span><br>
+        모집 안내
+      </h2>
+      <div class="notice-subtitle">평생 혜택 제공</div>
+
+      <div class="notice-stat-banner">
+        <div class="notice-stat-top">서울 · 수도권 치과</div>
+        <div class="notice-stat-num">3,500<span class="plus">+</span></div>
+        <div class="notice-stat-label">
+          덴딜 플랫폼 <span class="ing">이용중</span>
+        </div>
+      </div>
+
+      <div class="notice-intro">
+        이번에 <span class="hl">덴딜 쇼핑몰</span> 이용 시
+        아래 핵심 기능이 <strong>새롭게 연동</strong>되도록 개발하였습니다.
+      </div>
+
+      <div class="notice-features">
+        <div class="notice-feature">
+          <div class="notice-feature-new">NEW</div>
+          <div class="notice-feature-icon">📊</div>
+          <div class="notice-feature-title">
+            자동<br>구매관리 통계
+            <span class="em">월별 지출 한눈에</span>
+          </div>
+        </div>
+        <div class="notice-feature">
+          <div class="notice-feature-new">NEW</div>
+          <div class="notice-feature-icon">📦</div>
+          <div class="notice-feature-title">
+            치과<br>재고관리 기능
+            <span class="em">실시간 재고 파악</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice-intro">
+        이에 초기 자문 및 함께 성장해주실 치과를 선정하여
+        <span class="hl-quote">덴딜 자문위원</span>으로 위촉하고자 합니다.
+      </div>
+
+      <div class="notice-block">
+        <div class="notice-block-title">자문위원 혜택</div>
+        <div class="notice-benefits">
+          <div class="notice-benefit">
+            <span class="notice-benefit-check">✓</span>
+            <span>평생 <strong style="color:#FFD700">10% 쇼핑몰 할인권</strong></span>
+          </div>
+          <div class="notice-benefit">
+            <span class="notice-benefit-check">✓</span>
+            <span>뉴스 보도 및 <strong style="color:#fff">블로그 홍보</strong></span>
+          </div>
+          <div class="notice-benefit">
+            <span class="notice-benefit-check">✓</span>
+            <span>공식 <strong style="color:#fff">위촉장 제공</strong></span>
+          </div>
+          <div class="notice-benefit">
+            <span class="notice-benefit-check">✓</span>
+            <span>신규 기능 <strong style="color:#fff">무료 제공</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice-block">
+        <div class="notice-block-title">신청 방법</div>
+        <div class="notice-apply">
+          <div class="notice-apply-title">문자 답변으로 아래 정보를 보내주세요</div>
+          <div class="notice-apply-format">
+            <span>병원명</span> / <span>대표자명</span> / <span>연락처</span>
+          </div>
+          <div class="notice-apply-hint">
+            확인 후 방문드리겠습니다. 함께 성장하는 덴딜이 되겠습니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="notice-cta">
+        <a href="자문회원등록.html" class="notice-btn notice-btn-primary" target="_blank">
+          자문위원 신청서 작성하기 →
+        </a>
+        <a href="sms:01034400416" class="notice-btn notice-btn-call">
+          💬 문자로 바로 신청하기
+        </a>
+      </div>
+
+      <div class="notice-closing">
+        <strong>감사합니다.</strong><br>
+        앞으로도 더 좋은 서비스로 보답하겠습니다.
+      </div>
+
+      <div class="notice-contact">
+        담당자 · <strong>덴딜 사업팀</strong><br>
+        문의 · <strong>010-3440-0416</strong>
+      </div>
+
+      <div class="notice-optout">
+        무료수신거부 · 080-XXXX-XXXX
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="pain-section">
   <div class="container">
     <div class="animate-on-scroll">
@@ -2554,32 +3251,34 @@ body {
       <div class="section-desc">전화하고, 검색하고, 비교하느라 시간 낭비하고 있지 않나요?</div>
     </div>
 
-    <div class="pain-card animate-on-scroll">
-      <div class="pain-icon">📞</div>
-      <div class="pain-title">전화·문자 주문</div>
-      <div class="pain-desc">영업사원 연결, 제품 확인, 수량 체크. 한 번 주문에 10분 이상.</div>
-      <div class="pain-quote">진료 끝나면 6시라 전화도 못 해요</div>
-    </div>
+    <div class="pain-grid">
+      <div class="pain-card animate-on-scroll">
+        <div class="pain-icon">📞</div>
+        <div class="pain-title">전화·문자 주문</div>
+        <div class="pain-desc">영업사원 연결, 제품 확인, 수량 체크. 한 번 주문에 10분 이상.</div>
+        <div class="pain-quote">진료 끝나면 6시라 전화도 못 해요</div>
+      </div>
 
-    <div class="pain-card animate-on-scroll">
-      <div class="pain-icon">🌐</div>
-      <div class="pain-title">복잡한 쇼핑몰</div>
-      <div class="pain-desc">수천 개 제품. 우리 치과 제품 찾기 어렵고, 매번 처음부터.</div>
-      <div class="pain-quote">제품이 너무 많아서 뭐가 뭔지 모르겠어요</div>
-    </div>
+      <div class="pain-card animate-on-scroll">
+        <div class="pain-icon">🌐</div>
+        <div class="pain-title">복잡한 쇼핑몰</div>
+        <div class="pain-desc">수천 개 제품. 우리 치과 제품 찾기 어렵고, 매번 처음부터.</div>
+        <div class="pain-quote">제품이 너무 많아서 뭐가 뭔지 모르겠어요</div>
+      </div>
 
-    <div class="pain-card animate-on-scroll">
-      <div class="pain-icon">📋</div>
-      <div class="pain-title">인수인계 불가</div>
-      <div class="pain-desc">담당자 바뀌면 주문처, 가격, 주기 전부 처음부터 파악.</div>
-      <div class="pain-quote">전임자 퇴사 후 주문 내역이 하나도 없어요</div>
-    </div>
+      <div class="pain-card animate-on-scroll">
+        <div class="pain-icon">📋</div>
+        <div class="pain-title">인수인계 불가</div>
+        <div class="pain-desc">담당자 바뀌면 주문처, 가격, 주기 전부 처음부터 파악.</div>
+        <div class="pain-quote">전임자 퇴사 후 주문 내역이 하나도 없어요</div>
+      </div>
 
-    <div class="pain-card animate-on-scroll">
-      <div class="pain-icon">📊</div>
-      <div class="pain-title">구매 관리 불가</div>
-      <div class="pain-desc">얼마 썼는지 모르니 재고 관리도, 비용 절감도 불가능.</div>
-      <div class="pain-quote">재료비 물어보면 영수증 일일이 찾아요</div>
+      <div class="pain-card animate-on-scroll">
+        <div class="pain-icon">📊</div>
+        <div class="pain-title">구매 관리 불가</div>
+        <div class="pain-desc">얼마 썼는지 모르니 재고 관리도, 비용 절감도 불가능.</div>
+        <div class="pain-quote">재료비 물어보면 영수증 일일이 찾아요</div>
+      </div>
     </div>
   </div>
 </section>
@@ -3200,168 +3899,6 @@ body {
   </div>
 </section>
 
-<!-- ===== USER GUIDE (Mobile) ===== -->
-<section class="guide-section">
-  <div class="container">
-    <div class="animate-on-scroll">
-      <div class="section-label">User Guide</div>
-      <div class="section-title">덴딜 <span class="em">사용설명서</span></div>
-      <div class="section-desc">4단계로 끝나는 간편 주문</div>
-    </div>
-
-    <div class="guide-grid animate-on-scroll">
-      <div class="guide-card">
-        <div class="guide-card-top">
-          <div class="guide-card-num">1</div>
-          <div class="guide-card-title"><span class="em">즐겨찾기</span><br>바로 담기</div>
-        </div>
-        <div class="guide-card-desc">우리 치과 물품만 모아서 터치 한 번에 담기</div>
-        <div class="guide-card-img">
-          <img src="사용설명1번 쇼핑몰구매.JPG" alt="즐겨찾기에서 바로 담기">
-        </div>
-      </div>
-
-      <div class="guide-card">
-        <div class="guide-card-top">
-          <div class="guide-card-num">2</div>
-          <div class="guide-card-title"><span class="em">쇼핑몰</span><br>상품 구매</div>
-        </div>
-        <div class="guide-card-desc">카테고리별 탐색 + 할인 특가 확인</div>
-        <div class="guide-card-img">
-          <img src="사용설명2번 쇼핑몰구매.JPG" alt="쇼핑몰에서 상품 구매">
-        </div>
-      </div>
-
-      <div class="guide-card">
-        <div class="guide-card-top">
-          <div class="guide-card-num">3</div>
-          <div class="guide-card-title"><span class="em">자동 등록</span><br>재구매</div>
-        </div>
-        <div class="guide-card-desc">구매 상품 자동 등록, 원터치 재주문</div>
-        <div class="guide-card-img">
-          <img src="사용설명3번 구매항목 자동등록 재구매시 담기 및 치과에서 사용하는 물품만 정리. 구매상품을 클릭하면 구매한 리스트 있음..JPG" alt="자동등록 재구매">
-        </div>
-      </div>
-
-      <div class="guide-card">
-        <div class="guide-card-top">
-          <div class="guide-card-num">4</div>
-          <div class="guide-card-title"><span class="em">구매 통계</span><br>지출 관리</div>
-        </div>
-        <div class="guide-card-desc">월별 금액·건수 통계 + 엑셀 다운</div>
-        <div class="guide-card-img">
-          <img src="사용설명4번 구매통계관리로 지출 사용 내역 확인.JPG" alt="구매통계 관리">
-        </div>
-      </div>
-    </div>
-
-    <div class="guide-flow animate-on-scroll">
-      <div class="guide-flow-dot active"></div>
-      <div class="guide-flow-arrow">→</div>
-      <div class="guide-flow-dot active"></div>
-      <div class="guide-flow-arrow">→</div>
-      <div class="guide-flow-dot active"></div>
-      <div class="guide-flow-arrow">→</div>
-      <div class="guide-flow-dot active"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== USER GUIDE (PC) ===== -->
-<section class="guide-section-pc">
-  <div class="guide-pc-inner">
-    <div class="guide-pc-header">
-      <div class="section-label">User Guide</div>
-      <div class="section-title">덴딜 <span class="em">사용설명서</span></div>
-      <div class="section-desc">4단계로 끝나는 간편 주문, 한눈에 확인하세요.</div>
-    </div>
-
-    <div class="guide-pc-grid">
-      <div class="guide-pc-card">
-        <div class="guide-pc-card-top">
-          <div class="guide-pc-num">1</div>
-          <div class="guide-pc-title"><span class="em">즐겨찾기</span>에서<br>바로 담기</div>
-        </div>
-        <div class="guide-pc-desc">우리 치과에서 사용하는 물품만 즐겨찾기에 등록, 터치 한 번으로 장바구니에 담기</div>
-        <div class="guide-pc-img">
-          <img src="사용설명1번 쇼핑몰구매.JPG" alt="즐겨찾기에서 바로 담기">
-        </div>
-        <div class="guide-pc-tags">
-          <span class="guide-pc-tag">⭐ 즐겨찾기</span>
-          <span class="guide-pc-tag">🛒 바로 담기</span>
-        </div>
-      </div>
-
-      <div class="guide-pc-card">
-        <div class="guide-pc-card-top">
-          <div class="guide-pc-num">2</div>
-          <div class="guide-pc-title"><span class="em">쇼핑몰</span>에서<br>상품 검색·구매</div>
-        </div>
-        <div class="guide-pc-desc">카테고리별 상품 탐색, 최신 상품, 할인 특가까지 덴딜몰에서 한눈에</div>
-        <div class="guide-pc-img">
-          <img src="사용설명2번 쇼핑몰구매.JPG" alt="쇼핑몰에서 상품 구매">
-        </div>
-        <div class="guide-pc-tags">
-          <span class="guide-pc-tag">🔍 상품 검색</span>
-          <span class="guide-pc-tag">🏷️ 한정 특가</span>
-        </div>
-      </div>
-
-      <div class="guide-pc-card">
-        <div class="guide-pc-card-top">
-          <div class="guide-pc-num">3</div>
-          <div class="guide-pc-title"><span class="em">자동 등록</span>으로<br>재구매 간편하게</div>
-        </div>
-        <div class="guide-pc-desc">구매한 상품은 즐겨찾기에 자동 등록, 재구매 시 원터치로 끝</div>
-        <div class="guide-pc-img">
-          <img src="사용설명3번 구매항목 자동등록 재구매시 담기 및 치과에서 사용하는 물품만 정리. 구매상품을 클릭하면 구매한 리스트 있음..JPG" alt="자동등록 재구매">
-        </div>
-        <div class="guide-pc-tags">
-          <span class="guide-pc-tag">🔄 자동 등록</span>
-          <span class="guide-pc-tag">👆 원터치 재구매</span>
-        </div>
-      </div>
-
-      <div class="guide-pc-card">
-        <div class="guide-pc-card-top">
-          <div class="guide-pc-num">4</div>
-          <div class="guide-pc-title"><span class="em">구매 통계</span>로<br>지출 내역 관리</div>
-        </div>
-        <div class="guide-pc-desc">월별 주문 금액·건수, 카테고리별 비율까지 한눈에 확인 + 엑셀 다운</div>
-        <div class="guide-pc-img">
-          <img src="사용설명4번 구매통계관리로 지출 사용 내역 확인.JPG" alt="구매통계 관리">
-        </div>
-        <div class="guide-pc-tags">
-          <span class="guide-pc-tag">📊 월별 통계</span>
-          <span class="guide-pc-tag">📥 엑셀 다운로드</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="guide-pc-flow">
-      <div class="guide-pc-flow-step">
-        <div class="guide-pc-flow-num">1</div>
-        <div class="guide-pc-flow-text">즐겨찾기 담기</div>
-      </div>
-      <div class="guide-pc-flow-arrow">→</div>
-      <div class="guide-pc-flow-step">
-        <div class="guide-pc-flow-num">2</div>
-        <div class="guide-pc-flow-text">쇼핑몰 구매</div>
-      </div>
-      <div class="guide-pc-flow-arrow">→</div>
-      <div class="guide-pc-flow-step">
-        <div class="guide-pc-flow-num">3</div>
-        <div class="guide-pc-flow-text">자동 등록·재구매</div>
-      </div>
-      <div class="guide-pc-flow-arrow">→</div>
-      <div class="guide-pc-flow-step">
-        <div class="guide-pc-flow-num">4</div>
-        <div class="guide-pc-flow-text">통계 관리</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ===== CTA ===== -->
 <section class="cta-section">
   <div class="container">
@@ -3392,7 +3929,7 @@ body {
         </div>
       </div>
 
-      <a href="https://dendealshop.com/shop/couponzone.php" class="btn-cta-large" target="_blank">10% 할인 쿠폰받고 이용하기</a>
+      <a href="자문회원등록.html" class="btn-cta-large" target="_blank">덴딜 자문 회원 치과 등록하기</a>
       <a href="https://pf.kakao.com/_MYKhX/chat" class="btn-secondary" target="_blank">카카오톡 상담 문의하기</a>
       <div class="cta-note">* 가입 후 1분 내 바로 사용 가능</div>
     </div>
@@ -3416,7 +3953,7 @@ body {
 
 <!-- ===== FLOATING CTA ===== -->
 <div class="floating-cta" id="floatingCta">
-  <a href="https://dendealshop.com/shop/couponzone.php" class="floating-btn-primary" target="_blank">10% 할인 쿠폰받고 이용하기</a>
+  <a href="자문회원등록.html" class="floating-btn-primary" target="_blank">덴딜 자문 회원 치과 등록하기</a>
   <a href="https://pf.kakao.com/_MYKhX/chat" class="floating-btn-kakao" target="_blank">💬 채팅문의</a>
   <a href="tel:01034400416" class="floating-btn-call">📞 연락하기</a>
 </div>

@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>덴딜 자문 회원 치과 등록</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #0066FF;
+  --primary-dark: #0052CC;
+  --primary-light: #E8F0FE;
+  --accent: #00D4AA;
+  --dark: #0A0E27;
+  --gray-900: #111827;
+  --gray-700: #374151;
+  --gray-500: #6B7280;
+  --gray-300: #D1D5DB;
+  --gray-200: #E5E7EB;
+  --gray-100: #F3F4F6;
+  --gray-50: #F9FAFB;
+  --white: #FFFFFF;
+  --gradient-hero: linear-gradient(135deg, #0A0E27 0%, #1a237e 50%, #0066FF 100%);
+  --gradient-accent: linear-gradient(135deg, #0066FF, #00D4AA);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-lg: 24px;
+}
+
+body {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--gray-900);
+  background: var(--gray-50);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  padding-bottom: 60px;
+}
+
+.container { max-width: 480px; margin: 0 auto; padding: 0 20px; }
+
+/* ===== HERO ===== */
+.hero {
+  background: var(--gradient-hero);
+  padding: 60px 20px 50px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -30%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0,212,170,0.18) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -40%;
+  left: -30%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0,102,255,0.22) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero-inner { position: relative; z-index: 2; }
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 100px;
+  padding: 8px 18px;
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 22px;
+  letter-spacing: 0.5px;
+}
+.hero-badge::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.hero h1 {
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.3;
+  margin-bottom: 14px;
+  letter-spacing: -0.8px;
+}
+.hero h1 .em {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.7;
+  margin-bottom: 22px;
+}
+
+.hero-benefits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 18px;
+}
+.hero-benefit {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.9);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-align: left;
+  line-height: 1.4;
+}
+.hero-benefit::before {
+  content: '✓';
+  color: var(--accent);
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+/* ===== FORM SECTION ===== */
+.form-section {
+  padding: 40px 20px 30px;
+}
+.form-section .section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+.form-section .section-label::before {
+  content: '';
+  width: 20px;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 1px;
+}
+.form-section .section-title {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--gray-900);
+  line-height: 1.35;
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+.form-section .section-title .em { color: var(--primary); }
+.form-section .section-desc {
+  font-size: 14px;
+  color: var(--gray-500);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.form-card {
+  background: var(--white);
+  border: 1px solid var(--gray-100);
+  border-radius: var(--radius-lg);
+  padding: 28px 22px;
+  box-shadow: var(--shadow-md);
+}
+.form-row { margin-bottom: 18px; }
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gray-700);
+  margin-bottom: 8px;
+}
+.form-label .req {
+  color: #FF4D4D;
+  margin-left: 2px;
+}
+.form-input {
+  width: 100%;
+  padding: 14px 14px;
+  font-size: 15px;
+  font-family: inherit;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  color: var(--gray-900);
+  transition: all 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0,102,255,0.12);
+}
+.form-input::placeholder { color: var(--gray-300); }
+
+.form-hint {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--gray-500);
+}
+
+.form-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  background: var(--gray-50);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 12.5px;
+  color: var(--gray-700);
+  line-height: 1.55;
+}
+.form-checkbox input {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  accent-color: var(--primary);
+  flex-shrink: 0;
+}
+
+.form-msg {
+  display: none;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.form-msg.show { display: block; }
+.form-msg.error {
+  background: #FFF0F0;
+  color: #CC3333;
+  border: 1px solid #FFD6D6;
+}
+.form-msg.success {
+  background: #EDFFF6;
+  color: #0A8F4F;
+  border: 1px solid #B8F0D0;
+}
+
+.btn-submit {
+  display: block;
+  width: 100%;
+  padding: 18px;
+  background: var(--gradient-accent);
+  color: white;
+  font-weight: 800;
+  font-size: 17px;
+  font-family: inherit;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgba(0,102,255,0.3);
+  transition: all 0.3s;
+  margin-top: 8px;
+}
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0,102,255,0.4);
+}
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-kakao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 15px;
+  background: #FEE500;
+  color: #3C1E1E;
+  font-weight: 700;
+  font-size: 15px;
+  font-family: inherit;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  margin-top: 12px;
+}
+
+.form-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0 12px;
+  color: var(--gray-300);
+  font-size: 12px;
+  font-weight: 600;
+}
+.form-divider::before,
+.form-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gray-200);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  padding: 30px 20px 50px;
+  background: var(--dark);
+  text-align: center;
+}
+.footer-logo {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--white);
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+.footer-desc {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+}
+
+/* ===== BACK LINK ===== */
+.back-link {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 50;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 22px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.back-link:hover { background: rgba(255,255,255,0.2); }
+
+/* ===== SUCCESS MODAL ===== */
+.success-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,14,39,0.7);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.success-modal.show { display: flex; }
+.success-inner {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 36px 26px 28px;
+  text-align: center;
+  max-width: 380px;
+  width: 100%;
+  animation: pop 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+.success-inner::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  width: 300px;
+  height: 200px;
+  background: radial-gradient(ellipse at center top, rgba(0,212,170,0.15) 0%, transparent 70%);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+@keyframes pop {
+  0% { opacity: 0; transform: scale(0.75); }
+  60% { transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes checkPop {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.success-icon {
+  width: 72px;
+  height: 72px;
+  background: var(--gradient-accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: white;
+  margin: 0 auto 20px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 8px 30px rgba(0,212,170,0.35);
+  animation: checkPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+.success-icon.error {
+  background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+  box-shadow: 0 8px 30px rgba(255,107,107,0.35);
+}
+.success-title {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--gray-900);
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+  position: relative;
+  z-index: 1;
+}
+.success-desc {
+  font-size: 14px;
+  color: var(--gray-500);
+  line-height: 1.75;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+.success-desc strong {
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.success-info-box {
+  background: linear-gradient(135deg, #F0F8FF, #F0FFFA);
+  border: 1px solid rgba(0,102,255,0.15);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  text-align: left;
+  position: relative;
+  z-index: 1;
+}
+.success-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  padding: 4px 0;
+}
+.success-info-row + .success-info-row {
+  border-top: 1px dashed rgba(0,102,255,0.12);
+  margin-top: 4px;
+  padding-top: 8px;
+}
+.success-info-label {
+  color: var(--gray-500);
+  font-weight: 600;
+  font-size: 12px;
+}
+.success-info-value {
+  color: var(--gray-900);
+  font-weight: 700;
+  text-align: right;
+  max-width: 60%;
+  word-break: break-all;
+}
+
+.success-next {
+  background: rgba(0,102,255,0.06);
+  border-left: 3px solid var(--primary);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 22px;
+  text-align: left;
+  font-size: 13px;
+  color: var(--gray-700);
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+.success-next strong { color: var(--primary); font-weight: 800; }
+
+.success-close {
+  width: 100%;
+  padding: 15px;
+  background: var(--gradient-accent);
+  color: white;
+  font-weight: 800;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: all 0.2s;
+}
+.success-close:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0,102,255,0.25);
+}
+.success-close.error {
+  background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+}
+
+/* Small phones */
+@media (max-width: 360px) {
+  .hero h1 { font-size: 25px; }
+  .hero-sub { font-size: 13px; }
+  .form-section .section-title { font-size: 21px; }
+  .form-card { padding: 22px 16px; }
+  .btn-submit { font-size: 15px; padding: 16px; }
+  .form-input { font-size: 14px; padding: 13px; }
+  .hero-benefit { font-size: 11px; padding: 9px 10px; }
+}
+</style>
+</head>
+<body>
+
+<a href="덴딜쇼핑몰 실장님용 .html" class="back-link" aria-label="뒤로가기">‹</a>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">DENDEAL ADVISOR</div>
+    <h1>
+      덴딜 <span class="em">자문 회원 치과</span><br>
+      등록하기
+    </h1>
+    <p class="hero-sub">
+      병원명 · 원장님명 · 연락처만 남겨주시면<br>
+      <strong style="color:#fff">담당자가 직접 연락</strong>드립니다.
+    </p>
+    <div class="hero-benefits">
+      <div class="hero-benefit">평생 10% 쇼핑몰 할인권</div>
+      <div class="hero-benefit">뉴스·블로그 홍보</div>
+      <div class="hero-benefit">공식 위촉장</div>
+      <div class="hero-benefit">신규 기능 무료 제공</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FORM ===== -->
+<section class="form-section">
+  <div class="container">
+    <div class="section-label">자문회원 신청서</div>
+
+    <form class="form-card" id="advisorForm" novalidate>
+      <div class="form-msg" id="formMsg"></div>
+
+      <div class="form-row">
+        <label class="form-label" for="clinic">병원명<span class="req">*</span></label>
+        <input type="text" class="form-input" id="clinic" name="clinic" placeholder="예) 덴딜치과의원" required maxlength="100">
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="director">원장님 성함<span class="req">*</span></label>
+        <input type="text" class="form-input" id="director" name="director" placeholder="예) 홍길동" required maxlength="50">
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="phone">연락처<span class="req">*</span></label>
+        <input type="tel" class="form-input" id="phone" name="phone" placeholder="010-0000-0000" required maxlength="20">
+        <div class="form-hint">담당자가 이 번호로 연락드립니다.</div>
+      </div>
+
+      <div class="form-row">
+        <label class="form-checkbox">
+          <input type="checkbox" id="agree" required>
+          <span>
+            <strong>(필수)</strong> 자문회원 신청을 위한 개인정보 수집·이용에 동의합니다.
+            수집 항목은 병원명, 원장님 성함, 연락처이며 회원 관리 목적으로만 사용됩니다.
+          </span>
+        </label>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">
+        자문회원 신청하기 →
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-logo">DENDEAL</div>
+  <div class="footer-desc">
+    치과위생사를 위한 스마트 구매 플랫폼<br>
+    덴딜 자문회원 문의 · 010-3440-0416
+  </div>
+</footer>
+
+<!-- ===== RESULT MODAL ===== -->
+<div class="success-modal" id="resultModal">
+  <div class="success-inner">
+    <div class="success-icon" id="resultIcon">✓</div>
+    <div class="success-title" id="resultTitle">신청이 완료되었습니다</div>
+    <div class="success-desc" id="resultDesc">
+      소중한 신청 감사합니다.
+    </div>
+
+    <div class="success-info-box" id="resultInfo" style="display:none;">
+      <div class="success-info-row">
+        <span class="success-info-label">병원명</span>
+        <span class="success-info-value" id="rInfoClinic"></span>
+      </div>
+      <div class="success-info-row">
+        <span class="success-info-label">원장님</span>
+        <span class="success-info-value" id="rInfoDirector"></span>
+      </div>
+      <div class="success-info-row">
+        <span class="success-info-label">연락처</span>
+        <span class="success-info-value" id="rInfoPhone"></span>
+      </div>
+    </div>
+
+    <div class="success-next" id="resultNext">
+      <strong>📞 다음 단계</strong><br>
+      영업일 기준 <strong>1일 이내</strong> 전담 담당자가 입력하신 연락처로 직접 연락드립니다.
+    </div>
+
+    <button class="success-close" id="resultClose" onclick="closeModal()">확인</button>
+  </div>
+</div>
+
+<script>
+// ===========================================================
+// 🔧 Pantry 설정 (getpantry.cloud 에서 발급받은 ID 붙여넣기)
+// README_Pantry_설정.md 참고
+const PANTRY_ID = 'de6eb170-ccc2-4ba3-9363-6d2af43169a1';
+const PANTRY_BASKET = 'advisors';
+const PANTRY_API = 'https://getpantry.cloud/apiv1/pantry/' + PANTRY_ID + '/basket/' + PANTRY_BASKET;
+// ===========================================================
+
+const form = document.getElementById('advisorForm');
+const msgEl = document.getElementById('formMsg');
+const btn = document.getElementById('submitBtn');
+
+const modal = document.getElementById('resultModal');
+const mIcon = document.getElementById('resultIcon');
+const mTitle = document.getElementById('resultTitle');
+const mDesc = document.getElementById('resultDesc');
+const mInfo = document.getElementById('resultInfo');
+const mNext = document.getElementById('resultNext');
+const mClose = document.getElementById('resultClose');
+
+// 연락처 자동 하이픈
+document.getElementById('phone').addEventListener('input', function(e) {
+  let v = e.target.value.replace(/[^0-9]/g, '');
+  if (v.length <= 3) {
+    e.target.value = v;
+  } else if (v.length <= 7) {
+    e.target.value = v.slice(0,3) + '-' + v.slice(3);
+  } else {
+    e.target.value = v.slice(0,3) + '-' + v.slice(3,7) + '-' + v.slice(7,11);
+  }
+});
+
+function showMsg(type, text) {
+  msgEl.className = 'form-msg show ' + type;
+  msgEl.textContent = text;
+}
+function clearMsg() {
+  msgEl.className = 'form-msg';
+  msgEl.textContent = '';
+}
+
+function showSuccessModal(data) {
+  mIcon.textContent = '✓';
+  mIcon.classList.remove('error');
+  mClose.classList.remove('error');
+  mTitle.textContent = '신청이 완료되었습니다';
+  mDesc.innerHTML = '소중한 신청 감사합니다.<br>입력하신 정보로 접수되었습니다.';
+  document.getElementById('rInfoClinic').textContent = data.clinic;
+  document.getElementById('rInfoDirector').textContent = data.director;
+  document.getElementById('rInfoPhone').textContent = data.phone;
+  mInfo.style.display = '';
+  mNext.style.display = '';
+  mNext.innerHTML = '<strong>📞 다음 단계</strong><br>영업일 기준 <strong>1일 이내</strong>에 전담 담당자가 입력하신 연락처로 직접 연락드립니다.';
+  mClose.textContent = '확인';
+  modal.classList.add('show');
+}
+
+function showErrorModal(message) {
+  mIcon.textContent = '!';
+  mIcon.classList.add('error');
+  mClose.classList.add('error');
+  mTitle.textContent = '신청을 처리할 수 없습니다';
+  mDesc.innerHTML = message;
+  mInfo.style.display = 'none';
+  mNext.style.display = 'none';
+  mClose.textContent = '다시 시도';
+  modal.classList.add('show');
+}
+
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  clearMsg();
+
+  const clinic = document.getElementById('clinic').value.trim();
+  const director = document.getElementById('director').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const agree = document.getElementById('agree').checked;
+
+  if (!clinic || !director || !phone) {
+    showErrorModal('필수 항목(병원명·원장님·연락처)을 모두 입력해주세요.');
+    return;
+  }
+  if (!agree) {
+    showErrorModal('개인정보 수집·이용 동의가 필요합니다.');
+    return;
+  }
+  const phoneDigits = phone.replace(/[^0-9]/g, '');
+  if (phoneDigits.length < 9 || phoneDigits.length > 11) {
+    showErrorModal('연락처를 정확히 입력해주세요.<br>(예: 010-0000-0000)');
+    return;
+  }
+
+  if (PANTRY_ID.indexOf('REPLACE_WITH') !== -1) {
+    showErrorModal(
+      '신청 시스템이 아직 설정되지 않았습니다.<br>관리자에게 알려주세요.'
+    );
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '신청 중...';
+
+  try {
+    // 1) 현재 basket 가져오기 (없으면 빈 배열)
+    let entries = [];
+    let basketExists = false;
+    try {
+      const getRes = await fetch(PANTRY_API);
+      if (getRes.ok) {
+        const cur = await getRes.json();
+        entries = Array.isArray(cur.entries) ? cur.entries : [];
+        basketExists = true;
+      }
+    } catch (e) { /* network or no basket */ }
+
+    // 2) 새 항목 추가
+    const newEntry = {
+      id: 'a_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8),
+      clinic: clinic,
+      director: director,
+      phone: phone,
+      status: 'pending',
+      memo: '',
+      createdAt: new Date().toISOString()
+    };
+    entries.push(newEntry);
+
+    // 3) basket 저장
+    const method = basketExists ? 'PUT' : 'POST';
+    const saveRes = await fetch(PANTRY_API, {
+      method: method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ entries: entries })
+    });
+
+    if (saveRes.ok) {
+      showSuccessModal({ clinic, director, phone });
+      form.reset();
+    } else {
+      // POST 시도가 실패하면 PUT 시도, PUT 실패하면 POST 시도 (반대 케이스 폴백)
+      const altRes = await fetch(PANTRY_API, {
+        method: basketExists ? 'POST' : 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ entries: entries })
+      });
+      if (altRes.ok) {
+        showSuccessModal({ clinic, director, phone });
+        form.reset();
+      } else {
+        showErrorModal('신청 처리 중 오류가 발생했습니다.<br>잠시 후 다시 시도해주세요.');
+      }
+    }
+  } catch (err) {
+    showErrorModal(
+      '일시적으로 연결할 수 없습니다.<br>' +
+      '잠시 후 다시 시도해주세요.'
+    );
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '자문회원 신청하기 →';
+  }
+});
+
+function closeModal() {
+  modal.classList.remove('show');
+}
+modal.addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+// ESC 키로 닫기
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
+});
+</script>
+
+</body>
+</html>
