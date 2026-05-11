@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>덴딜 자문 회원 치과 등록</title>
+<title>덴딜 신규 이용 치과 등록</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -553,7 +553,7 @@ body {
   <div class="hero-inner">
     <div class="hero-badge">DENDEAL ADVISOR</div>
     <h1>
-      덴딜 <span class="em">자문 회원 치과</span><br>
+      덴딜 <span class="em">신규 이용 치과</span><br>
       등록하기
     </h1>
     <p class="hero-sub">
@@ -572,7 +572,7 @@ body {
 <!-- ===== FORM ===== -->
 <section class="form-section">
   <div class="container">
-    <div class="section-label">자문회원 신청서</div>
+    <div class="section-label">신규 이용 치과 신청서</div>
 
     <form class="form-card" id="advisorForm" novalidate>
       <div class="form-msg" id="formMsg"></div>
@@ -597,14 +597,14 @@ body {
         <label class="form-checkbox">
           <input type="checkbox" id="agree" required>
           <span>
-            <strong>(필수)</strong> 자문회원 신청을 위한 개인정보 수집·이용에 동의합니다.
+            <strong>(필수)</strong> 신규 이용 치과 신청을 위한 개인정보 수집·이용에 동의합니다.
             수집 항목은 병원명, 원장님 성함, 연락처이며 회원 관리 목적으로만 사용됩니다.
           </span>
         </label>
       </div>
 
       <button type="submit" class="btn-submit" id="submitBtn">
-        자문회원 신청하기 →
+        신규 이용 치과 신청하기 →
       </button>
     </form>
   </div>
@@ -615,7 +615,7 @@ body {
   <div class="footer-logo">DENDEAL</div>
   <div class="footer-desc">
     치과위생사를 위한 스마트 구매 플랫폼<br>
-    덴딜 자문회원 문의 · 010-3440-0416
+    덴딜 신규 이용 치과 문의 · 010-3440-0416
   </div>
 </footer>
 
@@ -812,7 +812,7 @@ form.addEventListener('submit', async function(e) {
     );
   } finally {
     btn.disabled = false;
-    btn.textContent = '자문회원 신청하기 →';
+    btn.textContent = '신규 이용 치과 신청하기 →';
   }
 });
 
