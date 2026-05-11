@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>덴딜 신규 이용 치과 관리자</title>
+<title>덴딜 혜택 신청 관리자</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -186,7 +186,7 @@ tr.deleted td { opacity:0.4; text-decoration:line-through; }
 <div class="wrap" id="loginWrap">
   <div class="login-box">
     <h1>덴딜 관리자</h1>
-    <p>신규 이용 치과 신청 관리자 페이지</p>
+    <p>덴딜 혜택 신청 관리자 페이지</p>
     <div class="login-err" id="loginErr" style="display:none;"></div>
     <form onsubmit="return login(event)">
       <input type="password" id="loginPw" class="login-input" placeholder="관리자 비밀번호" required autofocus>
@@ -198,7 +198,7 @@ tr.deleted td { opacity:0.4; text-decoration:line-through; }
 <!-- ===== ADMIN ===== -->
 <div class="wrap" id="adminWrap" style="display:none;">
   <div class="top">
-    <h1>덴딜 신규 이용 치과 신청 관리</h1>
+    <h1>덴딜 혜택 신청 관리</h1>
     <div class="top-actions">
       <button class="btn btn-refresh" onclick="loadEntries()">🔄 새로고침</button>
       <button class="btn btn-export" onclick="exportCSV()">📥 CSV 다운로드</button>
@@ -219,7 +219,7 @@ tr.deleted td { opacity:0.4; text-decoration:line-through; }
 
 <script>
 // ===========================================================
-// 🔧 Pantry 설정 — 신규이용치과등록.html 과 동일하게 맞추세요
+// 🔧 Pantry 설정 — 혜택신청.html 과 동일하게 맞추세요
 const PANTRY_ID = 'de6eb170-ccc2-4ba3-9363-6d2af43169a1';
 const PANTRY_BASKET = 'advisors';
 

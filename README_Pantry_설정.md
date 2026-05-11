@@ -22,7 +22,7 @@ GitHub Pages에서 신청을 받고 관리자 페이지에서 확인하기 위�
 
 ## 2단계 — HTML 파일 2개에 Pantry ID 붙여넣기
 
-### A. `신규이용치과등록.html` 수정
+### A. `혜택신청.html` 수정
 
 메모장으로 열어서 다음 줄을 찾아주세요 (Ctrl + F → `REPLACE_WITH`):
 
@@ -61,7 +61,7 @@ PowerShell 또는 Git Bash 에서:
 ```bash
 cd "D:\홍보\영업용실장님용"
 git add .
-git commit -m "자문회원 신청 + 관리자 페이지 추가 (Pantry 연동)"
+git commit -m "혜택 신청 + 관리자 페이지 추가 (Pantry 연동)"
 git push
 ```
 
@@ -72,7 +72,7 @@ git push
 ## 4단계 — 테스트
 
 ### 신청 페이지 테스트
-1. https://kswmiso0691.github.io/dendeal-promo/신규이용치과등록.html 접속
+1. https://kswmiso0691.github.io/dendeal-promo/혜택신청.html 접속
 2. 테스트 데이터로 신청
 3. "신청이 완료되었습니다" 팝업이 뜨면 성공
 
