@@ -4045,5 +4045,131 @@ function animateValue(element, start, end, duration) {
 }
 </script>
 
+<!-- ===== 방문 추적 (관리자 페이지에서 확인) ===== -->
+<script>
+(function() {
+  var VISITS_API = 'https://getpantry.cloud/apiv1/pantry/de6eb170-ccc2-4ba3-9363-6d2af43169a1/basket/visits';
+  var PAGE = 'main';
+
+  var visitorId;
+  try {
+    visitorId = localStorage.getItem('dd_vid');
+    if (!visitorId) {
+      visitorId = 'v_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+      localStorage.setItem('dd_vid', visitorId);
+    }
+  } catch (e) { visitorId = 'anon_' + Date.now().toString(36); }
+  var sessionId = 's_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+  var ua = navigator.userAgent;
+
+  function detectBrowser(u) {
+    if (/KAKAOTALK/i.test(u)) return 'KakaoTalk';
+    if (/NAVER/i.test(u)) return 'Naver앱';
+    if (/Edg\//.test(u)) return 'Edge';
+    if (/SamsungBrowser/.test(u)) return 'Samsung';
+    if (/FxiOS/.test(u)) return 'Firefox';
+    if (/CriOS/.test(u)) return 'Chrome';
+    if (/Chrome\//.test(u)) return 'Chrome';
+    if (/Firefox\//.test(u)) return 'Firefox';
+    if (/Safari\//.test(u)) return 'Safari';
+    return 'Other';
+  }
+  function detectOS(u) {
+    if (/Windows NT/.test(u)) return 'Windows';
+    if (/iPhone|iPad|iPod/.test(u)) return 'iOS';
+    if (/Android/.test(u)) return 'Android';
+    if (/Mac OS X/.test(u)) return 'macOS';
+    if (/Linux/.test(u)) return 'Linux';
+    return 'Other';
+  }
+  function detectDevice(u) {
+    if (/iPad/.test(u) || (/Android/.test(u) && !/Mobile/.test(u))) return 'tablet';
+    if (/Mobi|Android|iPhone|iPod/.test(u)) return 'mobile';
+    return 'desktop';
+  }
+
+  var startTime = Date.now();
+  var maxScroll = 0;
+  var clicks = [];
+  var ipInfo = null;
+
+  window.addEventListener('scroll', function() {
+    var doc = document.documentElement;
+    var total = doc.scrollHeight - window.innerHeight;
+    if (total > 0) {
+      var pct = Math.round(((window.pageYOffset || doc.scrollTop) / total) * 100);
+      if (pct > maxScroll) maxScroll = Math.min(100, pct);
+    }
+  }, { passive: true });
+
+  document.addEventListener('click', function(e) {
+    var t = e.target.closest && e.target.closest('a, button, [role="button"]');
+    if (!t || clicks.length >= 50) return;
+    var label = (t.textContent || t.getAttribute('aria-label') || '').trim().slice(0, 60).replace(/\s+/g, ' ');
+    clicks.push({
+      t: Date.now() - startTime,
+      label: label,
+      href: t.getAttribute('href') || null
+    });
+  }, true);
+
+  try {
+    fetch('https://ipapi.co/json/').then(function(r) {
+      return r.ok ? r.json() : null;
+    }).then(function(d) {
+      if (!d) return;
+      ipInfo = {
+        ip: d.ip || null,
+        country: d.country_name || null,
+        city: d.city || null,
+        region: d.region || null,
+        isp: d.org || null
+      };
+    }).catch(function() {});
+  } catch (e) {}
+
+  var sent = false;
+  function sendLog() {
+    if (sent) return;
+    sent = true;
+    var log = {
+      ts: new Date().toISOString(),
+      page: PAGE,
+      visitorId: visitorId,
+      sessionId: sessionId,
+      ip: ipInfo ? ipInfo.ip : null,
+      country: ipInfo ? ipInfo.country : null,
+      city: ipInfo ? ipInfo.city : null,
+      region: ipInfo ? ipInfo.region : null,
+      isp: ipInfo ? ipInfo.isp : null,
+      browser: detectBrowser(ua),
+      os: detectOS(ua),
+      device: detectDevice(ua),
+      ua: ua.slice(0, 200),
+      lang: navigator.language || '',
+      screen: (screen.width || 0) + 'x' + (screen.height || 0),
+      viewport: window.innerWidth + 'x' + window.innerHeight,
+      referrer: document.referrer || null,
+      dwellSec: Math.round((Date.now() - startTime) / 1000),
+      scrollPct: maxScroll,
+      clicks: clicks
+    };
+    try {
+      fetch(VISITS_API, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ logs: [log] }),
+        keepalive: true
+      }).catch(function() {});
+    } catch (e) {}
+  }
+
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'hidden') sendLog();
+  });
+  window.addEventListener('pagehide', sendLog);
+})();
+</script>
+
 </body>
 </html>
