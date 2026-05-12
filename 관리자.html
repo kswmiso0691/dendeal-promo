@@ -173,10 +173,65 @@ tr.deleted td { opacity:0.4; text-decoration:line-through; }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 .toast.error { background:#CC3333; }
 
+/* 탭 */
+.tabs {
+  display:flex; gap:4px; margin-bottom:20px;
+  border-bottom:1px solid #E5E7EB;
+}
+.tab-btn {
+  padding:12px 22px; background:none; border:none;
+  font-size:14px; font-weight:700; color:#6B7280;
+  cursor:pointer; font-family:inherit;
+  border-bottom:3px solid transparent;
+  margin-bottom:-1px; transition:all 0.15s;
+}
+.tab-btn:hover { color:#0066FF; }
+.tab-btn.active {
+  color:#0066FF; border-bottom-color:#0066FF;
+}
+
+/* 방문 통계 */
+.visit-row { cursor:pointer; }
+.visit-row.expanded td { background:#F0F7FF; }
+.visit-detail {
+  background:#F9FAFB; padding:14px 16px;
+  font-size:12px; color:#374151; line-height:1.7;
+  border-bottom:1px solid #F3F4F6;
+}
+.visit-detail b { color:#0A0E27; }
+.visit-detail .clicks-list {
+  margin-top:8px; padding:10px;
+  background:#fff; border-radius:8px;
+  border:1px solid #E5E7EB;
+  max-height:200px; overflow-y:auto;
+}
+.visit-detail .click-item {
+  padding:4px 0; border-bottom:1px dashed #F3F4F6;
+  font-size:11px;
+}
+.visit-detail .click-item:last-child { border-bottom:none; }
+.page-badge {
+  display:inline-block; padding:3px 10px; border-radius:10px;
+  font-size:11px; font-weight:700;
+}
+.page-badge.main { background:#E8F0FE; color:#0066FF; }
+.page-badge.apply { background:#E6F9F3; color:#00A085; }
+.device-icon { font-size:14px; margin-right:4px; }
+.bar-track {
+  display:inline-block; width:60px; height:6px;
+  background:#E5E7EB; border-radius:3px; overflow:hidden;
+  vertical-align:middle; margin-right:6px;
+}
+.bar-fill { height:100%; background:#0066FF; }
+
+.btn-clear { background:#FFF0F0; color:#CC3333; border:1px solid #FFD6D6; }
+.btn-clear:hover { background:#FFE0E0; }
+
 @media (max-width: 720px) {
   .stats { grid-template-columns:repeat(3,1fr); }
   .top h1 { font-size:18px; }
   body { padding:14px; }
+  .tab-btn { padding:10px 14px; font-size:13px; }
 }
 </style>
 </head>
@@ -198,20 +253,31 @@ tr.deleted td { opacity:0.4; text-decoration:line-through; }
 <!-- ===== ADMIN ===== -->
 <div class="wrap" id="adminWrap" style="display:none;">
   <div class="top">
-    <h1>덴딜 혜택 신청 관리</h1>
-    <div class="top-actions">
-      <button class="btn btn-refresh" onclick="loadEntries()">🔄 새로고침</button>
-      <button class="btn btn-export" onclick="exportCSV()">📥 CSV 다운로드</button>
-      <button class="btn btn-logout" onclick="logout()">로그아웃</button>
-    </div>
+    <h1>덴딜 관리자</h1>
+    <div class="top-actions" id="topActions"></div>
   </div>
 
-  <div class="stats" id="stats"></div>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="entries" onclick="switchTab('entries')">📋 신청 관리</button>
+    <button class="tab-btn" data-tab="visits" onclick="switchTab('visits')">📊 방문 통계</button>
+  </div>
 
   <div id="noticeArea"></div>
 
-  <div id="contentArea">
-    <div class="loading-box">불러오는 중...</div>
+  <!-- 신청 관리 뷰 -->
+  <div class="view view-entries">
+    <div class="stats" id="stats"></div>
+    <div id="contentArea">
+      <div class="loading-box">불러오는 중...</div>
+    </div>
+  </div>
+
+  <!-- 방문 통계 뷰 -->
+  <div class="view view-visits" style="display:none;">
+    <div class="stats" id="visitStats"></div>
+    <div id="visitContent">
+      <div class="loading-box">불러오는 중...</div>
+    </div>
   </div>
 </div>
 
@@ -228,6 +294,8 @@ const ADMIN_PASSWORD = '123123';
 // ===========================================================
 
 const PANTRY_API = 'https://getpantry.cloud/apiv1/pantry/' + PANTRY_ID + '/basket/' + PANTRY_BASKET;
+const VISITS_BASKET = 'visits';
+const VISITS_API = 'https://getpantry.cloud/apiv1/pantry/' + PANTRY_ID + '/basket/' + VISITS_BASKET;
 
 const statusLabels = {
   pending:   '대기',
@@ -243,6 +311,10 @@ const statusColors = {
 };
 
 let currentEntries = [];
+let currentVisits = [];
+let visitsLoaded = false;
+let currentTab = 'entries';
+let expandedVisit = null;
 
 // ===== 로그인 =====
 function isLoggedIn() {
@@ -271,7 +343,36 @@ function logout() {
 function showAdmin() {
   document.getElementById('loginWrap').style.display = 'none';
   document.getElementById('adminWrap').style.display = 'block';
+  renderTopActions();
   loadEntries();
+}
+
+function renderTopActions() {
+  const el = document.getElementById('topActions');
+  if (currentTab === 'entries') {
+    el.innerHTML =
+      '<button class="btn btn-refresh" onclick="loadEntries()">🔄 새로고침</button>' +
+      '<button class="btn btn-export" onclick="exportCSV()">📥 CSV 다운로드</button>' +
+      '<button class="btn btn-logout" onclick="logout()">로그아웃</button>';
+  } else {
+    el.innerHTML =
+      '<button class="btn btn-refresh" onclick="loadVisits()">🔄 새로고침</button>' +
+      '<button class="btn btn-export" onclick="exportVisitsCSV()">📥 CSV 다운로드</button>' +
+      '<button class="btn btn-clear" onclick="clearVisits()">🗑️ 로그 초기화</button>' +
+      '<button class="btn btn-logout" onclick="logout()">로그아웃</button>';
+  }
+}
+
+function switchTab(name) {
+  currentTab = name;
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === name);
+  });
+  document.querySelector('.view-entries').style.display = name === 'entries' ? 'block' : 'none';
+  document.querySelector('.view-visits').style.display = name === 'visits' ? 'block' : 'none';
+  document.getElementById('noticeArea').innerHTML = '';
+  renderTopActions();
+  if (name === 'visits' && !visitsLoaded) loadVisits();
 }
 
 // ===== 토스트 =====
@@ -484,6 +585,227 @@ function formatDate(iso) {
   const pad = n => String(n).padStart(2, '0');
   return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) +
          ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+}
+
+// ========================================
+// ===== 방문 통계 =====
+// ========================================
+async function loadVisits() {
+  visitsLoaded = true;
+  const content = document.getElementById('visitContent');
+  content.innerHTML = '<div class="loading-box">불러오는 중...</div>';
+  try {
+    const res = await fetch(VISITS_API);
+    if (res.status === 400 || res.status === 404) {
+      // basket 미존재 — 빈 배열로 초기화
+      currentVisits = [];
+      await fetch(VISITS_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ logs: [] })
+      }).catch(() => {});
+    } else if (res.ok) {
+      const data = await res.json();
+      currentVisits = Array.isArray(data.logs) ? data.logs : [];
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
+    renderVisitStats();
+    renderVisitsTable();
+  } catch (err) {
+    showNotice('error', '방문 로그를 불러오지 못했습니다: ' + err.message);
+    content.innerHTML = '';
+  }
+}
+
+function renderVisitStats() {
+  const today = new Date().toISOString().slice(0, 10);
+  const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+  let mainCnt = 0, applyCnt = 0, todayCnt = 0, weekCnt = 0;
+  const uniqueVisitors = new Set();
+  const uniqueToday = new Set();
+  currentVisits.forEach(v => {
+    const day = (v.ts || '').slice(0, 10);
+    if (v.page === 'main') mainCnt++;
+    if (v.page === 'apply') applyCnt++;
+    if (day === today) { todayCnt++; if (v.visitorId) uniqueToday.add(v.visitorId); }
+    if (day >= weekAgo) weekCnt++;
+    if (v.visitorId) uniqueVisitors.add(v.visitorId);
+  });
+  const conv = mainCnt > 0 ? Math.round((applyCnt / mainCnt) * 100) : 0;
+
+  document.getElementById('visitStats').innerHTML =
+    cell(currentVisits.length, '전체 방문', '#0066FF') +
+    cell(mainCnt, '메인 페이지', '#0066FF') +
+    cell(applyCnt, '혜택신청 페이지', '#00D4AA') +
+    cell(todayCnt, '오늘 방문', '#FF6B35') +
+    cell(uniqueVisitors.size, '고유 방문자', '#7C3AED') +
+    cell(conv + '%', '전환율', '#22863A');
+}
+
+function renderVisitsTable() {
+  const content = document.getElementById('visitContent');
+  if (currentVisits.length === 0) {
+    content.innerHTML = '<div class="table-wrap"><div class="empty"><div class="empty-icon">📭</div>아직 방문 기록이 없습니다.<br><br><span style="font-size:12px;">메인/혜택신청 페이지에 접속하면 로그가 쌓입니다.</span></div></div>';
+    return;
+  }
+  const sorted = [...currentVisits].sort((a, b) =>
+    (b.ts || '').localeCompare(a.ts || '')
+  );
+
+  let html = '<div class="table-wrap"><table><thead><tr>' +
+    '<th>#</th><th>시각</th><th>페이지</th><th>위치</th><th>IP</th>' +
+    '<th>디바이스</th><th>유입</th><th>체류</th><th>스크롤</th><th>클릭</th>' +
+    '</tr></thead><tbody>';
+
+  sorted.forEach((v, idx) => {
+    const sid = escapeHtml(v.sessionId || '');
+    const pageBadge = v.page === 'apply'
+      ? '<span class="page-badge apply">혜택신청</span>'
+      : '<span class="page-badge main">메인</span>';
+    const loc = [v.city, v.country].filter(Boolean).join(', ') || '-';
+    const deviceIcon = v.device === 'mobile' ? '📱' : v.device === 'tablet' ? '📱' : '💻';
+    const referrer = referrerLabel(v.referrer);
+    const dwellLabel = v.dwellSec ? formatDwell(v.dwellSec) : '-';
+    const scroll = (v.scrollPct || 0);
+    const clickCnt = (v.clicks && v.clicks.length) || 0;
+    const expanded = expandedVisit === sid;
+
+    html += `<tr class="visit-row${expanded ? ' expanded' : ''}" onclick="toggleVisit('${sid}')">
+      <td class="cell-no">${currentVisits.length - idx}</td>
+      <td class="cell-date">${escapeHtml(formatDate(v.ts || ''))}</td>
+      <td>${pageBadge}</td>
+      <td>${escapeHtml(loc)}</td>
+      <td class="cell-phone">${escapeHtml(v.ip || '-')}</td>
+      <td><span class="device-icon">${deviceIcon}</span>${escapeHtml(v.browser || '')} / ${escapeHtml(v.os || '')}</td>
+      <td style="font-size:12px;color:#6B7280;">${escapeHtml(referrer)}</td>
+      <td>${dwellLabel}</td>
+      <td><span class="bar-track"><span class="bar-fill" style="width:${scroll}%"></span></span>${scroll}%</td>
+      <td>${clickCnt}</td>
+    </tr>`;
+
+    if (expanded) {
+      let clickHtml = '';
+      if (v.clicks && v.clicks.length > 0) {
+        clickHtml = '<div class="clicks-list">' +
+          v.clicks.map(c =>
+            `<div class="click-item">
+              <b>+${Math.round((c.t||0)/1000)}s</b>
+              ${escapeHtml(c.label || '(no label)')}
+              ${c.href ? `<span style="color:#9CA3AF;">→ ${escapeHtml(c.href)}</span>` : ''}
+            </div>`
+          ).join('') + '</div>';
+      } else {
+        clickHtml = '<div style="color:#9CA3AF;margin-top:6px;">클릭한 버튼/링크 없음</div>';
+      }
+      html += `<tr><td colspan="10" style="padding:0;">
+        <div class="visit-detail">
+          <b>방문자ID:</b> ${escapeHtml(v.visitorId || '-')} &nbsp;|&nbsp;
+          <b>세션ID:</b> ${escapeHtml(v.sessionId || '-')}<br>
+          <b>지역:</b> ${escapeHtml(v.region || '-')} / <b>ISP:</b> ${escapeHtml(v.isp || '-')}<br>
+          <b>화면:</b> ${escapeHtml(v.screen || '-')} / <b>뷰포트:</b> ${escapeHtml(v.viewport || '-')} / <b>언어:</b> ${escapeHtml(v.lang || '-')}<br>
+          <b>전체 유입경로:</b> ${escapeHtml(v.referrer || '직접 접속')}<br>
+          <b>UA:</b> <span style="color:#9CA3AF;word-break:break-all;">${escapeHtml(v.ua || '')}</span><br>
+          <b>클릭 내역 (${clickCnt}건):</b>
+          ${clickHtml}
+        </div>
+      </td></tr>`;
+    }
+  });
+
+  html += '</tbody></table></div>';
+  content.innerHTML = html;
+}
+
+function toggleVisit(sid) {
+  expandedVisit = (expandedVisit === sid) ? null : sid;
+  renderVisitsTable();
+}
+
+function referrerLabel(ref) {
+  if (!ref) return '직접 접속';
+  try {
+    const url = new URL(ref);
+    const host = url.hostname.replace(/^www\./, '');
+    if (host.includes('google')) return 'Google 검색';
+    if (host.includes('naver')) return 'Naver';
+    if (host.includes('daum') || host.includes('kakao')) return 'Daum/Kakao';
+    if (host.includes('facebook') || host.includes('fb.com')) return 'Facebook';
+    if (host.includes('instagram')) return 'Instagram';
+    if (host.includes('youtube') || host.includes('youtu.be')) return 'YouTube';
+    if (host.includes('github.io')) return host;
+    return host;
+  } catch (e) { return ref.slice(0, 40); }
+}
+
+function formatDwell(sec) {
+  if (sec < 60) return sec + 's';
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return m + 'm ' + s + 's';
+}
+
+async function clearVisits() {
+  if (!confirm('방문 로그 ' + currentVisits.length + '건을 모두 삭제하시겠습니까?\n(되돌릴 수 없습니다)')) return;
+  try {
+    const res = await fetch(VISITS_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ logs: [] })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    currentVisits = [];
+    expandedVisit = null;
+    renderVisitStats();
+    renderVisitsTable();
+    toast('방문 로그 초기화됨');
+  } catch (err) {
+    toast('초기화 실패: ' + err.message, 'error');
+  }
+}
+
+function exportVisitsCSV() {
+  if (currentVisits.length === 0) {
+    toast('내보낼 데이터가 없습니다', 'error');
+    return;
+  }
+  const rows = [['시각','페이지','방문자ID','IP','도시','지역','국가','ISP','브라우저','OS','디바이스','유입경로','체류(초)','스크롤(%)','클릭수','화면','뷰포트','언어','UA']];
+  const sorted = [...currentVisits].sort((a, b) =>
+    (b.ts || '').localeCompare(a.ts || '')
+  );
+  sorted.forEach(v => {
+    rows.push([
+      v.ts ? formatDate(v.ts) : '',
+      v.page === 'apply' ? '혜택신청' : '메인',
+      v.visitorId || '',
+      v.ip || '',
+      v.city || '',
+      v.region || '',
+      v.country || '',
+      v.isp || '',
+      v.browser || '',
+      v.os || '',
+      v.device || '',
+      v.referrer || '직접 접속',
+      v.dwellSec || 0,
+      v.scrollPct || 0,
+      (v.clicks && v.clicks.length) || 0,
+      v.screen || '',
+      v.viewport || '',
+      v.lang || '',
+      v.ua || ''
+    ]);
+  });
+  const csv = '﻿' + rows.map(r =>
+    r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')
+  ).join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'dendeal_visits_' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 // 시작
