@@ -807,7 +807,7 @@ document.addEventListener('keydown', function(e) {
 });
 </script>
 
-<!-- ===== 방문 추적 (관리자 페이지에서 확인) ===== -->
+<!-- ===== 방문 추적 (접속 즉시 전송) ===== -->
 <script>
 (function() {
   var VISITS_API = 'https://getpantry.cloud/apiv1/pantry/de6eb170-ccc2-4ba3-9363-6d2af43169a1/basket/visits';
@@ -850,48 +850,8 @@ document.addEventListener('keydown', function(e) {
     return 'desktop';
   }
 
-  var startTime = Date.now();
-  var maxScroll = 0;
-  var clicks = [];
-  var ipInfo = null;
-
-  window.addEventListener('scroll', function() {
-    var doc = document.documentElement;
-    var total = doc.scrollHeight - window.innerHeight;
-    if (total > 0) {
-      var pct = Math.round(((window.pageYOffset || doc.scrollTop) / total) * 100);
-      if (pct > maxScroll) maxScroll = Math.min(100, pct);
-    }
-  }, { passive: true });
-
-  document.addEventListener('click', function(e) {
-    var t = e.target.closest && e.target.closest('a, button, [role="button"]');
-    if (!t || clicks.length >= 50) return;
-    var label = (t.textContent || t.getAttribute('aria-label') || '').trim().slice(0, 60).replace(/\s+/g, ' ');
-    clicks.push({
-      t: Date.now() - startTime,
-      label: label,
-      href: t.getAttribute('href') || null
-    });
-  }, true);
-
-  try {
-    fetch('https://ipapi.co/json/').then(function(r) {
-      return r.ok ? r.json() : null;
-    }).then(function(d) {
-      if (!d) return;
-      ipInfo = {
-        ip: d.ip || null,
-        country: d.country_name || null,
-        city: d.city || null,
-        region: d.region || null,
-        isp: d.org || null
-      };
-    }).catch(function() {});
-  } catch (e) {}
-
   var sent = false;
-  function sendLog() {
+  function sendLog(ipInfo) {
     if (sent) return;
     sent = true;
     var log = {
@@ -911,25 +871,37 @@ document.addEventListener('keydown', function(e) {
       lang: navigator.language || '',
       screen: (screen.width || 0) + 'x' + (screen.height || 0),
       viewport: window.innerWidth + 'x' + window.innerHeight,
-      referrer: document.referrer || null,
-      dwellSec: Math.round((Date.now() - startTime) / 1000),
-      scrollPct: maxScroll,
-      clicks: clicks
+      referrer: document.referrer || null
     };
     try {
       fetch(VISITS_API, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ logs: [log] }),
-        keepalive: true
+        body: JSON.stringify({ logs: [log] })
       }).catch(function() {});
     } catch (e) {}
   }
 
-  document.addEventListener('visibilitychange', function() {
-    if (document.visibilityState === 'hidden') sendLog();
-  });
-  window.addEventListener('pagehide', sendLog);
+  var ipReceived = false;
+  try {
+    fetch('https://ipapi.co/json/').then(function(r) {
+      return r.ok ? r.json() : null;
+    }).then(function(d) {
+      ipReceived = true;
+      if (!d) { sendLog(null); return; }
+      sendLog({
+        ip: d.ip || null,
+        country: d.country_name || null,
+        city: d.city || null,
+        region: d.region || null,
+        isp: d.org || null
+      });
+    }).catch(function() { sendLog(null); });
+  } catch (e) { sendLog(null); }
+
+  setTimeout(function() {
+    if (!ipReceived) sendLog(null);
+  }, 3000);
 })();
 </script>
 

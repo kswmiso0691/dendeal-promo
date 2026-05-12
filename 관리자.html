@@ -655,7 +655,7 @@ function renderVisitsTable() {
 
   let html = '<div class="table-wrap"><table><thead><tr>' +
     '<th>#</th><th>시각</th><th>페이지</th><th>위치</th><th>IP</th>' +
-    '<th>디바이스</th><th>유입</th><th>체류</th><th>스크롤</th><th>클릭</th>' +
+    '<th>디바이스</th><th>유입</th>' +
     '</tr></thead><tbody>';
 
   sorted.forEach((v, idx) => {
@@ -666,9 +666,6 @@ function renderVisitsTable() {
     const loc = [v.city, v.country].filter(Boolean).join(', ') || '-';
     const deviceIcon = v.device === 'mobile' ? '📱' : v.device === 'tablet' ? '📱' : '💻';
     const referrer = referrerLabel(v.referrer);
-    const dwellLabel = v.dwellSec ? formatDwell(v.dwellSec) : '-';
-    const scroll = (v.scrollPct || 0);
-    const clickCnt = (v.clicks && v.clicks.length) || 0;
     const expanded = expandedVisit === sid;
 
     html += `<tr class="visit-row${expanded ? ' expanded' : ''}" onclick="toggleVisit('${sid}')">
@@ -679,35 +676,17 @@ function renderVisitsTable() {
       <td class="cell-phone">${escapeHtml(v.ip || '-')}</td>
       <td><span class="device-icon">${deviceIcon}</span>${escapeHtml(v.browser || '')} / ${escapeHtml(v.os || '')}</td>
       <td style="font-size:12px;color:#6B7280;">${escapeHtml(referrer)}</td>
-      <td>${dwellLabel}</td>
-      <td><span class="bar-track"><span class="bar-fill" style="width:${scroll}%"></span></span>${scroll}%</td>
-      <td>${clickCnt}</td>
     </tr>`;
 
     if (expanded) {
-      let clickHtml = '';
-      if (v.clicks && v.clicks.length > 0) {
-        clickHtml = '<div class="clicks-list">' +
-          v.clicks.map(c =>
-            `<div class="click-item">
-              <b>+${Math.round((c.t||0)/1000)}s</b>
-              ${escapeHtml(c.label || '(no label)')}
-              ${c.href ? `<span style="color:#9CA3AF;">→ ${escapeHtml(c.href)}</span>` : ''}
-            </div>`
-          ).join('') + '</div>';
-      } else {
-        clickHtml = '<div style="color:#9CA3AF;margin-top:6px;">클릭한 버튼/링크 없음</div>';
-      }
-      html += `<tr><td colspan="10" style="padding:0;">
+      html += `<tr><td colspan="7" style="padding:0;">
         <div class="visit-detail">
           <b>방문자ID:</b> ${escapeHtml(v.visitorId || '-')} &nbsp;|&nbsp;
           <b>세션ID:</b> ${escapeHtml(v.sessionId || '-')}<br>
           <b>지역:</b> ${escapeHtml(v.region || '-')} / <b>ISP:</b> ${escapeHtml(v.isp || '-')}<br>
           <b>화면:</b> ${escapeHtml(v.screen || '-')} / <b>뷰포트:</b> ${escapeHtml(v.viewport || '-')} / <b>언어:</b> ${escapeHtml(v.lang || '-')}<br>
           <b>전체 유입경로:</b> ${escapeHtml(v.referrer || '직접 접속')}<br>
-          <b>UA:</b> <span style="color:#9CA3AF;word-break:break-all;">${escapeHtml(v.ua || '')}</span><br>
-          <b>클릭 내역 (${clickCnt}건):</b>
-          ${clickHtml}
+          <b>UA:</b> <span style="color:#9CA3AF;word-break:break-all;">${escapeHtml(v.ua || '')}</span>
         </div>
       </td></tr>`;
     }
@@ -769,7 +748,7 @@ function exportVisitsCSV() {
     toast('내보낼 데이터가 없습니다', 'error');
     return;
   }
-  const rows = [['시각','페이지','방문자ID','IP','도시','지역','국가','ISP','브라우저','OS','디바이스','유입경로','체류(초)','스크롤(%)','클릭수','화면','뷰포트','언어','UA']];
+  const rows = [['시각','페이지','방문자ID','IP','도시','지역','국가','ISP','브라우저','OS','디바이스','유입경로','화면','뷰포트','언어','UA']];
   const sorted = [...currentVisits].sort((a, b) =>
     (b.ts || '').localeCompare(a.ts || '')
   );
@@ -787,9 +766,6 @@ function exportVisitsCSV() {
       v.os || '',
       v.device || '',
       v.referrer || '직접 접속',
-      v.dwellSec || 0,
-      v.scrollPct || 0,
-      (v.clicks && v.clicks.length) || 0,
       v.screen || '',
       v.viewport || '',
       v.lang || '',
