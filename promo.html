@@ -3068,6 +3068,57 @@ body {
     max-width: 100%;
   }
 }
+/* ===== 컨퍼런스 패키지 (전단지 연동) ===== */
+.cpkg-section { padding: 70px 20px; background: linear-gradient(180deg, #eef3ff 0%, #ffffff 100%); }
+.cpkg-section .container { max-width: 480px; margin: 0 auto; padding: 0 20px; }
+.cpkg-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, #FFD700, #FF6B35); color: #0A0E27;
+  border-radius: 100px; padding: 7px 16px; font-size: 12.5px; font-weight: 900;
+  letter-spacing: 0.3px; box-shadow: 0 5px 16px rgba(255,107,53,0.3); margin-bottom: 14px;
+}
+.cpkg-heading { font-size: 28px; font-weight: 900; color: #111827; line-height: 1.3; letter-spacing: -0.5px; margin-bottom: 8px; }
+.cpkg-heading .em { background: linear-gradient(135deg, #0066FF, #00D4AA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.cpkg-sub { font-size: 14px; color: #6B7280; line-height: 1.6; margin-bottom: 24px; }
+.cpkg-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.cpkg-card {
+  background: #fff; border: 1.5px solid #F3F4F6; border-radius: 18px; padding: 22px 18px 20px;
+  position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+.cpkg-card.best { border-color: #00D4AA; box-shadow: 0 10px 30px rgba(0,212,170,0.2); background: linear-gradient(170deg, #fff 60%, #f0fffb 100%); }
+.cpkg-ribbon {
+  position: absolute; top: 14px; right: -32px; transform: rotate(45deg);
+  background: linear-gradient(135deg, #0066FF, #00D4AA); color: #fff; font-size: 10px; font-weight: 900;
+  padding: 4px 36px; letter-spacing: 0.5px;
+}
+.cpkg-tier { font-size: 12.5px; font-weight: 800; color: #6B7280; margin-bottom: 5px; }
+.cpkg-card.best .cpkg-tier { color: #0066FF; }
+.cpkg-amt { font-size: 27px; font-weight: 900; color: #111827; line-height: 1; letter-spacing: -1px; }
+.cpkg-amt span { font-size: 16px; font-weight: 800; }
+.cpkg-div { height: 1px; background: #F3F4F6; margin: 14px 0; }
+.cpkg-rate { font-size: 13px; font-weight: 800; color: #6B7280; display: flex; align-items: baseline; gap: 7px; }
+.cpkg-rate b {
+  font-size: 38px; font-weight: 900; line-height: 1; letter-spacing: -1.5px;
+  background: linear-gradient(135deg, #0066FF, #00D4AA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.cpkg-card.best .cpkg-rate b { background: linear-gradient(135deg, #FFD700, #FF6B35); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.cpkg-rate b span { font-size: 21px; }
+.cpkg-bonus {
+  background: linear-gradient(150deg, #0A0E27 0%, #1a237e 55%, #0066FF 100%);
+  border-radius: 20px; padding: 24px 22px; color: #fff; position: relative; overflow: hidden;
+}
+.cpkg-bonus::before { content: ''; position: absolute; top: -70px; right: -50px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(255,215,0,0.18) 0%, transparent 70%); border-radius: 50%; }
+.cpkg-bonus > * { position: relative; z-index: 2; }
+.cpkg-bonus-tag { display: inline-block; background: linear-gradient(135deg, #FFD700, #FF6B35); color: #0A0E27; font-size: 11.5px; font-weight: 900; padding: 5px 13px; border-radius: 100px; margin-bottom: 10px; box-shadow: 0 4px 14px rgba(255,107,53,0.35); }
+.cpkg-bonus-title { font-size: 20px; font-weight: 900; line-height: 1.35; letter-spacing: -0.4px; margin-bottom: 16px; }
+.cpkg-bonus-title span { background: linear-gradient(135deg, #FFD700, #FF6B35); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.cpkg-bonus-items { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+.cpkg-bonus-item { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 13px; padding: 14px 6px; text-align: center; font-size: 12.5px; font-weight: 800; color: #fff; line-height: 1.3; }
+.cpkg-bonus-item .ico { display: block; font-size: 26px; margin-bottom: 7px; }
+.cpkg-bonus-val { margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 7px; flex-wrap: wrap; background: rgba(255,215,0,0.12); border: 1px dashed rgba(255,215,0,0.5); border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); }
+.cpkg-bonus-val b { font-size: 19px; font-weight: 900; background: linear-gradient(135deg, #FFD700, #FF6B35); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.cpkg-cta { display: block; text-align: center; margin-top: 18px; padding: 16px; border-radius: 14px; background: linear-gradient(135deg, #0066FF, #00D4AA); color: #fff; font-size: 15px; font-weight: 800; text-decoration: none; box-shadow: 0 8px 28px rgba(0,102,255,0.3); }
+.cpkg-note { font-size: 11.5px; color: #6B7280; text-align: center; margin-top: 14px; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -3287,6 +3338,45 @@ body {
         무료수신거부 · 080-XXXX-XXXX
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ===== 컨퍼런스 패키지 (전단지 연동) ===== -->
+<section class="cpkg-section">
+  <div class="container animate-on-scroll">
+    <div class="cpkg-label">🎤 컨퍼런스 한정 이벤트</div>
+    <div class="cpkg-heading">덴딜 쇼핑몰 <span class="em">패키지</span> 혜택</div>
+    <div class="cpkg-sub">컨퍼런스 현장 신청 고객님께만 드리는 특별 할인과 추가 제공 혜택입니다.</div>
+
+    <div class="cpkg-cards">
+      <div class="cpkg-card">
+        <div class="cpkg-tier">스탠다드 패키지</div>
+        <div class="cpkg-amt">500<span>만원</span></div>
+        <div class="cpkg-div"></div>
+        <div class="cpkg-rate">할인 <b>5<span>%</span></b></div>
+      </div>
+      <div class="cpkg-card best">
+        <div class="cpkg-ribbon">BEST</div>
+        <div class="cpkg-tier">프리미엄 패키지</div>
+        <div class="cpkg-amt">1,000<span>만원</span></div>
+        <div class="cpkg-div"></div>
+        <div class="cpkg-rate">할인 <b>10<span>%</span></b></div>
+      </div>
+    </div>
+
+    <div class="cpkg-bonus">
+      <span class="cpkg-bonus-tag">SPECIAL</span>
+      <div class="cpkg-bonus-title">쇼핑몰 패키지 이용 시<br><span>200만원 상품 추가 제공</span></div>
+      <div class="cpkg-bonus-items">
+        <div class="cpkg-bonus-item"><span class="ico">🖥️</span>홈페이지<br>제작</div>
+        <div class="cpkg-bonus-item"><span class="ico">✍️</span>블로그<br>운영</div>
+        <div class="cpkg-bonus-item"><span class="ico">📰</span>뉴스 보도<br>홍보</div>
+      </div>
+      <div class="cpkg-bonus-val">총 제공 가치 <b>200만원 상당</b> 무료 제공</div>
+    </div>
+
+    <a href="혜택신청.html" class="cpkg-cta" target="_blank">컨퍼런스 패키지 신청하기 →</a>
+    <div class="cpkg-note">* 패키지 할인은 컨퍼런스 이벤트 기간 한정이며, 추가 제공 혜택은 쇼핑몰 패키지 이용 시 적용됩니다.</div>
   </div>
 </section>
 
