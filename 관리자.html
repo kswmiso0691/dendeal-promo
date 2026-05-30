@@ -216,6 +216,8 @@ tr.deleted td { opacity:0.4; text-decoration:line-through; }
 }
 .page-badge.main { background:#E8F0FE; color:#0066FF; }
 .page-badge.apply { background:#E6F9F3; color:#00A085; }
+.page-badge.cnc { background:#FFF4E6; color:#CC6600; }
+.page-badge.cnc_apply { background:#F3E8FF; color:#7C3AED; }
 .device-icon { font-size:14px; margin-right:4px; }
 .bar-track {
   display:inline-block; width:60px; height:6px;
@@ -258,7 +260,8 @@ tr.deleted td { opacity:0.4; text-decoration:line-through; }
   </div>
 
   <div class="tabs">
-    <button class="tab-btn active" data-tab="entries" onclick="switchTab('entries')">📋 신청 관리</button>
+    <button class="tab-btn active" data-tab="entries" onclick="switchTab('entries')">📋 혜택 신청</button>
+    <button class="tab-btn" data-tab="cnc" onclick="switchTab('cnc')">🏭 제조중개 문의</button>
     <button class="tab-btn" data-tab="visits" onclick="switchTab('visits')">📊 방문 통계</button>
   </div>
 
@@ -268,6 +271,14 @@ tr.deleted td { opacity:0.4; text-decoration:line-through; }
   <div class="view view-entries">
     <div class="stats" id="stats"></div>
     <div id="contentArea">
+      <div class="loading-box">불러오는 중...</div>
+    </div>
+  </div>
+
+  <!-- 제조중개 문의 뷰 -->
+  <div class="view view-cnc" style="display:none;">
+    <div class="stats" id="cncStats"></div>
+    <div id="cncContent">
       <div class="loading-box">불러오는 중...</div>
     </div>
   </div>
@@ -296,6 +307,8 @@ const ADMIN_PASSWORD = '123123';
 const PANTRY_API = 'https://getpantry.cloud/apiv1/pantry/' + PANTRY_ID + '/basket/' + PANTRY_BASKET;
 const VISITS_BASKET = 'visits';
 const VISITS_API = 'https://getpantry.cloud/apiv1/pantry/' + PANTRY_ID + '/basket/' + VISITS_BASKET;
+const CNC_BASKET = 'cnc_inquiries';
+const CNC_API = 'https://getpantry.cloud/apiv1/pantry/' + PANTRY_ID + '/basket/' + CNC_BASKET;
 
 const statusLabels = {
   pending:   '대기',
@@ -312,7 +325,9 @@ const statusColors = {
 
 let currentEntries = [];
 let currentVisits = [];
+let currentCnc = [];
 let visitsLoaded = false;
+let cncLoaded = false;
 let currentTab = 'entries';
 let expandedVisit = null;
 
@@ -354,6 +369,11 @@ function renderTopActions() {
       '<button class="btn btn-refresh" onclick="loadEntries()">🔄 새로고침</button>' +
       '<button class="btn btn-export" onclick="exportCSV()">📥 CSV 다운로드</button>' +
       '<button class="btn btn-logout" onclick="logout()">로그아웃</button>';
+  } else if (currentTab === 'cnc') {
+    el.innerHTML =
+      '<button class="btn btn-refresh" onclick="loadCnc()">🔄 새로고침</button>' +
+      '<button class="btn btn-export" onclick="exportCncCSV()">📥 CSV 다운로드</button>' +
+      '<button class="btn btn-logout" onclick="logout()">로그아웃</button>';
   } else {
     el.innerHTML =
       '<button class="btn btn-refresh" onclick="loadVisits()">🔄 새로고침</button>' +
@@ -369,10 +389,12 @@ function switchTab(name) {
     b.classList.toggle('active', b.dataset.tab === name);
   });
   document.querySelector('.view-entries').style.display = name === 'entries' ? 'block' : 'none';
+  document.querySelector('.view-cnc').style.display = name === 'cnc' ? 'block' : 'none';
   document.querySelector('.view-visits').style.display = name === 'visits' ? 'block' : 'none';
   document.getElementById('noticeArea').innerHTML = '';
   renderTopActions();
   if (name === 'visits' && !visitsLoaded) loadVisits();
+  if (name === 'cnc' && !cncLoaded) loadCnc();
 }
 
 // ===== 토스트 =====
@@ -588,6 +610,196 @@ function formatDate(iso) {
 }
 
 // ========================================
+// ===== 제조중개 문의 =====
+// ========================================
+const monthlyLabels = {
+  '0-50':    '월 50건 이하',
+  '50-100':  '월 50~100건',
+  '100-300': '월 100~300건',
+  '300-500': '월 300~500건',
+  '500+':    '월 500건 이상',
+};
+
+async function loadCnc() {
+  cncLoaded = true;
+  const content = document.getElementById('cncContent');
+  content.innerHTML = '<div class="loading-box">불러오는 중...</div>';
+  try {
+    const res = await fetch(CNC_API);
+    if (res.status === 400 || res.status === 404) {
+      currentCnc = [];
+    } else if (res.ok) {
+      const data = await res.json();
+      currentCnc = Array.isArray(data.entries) ? data.entries : [];
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
+    renderCncStats();
+    renderCncTable();
+  } catch (err) {
+    showNotice('error', '제조중개 문의를 불러오지 못했습니다: ' + err.message);
+    content.innerHTML = '';
+  }
+}
+
+function renderCncStats() {
+  const counts = { pending: 0, contacted: 0, approved: 0, rejected: 0, today: 0 };
+  const today = new Date().toISOString().slice(0, 10);
+  currentCnc.forEach(e => {
+    const s = e.status || 'pending';
+    if (counts[s] !== undefined) counts[s]++;
+    if ((e.createdAt || '').slice(0, 10) === today) counts.today++;
+  });
+
+  document.getElementById('cncStats').innerHTML =
+    cell(currentCnc.length, '전체 문의', '#0066FF') +
+    cell(counts.today,     '오늘 접수', '#00D4AA') +
+    cell(counts.pending,   '대기',      '#FFB800') +
+    cell(counts.contacted, '연락완료',  '#0066FF') +
+    cell(counts.approved,  '승인',      '#22863A') +
+    cell(counts.rejected,  '거절',      '#CC3333');
+}
+
+function renderCncTable() {
+  const content = document.getElementById('cncContent');
+
+  if (currentCnc.length === 0) {
+    content.innerHTML = '<div class="table-wrap"><div class="empty"><div class="empty-icon">📭</div>아직 접수된 제조중개 문의가 없습니다.</div></div>';
+    return;
+  }
+
+  const sorted = [...currentCnc].sort((a, b) =>
+    (b.createdAt || '').localeCompare(a.createdAt || '')
+  );
+
+  let html = '<div class="table-wrap"><table><thead><tr>' +
+    '<th>#</th><th>신청일시</th><th>기공소명</th><th>대표(소장)</th>' +
+    '<th>연락처</th><th>지역</th><th>월 건수</th><th>문의내용</th>' +
+    '<th>상태</th><th>메모</th><th></th>' +
+    '</tr></thead><tbody>';
+
+  sorted.forEach((e, idx) => {
+    const id = escapeHtml(e.id || '');
+    const status = e.status || 'pending';
+    const color = statusColors[status] || '#6B7280';
+    const phone = escapeHtml(e.phone || '');
+    const phoneTel = (e.phone || '').replace(/[^0-9+]/g, '');
+    const created = e.createdAt ? formatDate(e.createdAt) : '';
+    const monthly = e.monthly ? (monthlyLabels[e.monthly] || e.monthly) : '-';
+
+    let statusOpts = '';
+    Object.entries(statusLabels).forEach(([k, label]) => {
+      statusOpts += `<option value="${k}"${status === k ? ' selected' : ''}>${label}</option>`;
+    });
+
+    const memoText = e.memo || '';
+    const memoShort = memoText.length > 30 ? memoText.slice(0, 30) + '…' : memoText;
+
+    html += `<tr>
+      <td class="cell-no">${currentCnc.length - idx}</td>
+      <td class="cell-date">${escapeHtml(created)}</td>
+      <td class="cell-clinic">${escapeHtml(e.lab || '')}</td>
+      <td class="cell-director">${escapeHtml(e.director || '')}</td>
+      <td class="cell-phone"><a href="tel:${escapeHtml(phoneTel)}">${phone}</a></td>
+      <td>${escapeHtml(e.region || '-')}</td>
+      <td style="font-size:12px;color:#374151;">${escapeHtml(monthly)}</td>
+      <td style="max-width:180px;font-size:12px;color:#6B7280;" title="${escapeHtml(memoText)}">${escapeHtml(memoShort) || '-'}</td>
+      <td>
+        <select class="status-select" style="color:${color};border-color:${color};"
+                onchange="updateCncStatus('${id}', this.value)">
+          ${statusOpts}
+        </select>
+      </td>
+      <td style="min-width:200px;">
+        <input type="text" class="memo-input" value="${escapeHtml(e.adminMemo || '')}"
+               placeholder="관리자 메모..."
+               onblur="updateCncMemo('${id}', this.value)"
+               onkeydown="if(event.key==='Enter'){this.blur();}">
+      </td>
+      <td>
+        <button class="action-btn action-del" onclick="deleteCnc('${id}')">삭제</button>
+      </td>
+    </tr>`;
+  });
+
+  html += '</tbody></table></div>';
+  content.innerHTML = html;
+}
+
+async function updateCncStatus(id, newStatus) {
+  const idx = currentCnc.findIndex(e => e.id === id);
+  if (idx < 0) return;
+  currentCnc[idx].status = newStatus;
+  await saveCnc('상태 변경됨');
+  renderCncStats();
+  renderCncTable();
+}
+
+async function updateCncMemo(id, newMemo) {
+  const idx = currentCnc.findIndex(e => e.id === id);
+  if (idx < 0) return;
+  if ((currentCnc[idx].adminMemo || '') === newMemo) return;
+  currentCnc[idx].adminMemo = newMemo;
+  await saveCnc('메모 저장됨');
+}
+
+async function deleteCnc(id) {
+  if (!confirm('정말 삭제하시겠습니까?')) return;
+  currentCnc = currentCnc.filter(e => e.id !== id);
+  await saveCnc('삭제됨');
+  renderCncStats();
+  renderCncTable();
+}
+
+async function saveCnc(successMsg) {
+  try {
+    const res = await fetch(CNC_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ entries: currentCnc })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    toast(successMsg || '저장됨');
+  } catch (err) {
+    toast('저장 실패: ' + err.message, 'error');
+  }
+}
+
+function exportCncCSV() {
+  if (currentCnc.length === 0) {
+    toast('내보낼 데이터가 없습니다', 'error');
+    return;
+  }
+  const rows = [['신청일시','기공소명','대표(소장)','연락처','지역','월 건수','문의내용','상태','관리자 메모']];
+  const sorted = [...currentCnc].sort((a, b) =>
+    (b.createdAt || '').localeCompare(a.createdAt || '')
+  );
+  sorted.forEach(e => {
+    rows.push([
+      e.createdAt ? formatDate(e.createdAt) : '',
+      e.lab || '',
+      e.director || '',
+      e.phone || '',
+      e.region || '',
+      e.monthly ? (monthlyLabels[e.monthly] || e.monthly) : '',
+      e.memo || '',
+      statusLabels[e.status] || e.status || '',
+      e.adminMemo || '',
+    ]);
+  });
+  const csv = '﻿' + rows.map(r =>
+    r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')
+  ).join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'dendeal_cnc_inquiries_' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ========================================
 // ===== 방문 통계 =====
 // ========================================
 async function loadVisits() {
@@ -621,26 +833,27 @@ async function loadVisits() {
 function renderVisitStats() {
   const today = new Date().toISOString().slice(0, 10);
   const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
-  let mainCnt = 0, applyCnt = 0, todayCnt = 0, weekCnt = 0;
+  let mainCnt = 0, applyCnt = 0, cncCnt = 0, cncApplyCnt = 0, todayCnt = 0, weekCnt = 0;
   const uniqueVisitors = new Set();
   const uniqueToday = new Set();
   currentVisits.forEach(v => {
     const day = (v.ts || '').slice(0, 10);
     if (v.page === 'main') mainCnt++;
     if (v.page === 'apply') applyCnt++;
+    if (v.page === 'cnc') cncCnt++;
+    if (v.page === 'cnc_apply') cncApplyCnt++;
     if (day === today) { todayCnt++; if (v.visitorId) uniqueToday.add(v.visitorId); }
     if (day >= weekAgo) weekCnt++;
     if (v.visitorId) uniqueVisitors.add(v.visitorId);
   });
-  const conv = mainCnt > 0 ? Math.round((applyCnt / mainCnt) * 100) : 0;
 
   document.getElementById('visitStats').innerHTML =
     cell(currentVisits.length, '전체 방문', '#0066FF') +
-    cell(mainCnt, '메인 페이지', '#0066FF') +
-    cell(applyCnt, '혜택신청 페이지', '#00D4AA') +
-    cell(todayCnt, '오늘 방문', '#FF6B35') +
-    cell(uniqueVisitors.size, '고유 방문자', '#7C3AED') +
-    cell(conv + '%', '전환율', '#22863A');
+    cell(mainCnt, '메인', '#0066FF') +
+    cell(applyCnt, '혜택신청', '#00D4AA') +
+    cell(cncCnt, '제조중개', '#CC6600') +
+    cell(cncApplyCnt, '제조중개 신청', '#7C3AED') +
+    cell(todayCnt, '오늘 방문', '#FF6B35');
 }
 
 function renderVisitsTable() {
@@ -660,9 +873,11 @@ function renderVisitsTable() {
 
   sorted.forEach((v, idx) => {
     const sid = escapeHtml(v.sessionId || '');
-    const pageBadge = v.page === 'apply'
-      ? '<span class="page-badge apply">혜택신청</span>'
-      : '<span class="page-badge main">메인</span>';
+    let pageBadge;
+    if (v.page === 'apply')          pageBadge = '<span class="page-badge apply">혜택신청</span>';
+    else if (v.page === 'cnc')       pageBadge = '<span class="page-badge cnc">제조중개</span>';
+    else if (v.page === 'cnc_apply') pageBadge = '<span class="page-badge cnc_apply">제조중개 신청</span>';
+    else                             pageBadge = '<span class="page-badge main">메인</span>';
     const loc = [v.city, v.country].filter(Boolean).join(', ') || '-';
     const deviceIcon = v.device === 'mobile' ? '📱' : v.device === 'tablet' ? '📱' : '💻';
     const referrer = referrerLabel(v.referrer);
@@ -752,10 +967,16 @@ function exportVisitsCSV() {
   const sorted = [...currentVisits].sort((a, b) =>
     (b.ts || '').localeCompare(a.ts || '')
   );
+  const pageLabel = function(p) {
+    if (p === 'apply')     return '혜택신청';
+    if (p === 'cnc')       return '제조중개';
+    if (p === 'cnc_apply') return '제조중개 신청';
+    return '메인';
+  };
   sorted.forEach(v => {
     rows.push([
       v.ts ? formatDate(v.ts) : '',
-      v.page === 'apply' ? '혜택신청' : '메인',
+      pageLabel(v.page),
       v.visitorId || '',
       v.ip || '',
       v.city || '',
