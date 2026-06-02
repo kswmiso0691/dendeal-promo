@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#1c3a8f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>덴딜 영업용 · 쇼핑몰 패키지 안내 &amp; 계약</title>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSans.css">
+
+<style>
+:root{
+  --navy:#1c3a8f; --navy-deep:#122a6e; --navy-soft:#eaf1fc;
+  --pink:#ff4f8b; --pink-deep:#e63a76; --pink-soft:#ffe2ec; --pink-lt:#ff86b4;
+  --text:#1a1f33; --text-soft:#4b5365; --muted:#8a92a6;
+  --line:#e3e8f1; --bg:#f4f7fc; --card:#fff;
+  --good:var(--pink);
+  --font-body:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Malgun Gothic",sans-serif;
+  --font-display:'GmarketSans','Pretendard Variable',Pretendard,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:var(--font-body); color:var(--text);
+  background:var(--bg); overflow:hidden;
+  -webkit-user-select:none; user-select:none;
+}
+.app{height:100vh; height:100dvh; display:flex; flex-direction:column;}
+
+/* ===== 상단 바 ===== */
+.topbar{
+  flex:0 0 auto; display:flex; align-items:center; gap:14px;
+  padding:14px 22px; background:var(--navy); color:#fff;
+  box-shadow:0 3px 14px rgba(18,42,110,.25); z-index:20;
+}
+.brand{font-family:var(--font-display); font-size:22px; letter-spacing:1px;}
+.brand small{display:block; font-size:11px; opacity:.8; letter-spacing:2px; font-family:var(--font-body);}
+.steps{display:flex; gap:8px; margin-left:auto; flex-wrap:wrap;}
+.step-dot{
+  display:flex; align-items:center; gap:7px; padding:7px 14px;
+  border-radius:999px; background:rgba(255,255,255,.13); font-size:13px;
+  font-weight:600; transition:.25s; cursor:pointer; white-space:nowrap;
+}
+.step-dot b{
+  width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.25);
+  display:flex;align-items:center;justify-content:center;font-size:11px;
+}
+.step-dot.active{background:var(--pink);}
+.step-dot.active b{background:#fff;color:var(--pink);}
+.step-dot.done b{background:#fff;color:var(--navy);}
+
+/* ===== 본문 슬라이드 ===== */
+.stage{flex:1 1 auto; position:relative; overflow:hidden;}
+.slide{
+  position:absolute; inset:0; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  padding:28px 26px 110px; opacity:0; visibility:hidden;
+  transform:translateX(24px); transition:opacity .3s, transform .3s;
+}
+.slide.active{opacity:1; visibility:visible; transform:none;}
+.slide-inner{max-width:980px; margin:0 auto;}
+
+.eyebrow{color:var(--pink-deep); font-weight:800; font-size:15px; letter-spacing:1px; margin:0 0 6px;}
+.s-title{font-family:var(--font-display); font-size:30px; line-height:1.25; margin:0 0 6px; color:var(--navy-deep);}
+.s-title em{color:var(--pink); font-style:normal;}
+.s-sub{color:var(--text-soft); font-size:16px; margin:0 0 22px;}
+
+/* ===== 패키지 카드 ===== */
+.pkg-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+.pkg{
+  background:var(--card); border:2px solid var(--line); border-radius:20px;
+  padding:26px 22px; text-align:center; position:relative; cursor:pointer;
+  transition:.2s; display:flex; flex-direction:column;
+}
+.pkg:active{transform:scale(.985);}
+.pkg.sel{border-color:var(--pink); box-shadow:0 12px 30px rgba(255,79,139,.22);}
+.pkg.best{border-color:var(--navy);}
+.pkg.best.sel{border-color:var(--pink);}
+.pkg-tag{
+  position:absolute; top:-13px; left:50%; transform:translateX(-50%);
+  background:var(--navy); color:#fff; font-size:12px; font-weight:800;
+  padding:5px 14px; border-radius:999px; letter-spacing:1px;
+}
+.pkg.best .pkg-tag{background:var(--pink);}
+.pkg-name{font-family:var(--font-display); font-size:21px; color:var(--navy-deep); margin:6px 0 4px;}
+.pkg-price{font-family:var(--font-display); font-size:36px; color:var(--pink); line-height:1; margin:8px 0;}
+.pkg-price span{font-size:17px; color:var(--text-soft);}
+.pkg-qty{font-size:14px; color:var(--text-soft); margin-bottom:14px;}
+.pkg-disc{font-family:var(--font-display); font-size:18px; color:var(--navy); background:var(--navy-soft); border-radius:999px; padding:6px 0; margin-bottom:4px;}
+.pkg.best .pkg-disc{color:var(--pink-deep); background:var(--pink-soft);}
+.pkg ul{list-style:none; margin:0 0 16px; padding:14px 0 0; border-top:1px dashed var(--line); text-align:left; flex:1;}
+.pkg ul li{font-size:14.5px; padding:6px 0 6px 22px; position:relative; color:var(--text);}
+.pkg ul li::before{content:"✓"; position:absolute; left:0; color:var(--good); font-weight:900;}
+.pkg ul li.hi{color:var(--pink-deep); font-weight:700;}
+.pkg ul li.hi::before{content:"＋"; color:var(--pink);}
+.pkg-pick{
+  margin-top:auto; padding:12px; border-radius:12px; font-weight:800; font-size:15px;
+  background:var(--navy-soft); color:var(--navy); transition:.2s;
+}
+.pkg.sel .pkg-pick{background:var(--pink); color:#fff;}
+.unit-note{margin:14px 0 0; font-size:13px; color:var(--muted); text-align:center;}
+.scope-note{margin:18px 0 0; padding:14px 18px; text-align:center; font-size:15px; color:var(--navy-deep);
+  background:var(--navy-soft); border:1.5px solid #cdddf6; border-radius:14px;}
+.scope-note b{color:var(--pink-deep);}
+
+/* ===== 핵심 기능 소개 ===== */
+.svc-intro{margin:24px 0 0; padding:26px 24px; border-radius:20px; text-align:center;
+  background:linear-gradient(135deg,#122a6e,#1c3a8f); color:#fff;}
+.svc-flag{display:inline-block; background:rgba(255,255,255,.16); color:#fff; font-size:13px; font-weight:800;
+  letter-spacing:1px; padding:6px 16px; border-radius:999px; margin-bottom:12px;}
+.svc-title{font-family:var(--font-display); font-size:23px; margin:0 0 18px;}
+.svc-title em{color:var(--pink-lt); font-style:normal;}
+.feat-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+.feat{background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.16); border-radius:16px; padding:18px 16px; text-align:left;}
+.feat .ico{font-size:30px; display:block; margin-bottom:8px;}
+.feat strong{display:block; font-size:16.5px; margin-bottom:4px;}
+.feat small{opacity:.85; font-size:13px; line-height:1.5; display:block;}
+.svc-stat{margin-top:16px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:16px; padding:20px 18px; text-align:left;}
+.svc-stat-flag{display:inline-block; background:var(--pink); color:#fff; font-size:13px; font-weight:800; padding:5px 14px; border-radius:999px; margin-bottom:10px;}
+.svc-stat-desc{margin:0 0 14px; font-size:14.5px; line-height:1.6; opacity:.95;}
+.svc-stat-points{display:flex; flex-wrap:wrap; gap:8px;}
+.svc-stat-points span{background:rgba(255,255,255,.14); border-radius:999px; padding:8px 14px; font-size:13px; font-weight:600;}
+@media (max-width:760px){ .feat-grid{grid-template-columns:1fr;} }
+
+/* ===== 이벤트/보너스 ===== */
+.bonus{
+  margin-top:8px; background:linear-gradient(135deg,#122a6e,#1c3a8f);
+  border-radius:22px; padding:26px 24px; color:#fff; position:relative; overflow:hidden;
+}
+.only-flag{display:inline-block; background:var(--pink); color:#fff; font-size:12px; font-weight:800; padding:5px 12px; border-radius:999px; margin-bottom:10px; letter-spacing:.5px;}
+.bonus h3{font-family:var(--font-display); font-size:21px; margin:0 0 4px;}
+.bonus h3 em{color:var(--pink-lt); font-style:normal;}
+.bonus p.bsub{opacity:.85; font-size:14px; margin:0 0 18px;}
+.bonus-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+.bonus-item{background:rgba(255,255,255,.1); border-radius:14px; padding:18px 12px; text-align:center;}
+.bonus-item .ico{font-size:32px;}
+.bonus-item strong{display:block; margin:8px 0 3px; font-size:15px;}
+.bonus-item small{opacity:.8; font-size:12px; line-height:1.4; display:block;}
+.bonus-foot{
+  margin-top:18px; display:flex; align-items:center; justify-content:center; gap:12px;
+  background:rgba(255,255,255,.13); border-radius:14px; padding:14px; font-size:15px;
+}
+.bonus-foot b{font-family:var(--font-display); font-size:24px; color:var(--pink-lt);}
+
+/* ===== 혜택/비교 ===== */
+.cmp-box{background:var(--card); border:1.5px solid var(--line); border-radius:18px; overflow:hidden; margin-bottom:18px;}
+.cmp-row{display:grid; grid-template-columns:1.2fr 1fr 1fr;}
+.cmp-row + .cmp-row{border-top:1px solid var(--line);}
+.cmp-cell{padding:14px 16px; font-size:15px; display:flex; align-items:center;}
+.cmp-head{background:var(--navy-soft); font-weight:800;}
+.cmp-head .bad{color:var(--muted);} .cmp-head .good{color:var(--pink-deep);}
+.cmp-cell.k{font-weight:700; color:var(--text-soft); font-size:14px;}
+.cmp-cell.bad{color:var(--muted); justify-content:center;}
+.cmp-cell.good{color:var(--navy-deep); font-weight:800; justify-content:center; background:rgba(255,79,139,.05);}
+.save{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:6px;}
+.save-card{background:var(--card); border:2px solid var(--line); border-radius:18px; padding:22px; position:relative;}
+.save-card.best{border-color:var(--pink);}
+.save-flag{position:absolute; top:-12px; left:20px; background:var(--pink); color:#fff; font-size:12px; font-weight:800; padding:4px 12px; border-radius:999px;}
+.save-card.best .save-flag{background:var(--navy);}
+.save-card h4{font-family:var(--font-display); margin:6px 0 14px; color:var(--navy-deep); font-size:18px;}
+.save-line{display:flex; justify-content:space-between; align-items:baseline; padding:9px 0; border-bottom:1px dashed var(--line); font-size:15px;}
+.save-line .lbl{color:var(--text-soft);}
+.save-line .good{color:var(--navy); font-weight:800;}
+.save-result{margin-top:14px; background:var(--pink-soft); border-radius:12px; padding:14px; text-align:center;}
+.save-result span{font-size:13px; color:var(--pink-deep); font-weight:700;}
+.save-result strong{display:block; font-family:var(--font-display); font-size:26px; color:var(--pink-deep);}
+
+/* ===== 계약서 폼 ===== */
+.contract{background:var(--card); border:1.5px solid var(--line); border-radius:18px; padding:26px;}
+.contract h3{font-family:var(--font-display); color:var(--navy-deep); margin:0 0 16px; font-size:19px; border-bottom:2px solid var(--navy); padding-bottom:10px;}
+.field-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px 18px;}
+.field{display:flex; flex-direction:column; gap:6px;}
+.field.full{grid-column:1 / -1;}
+.field label{font-size:14px; font-weight:700; color:var(--text-soft);}
+.field label .req{color:var(--pink);}
+.field input, .field select, .field textarea{
+  font-family:var(--font-body); font-size:16px; padding:13px 14px;
+  border:1.5px solid var(--line); border-radius:11px; background:#fbfcfe;
+  color:var(--text); -webkit-user-select:text; user-select:text;
+}
+.field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--navy); background:#fff;}
+.field textarea{resize:none; min-height:64px;}
+.pay-note{margin:8px 0 0; padding:11px 14px; font-size:14px; color:var(--navy-deep); font-weight:600;
+  background:var(--navy-soft); border:1.5px solid #cdddf6; border-radius:10px;}
+.pay-note b{color:var(--pink-deep);}
+.bank-info{display:flex; align-items:center; flex-wrap:wrap; gap:10px 14px; background:var(--navy-soft); border:1.5px solid #cdddf6; border-radius:12px; padding:14px 16px;}
+.bank-line{display:flex; align-items:baseline; gap:8px;}
+.bank-bank{background:var(--navy); color:#fff; font-size:13px; font-weight:800; padding:4px 10px; border-radius:8px;}
+.bank-acc{font-family:var(--font-display); font-size:22px; color:var(--navy-deep); letter-spacing:.5px;}
+.bank-holder{font-size:14px; color:var(--text-soft); font-weight:600;}
+.bank-copy{margin-left:auto; background:var(--navy); color:#fff; border:none; padding:9px 16px; border-radius:9px; font-weight:700; font-size:14px; cursor:pointer;}
+.bank-need{margin:10px 0 0; font-size:13px; color:var(--text-soft);}
+.bank-need b{color:var(--pink-deep);}
+
+.pkg-choose{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:4px;}
+.choice{
+  border:1.5px solid var(--line); border-radius:12px; padding:14px; text-align:center;
+  cursor:pointer; background:#fbfcfe; transition:.15s;
+}
+.choice.sel{border-color:var(--pink); background:var(--pink-soft);}
+.choice b{display:block; color:var(--navy-deep); font-size:15px;}
+.choice span{font-size:13px; color:var(--text-soft);}
+
+.amount-box{
+  margin-top:18px; background:var(--navy-soft); border-radius:14px; padding:18px 20px;
+}
+.amount-row{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+.amount-row + .amount-row{margin-top:10px; padding-top:10px; border-top:1px dashed #cdddf6;}
+.amount-box .a-lbl{font-size:15px; color:var(--navy-deep); font-weight:700;}
+.amount-box .a-val{font-family:var(--font-display); font-size:30px; color:var(--navy-deep);}
+.amount-box .a-val small{font-size:15px; color:var(--text-soft);}
+.amount-box .a-final{color:var(--pink-deep);}
+
+/* ===== 약관/서명 ===== */
+.terms{
+  margin-top:6px; max-height:200px; overflow-y:auto; background:#fbfcfe;
+  border:1.5px solid var(--line); border-radius:12px; padding:16px 18px;
+  font-size:13px; line-height:1.7; color:var(--text-soft);
+  -webkit-user-select:text; user-select:text;
+}
+.terms h5{margin:0 0 8px; color:var(--navy-deep); font-size:14px;}
+.agree{display:flex; align-items:center; gap:10px; margin-top:14px; font-size:15px; font-weight:700;}
+.agree input{width:22px; height:22px; accent-color:var(--pink);}
+
+.sign-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:8px;}
+.sign-box{border:1.5px solid var(--line); border-radius:16px; padding:16px; background:var(--card);}
+.sign-box .s-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;}
+.sign-box .s-head b{font-size:15px; color:var(--navy-deep);}
+.sign-box .s-head .who{font-size:13px; color:var(--muted);}
+.sign-clear{font-size:13px; color:var(--pink-deep); background:var(--pink-soft); border:none; padding:7px 14px; border-radius:8px; font-weight:700;}
+.sign-name{width:100%; font-family:var(--font-body); font-size:15px; padding:11px 13px; margin-bottom:10px;
+  border:1.5px solid var(--line); border-radius:10px; background:#fbfcfe; color:var(--text);
+  -webkit-user-select:text; user-select:text;}
+.sign-name:focus{outline:none; border-color:var(--navy); background:#fff;}
+.pad-wrap{position:relative; background:#fff; border:2px dashed var(--line); border-radius:12px; overflow:hidden;}
+.pad-wrap.signed{border-style:solid; border-color:var(--good);}
+.pad-hint{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#c5cdda; font-size:15px; pointer-events:none;}
+canvas.pad{display:block; width:100%; height:170px; touch-action:none;}
+
+.party-info{margin-top:18px; background:#fbfcfe; border:1.5px solid var(--line); border-radius:12px; padding:16px 18px; font-size:14px; line-height:1.8; color:var(--text-soft);}
+.party-info b{color:var(--navy-deep);}
+
+/* ===== 완료 화면 ===== */
+.done-card{text-align:center; max-width:640px; margin:18px auto 0;}
+.done-ico{width:96px; height:96px; border-radius:50%; background:var(--navy); color:#fff; font-size:52px; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; box-shadow:0 14px 34px rgba(28,58,143,.3);}
+.done-card h2{font-family:var(--font-display); font-size:28px; color:var(--navy-deep); margin:0 0 8px;}
+.done-card p{color:var(--text-soft); font-size:16px;}
+.receipt{margin-top:24px; text-align:left; background:var(--card); border:1.5px solid var(--line); border-radius:16px; padding:24px; box-shadow:0 8px 24px rgba(18,42,110,.06);}
+.receipt h4{font-family:var(--font-display); color:var(--navy-deep); border-bottom:2px solid var(--navy); padding-bottom:10px; margin:0 0 14px; display:flex; justify-content:space-between; align-items:baseline; font-size:17px;}
+.receipt h4 small{font-size:13px; color:var(--muted); font-weight:400;}
+.r-row{display:flex; justify-content:space-between; padding:9px 0; border-bottom:1px dotted var(--line); font-size:15px;}
+.r-row .rk{color:var(--text-soft);}
+.r-row .rv{font-weight:700; color:var(--text); text-align:right;}
+.r-amt{margin-top:12px; background:var(--pink-soft); border-radius:12px; padding:14px; display:flex; justify-content:space-between; align-items:center;}
+.r-amt span{font-weight:700; color:var(--pink-deep);}
+.r-amt strong{font-family:var(--font-display); font-size:24px; color:var(--pink-deep);}
+.r-signs{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px;}
+.r-sign{border:1px solid var(--line); border-radius:12px; padding:10px; text-align:center;}
+.r-sign small{display:block; color:var(--muted); margin-bottom:6px; font-size:12px;}
+.r-sign img{max-width:100%; height:70px; object-fit:contain;}
+
+/* ===== 하단 네비 바 ===== */
+.navbar{
+  position:absolute; left:0; right:0; bottom:0; z-index:15;
+  display:flex; gap:12px; padding:16px 26px;
+  background:linear-gradient(to top,#fff 70%,rgba(255,255,255,0));
+}
+.btn{
+  flex:1; padding:17px; border-radius:14px; font-size:17px; font-weight:800;
+  font-family:var(--font-body); border:none; cursor:pointer; transition:.15s;
+}
+.btn:active{transform:translateY(1px);}
+.btn-ghost{flex:0 0 130px; background:#eef1f7; color:var(--text-soft);}
+.btn-main{background:var(--navy); color:#fff; box-shadow:0 8px 20px rgba(28,58,143,.3);}
+.btn-pink{background:var(--pink); color:#fff; box-shadow:0 8px 20px rgba(255,79,139,.32);}
+.btn:disabled{opacity:.4; box-shadow:none;}
+
+@media (max-width:760px){
+  .pkg-grid,.bonus-grid,.pkg-choose{grid-template-columns:1fr;}
+  .save,.field-grid,.sign-grid,.r-signs{grid-template-columns:1fr;}
+  .cmp-cell{font-size:13px; padding:12px 8px;}
+  .s-title{font-size:24px;} .steps .lbl{display:none;}
+  .step-dot{padding:8px;}
+}
+
+@media print{
+  body{overflow:visible; background:#fff;}
+  .topbar,.navbar,.slide:not(.active){display:none!important;}
+  .app,.stage,.slide{position:static; height:auto; overflow:visible;}
+  .slide{opacity:1!important; visibility:visible!important; transform:none!important; padding:0;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 상단 바 -->
+  <header class="topbar">
+    <div class="brand">DENDEAL<small>치과 구매 시스템</small></div>
+    <nav class="steps" id="steps">
+      <div class="step-dot active" data-go="0"><b>1</b><span class="lbl">패키지</span></div>
+      <div class="step-dot" data-go="1"><b>2</b><span class="lbl">이벤트</span></div>
+      <div class="step-dot" data-go="2"><b>3</b><span class="lbl">혜택비교</span></div>
+      <div class="step-dot" data-go="3"><b>4</b><span class="lbl">계약서</span></div>
+      <div class="step-dot" data-go="4"><b>5</b><span class="lbl">서명</span></div>
+    </nav>
+  </header>
+
+  <!-- 슬라이드 영역 -->
+  <main class="stage" id="stage">
+
+    <!-- 1) 패키지 안내 -->
+    <section class="slide active" data-step="0">
+      <div class="slide-inner">
+        <p class="eyebrow">치과위생사 전용 구매 시스템 · 컨퍼런스 한정</p>
+        <h1 class="s-title">덴딜 쇼핑몰 <em>패키지</em></h1>
+        <p class="s-sub">우리 치과 제품만 모아 30초 주문 · 재구매·통계·인수인계까지 · 행사 한정 특별가</p>
+
+        <div class="pkg-grid">
+          <div class="pkg" data-pkg="standard">
+            <div class="pkg-name">스탠다드 패키지</div>
+            <div class="pkg-price">500<span>만원</span></div>
+            <div class="pkg-qty">쇼핑몰 이용 약정</div>
+            <div class="pkg-disc">할인 5%</div>
+            <ul>
+              <li>쇼핑몰 패키지 이용</li>
+              <li class="hi">할인 5% · <b>25만원 상당</b></li>
+              <li>즐겨찾기 세팅 무료 지원</li>
+            </ul>
+            <div class="pkg-pick">선택</div>
+          </div>
+
+          <div class="pkg best" data-pkg="premium">
+            <div class="pkg-tag">BEST</div>
+            <div class="pkg-name">프리미엄 패키지</div>
+            <div class="pkg-price">1,000<span>만원</span></div>
+            <div class="pkg-qty">쇼핑몰 이용 약정</div>
+            <div class="pkg-disc">할인 10%</div>
+            <ul>
+              <li>쇼핑몰 패키지 이용</li>
+              <li class="hi">할인 10% · <b>100만원 상당</b></li>
+              <li class="hi">마케팅 풀패키지 <b>200만원</b> 무료</li>
+              <li>전담 고객지원</li>
+            </ul>
+            <div class="pkg-pick">선택</div>
+          </div>
+        </div>
+
+        <div class="scope-note">
+          <b>가입비 0원 · 월 이용료 0원</b> · 가입 즉시 바로 사용 가능
+        </div>
+        <p class="unit-note">💳 카드결제 · 카드할부 가능 　|　 ※ 행사 종료 후 일반가로 환원됩니다</p>
+
+        <div class="svc-intro">
+          <div class="svc-flag">덴딜 구매 시스템</div>
+          <h3 class="svc-title">복잡한 주문, <em>덴딜이 해결합니다</em></h3>
+          <div class="feat-grid">
+            <div class="feat"><span class="ico">⭐</span><strong>즐겨찾기 전용 리스트</strong><small>우리 치과 제품만 등록 → 검색 없이 터치 한 번에 주문</small></div>
+            <div class="feat"><span class="ico">🔄</span><strong>원터치 재구매</strong><small>지난 주문 그대로 30초 재주문 · 입력 시간 제로</small></div>
+            <div class="feat"><span class="ico">📊</span><strong>구매 통계 자동화</strong><small>월별·카테고리별 자동 정리 · 엑셀 작업 불필요</small></div>
+            <div class="feat"><span class="ico">👥</span><strong>완벽한 인수인계</strong><small>모든 기록이 시스템에 · 새 담당자도 첫날부터 업무</small></div>
+          </div>
+
+          <div class="svc-stat">
+            <div class="svc-stat-flag">자동 통계 · 기록 관리</div>
+            <p class="svc-stat-desc">주문부터 비용 현황까지 한 번에 — 구매 내역이 자동 집계되어 월별 수량·금액 통계를 손쉽게 확인하고, 담당자 교체 시에도 기록이 그대로 남습니다.</p>
+            <div class="svc-stat-points">
+              <span>터치 한 번 주문</span>
+              <span>월별 비용 자동 통계</span>
+              <span>퇴사해도 기록 보존</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2) 이벤트/보너스 -->
+    <section class="slide" data-step="1">
+      <div class="slide-inner">
+        <p class="eyebrow">🎁 FREE BONUS · 컨퍼런스 한정</p>
+        <h1 class="s-title">패키지 신청 시 <em>마케팅 풀패키지</em> 무료 증정</h1>
+        <p class="s-sub"><b style="color:var(--pink-deep)">행사 한정 혜택은 쇼핑몰 패키지를 이용하는 고객에게만 제공됩니다.</b></p>
+
+        <div class="bonus">
+          <span class="only-flag">패키지 이용 고객 한정</span>
+          <h3>마케팅 <em>풀패키지</em> 무료 증정</h3>
+          <p class="bsub">우리 치과 홍보를 한 번에 — 패키지 이용 고객에게 별도 비용 없이 제공</p>
+          <div class="bonus-grid">
+            <div class="bonus-item"><div class="ico">🖥️</div><strong>홈페이지 제작</strong><small>전문 디자인 · 모바일 반응형</small></div>
+            <div class="bonus-item"><div class="ico">📰</div><strong>뉴스 보도 홍보</strong><small>공식 매체 노출 지원</small></div>
+            <div class="bonus-item"><div class="ico">✍️</div><strong>블로그 운영</strong><small>마케팅 콘텐츠 제공</small></div>
+          </div>
+          <div class="bonus-foot">총 제공 가치 <b>200만원</b> 상당 무료 제공</div>
+        </div>
+
+        <div class="scope-note" style="margin-top:18px;">
+          가입비 · 월 이용료 <b>0원</b> · 가입 즉시 사용 · 즐겨찾기 세팅 무료 지원
+        </div>
+      </div>
+    </section>
+
+    <!-- 3) 혜택 비교 -->
+    <section class="slide" data-step="2">
+      <div class="slide-inner">
+        <p class="eyebrow">기존 방식 vs 덴딜</p>
+        <h1 class="s-title">덴딜로 바꾸면 <em>이만큼 달라집니다</em></h1>
+        <p class="s-sub">주문 시간 · 비용 관리 · 인수인계까지 한 번에 해결</p>
+
+        <div class="cmp-box">
+          <div class="cmp-row cmp-head">
+            <div class="cmp-cell k">구분</div>
+            <div class="cmp-cell bad"><span class="bad">기존 방식</span></div>
+            <div class="cmp-cell good"><span class="good">덴딜</span></div>
+          </div>
+          <div class="cmp-row"><div class="cmp-cell k">주문 소요 시간</div><div class="cmp-cell bad">10~15분</div><div class="cmp-cell good">30초</div></div>
+          <div class="cmp-row"><div class="cmp-cell k">우리 치과 제품 모음</div><div class="cmp-cell bad">✕</div><div class="cmp-cell good">즐겨찾기</div></div>
+          <div class="cmp-row"><div class="cmp-cell k">구매 통계 관리</div><div class="cmp-cell bad">수기</div><div class="cmp-cell good">자동</div></div>
+          <div class="cmp-row"><div class="cmp-cell k">담당자 인수인계</div><div class="cmp-cell bad">불가</div><div class="cmp-cell good">즉시</div></div>
+          <div class="cmp-row"><div class="cmp-cell k">가입비 · 월 이용료</div><div class="cmp-cell bad">제각각</div><div class="cmp-cell good">0원</div></div>
+        </div>
+
+        <div class="save">
+          <div class="save-card">
+            <div class="save-flag">스탠다드 · 500만원</div>
+            <h4>스탠다드 혜택 분석</h4>
+            <div class="save-line"><span class="lbl">패키지 할인 5%</span><span class="good">25만원</span></div>
+            <div class="save-line"><span class="lbl">즐겨찾기 세팅 지원</span><span class="good">무료</span></div>
+            <div class="save-line"><span class="lbl">가입비·월 이용료</span><span class="good">0원</span></div>
+            <div class="save-result"><span>총 혜택</span><strong>약 25만원+</strong></div>
+          </div>
+          <div class="save-card best">
+            <div class="save-flag">프리미엄 · 1,000만원</div>
+            <h4>프리미엄 혜택 분석</h4>
+            <div class="save-line"><span class="lbl">패키지 할인 10%</span><span class="good">100만원</span></div>
+            <div class="save-line"><span class="lbl">마케팅 풀패키지</span><span class="good">200만원</span></div>
+            <div class="save-line"><span class="lbl">가입비·월 이용료</span><span class="good">0원</span></div>
+            <div class="save-result"><span>총 혜택</span><strong>약 300만원</strong></div>
+          </div>
+        </div>
+
+        <div class="bonus" style="margin-top:18px;background:linear-gradient(135deg,#e63a76,#ff4f8b);">
+          <h3 style="margin:0;">결론 — 패키지가 커질수록 <em style="color:#fff;text-decoration:underline;">혜택이 커집니다</em></h3>
+          <p class="bsub" style="margin:6px 0 0;">시간 · 비용 · 관리 · 인수인계 부담까지 모두 해결</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4) 계약서 작성 -->
+    <section class="slide" data-step="3">
+      <div class="slide-inner">
+        <p class="eyebrow">STEP 4 · 계약 정보 입력</p>
+        <h1 class="s-title">쇼핑몰 패키지 <em>계약서</em> 작성</h1>
+        <p class="s-sub">고객(병원) 정보를 입력하고 계약 패키지를 선택해주세요</p>
+
+        <div class="contract">
+          <h3>① 계약자(병원) 정보</h3>
+          <div class="field-grid">
+            <div class="field"><label>병원(상호)명 <span class="req">*</span></label><input id="f_lab" type="text" placeholder="예) 덴딜치과의원"></div>
+            <div class="field"><label>대표자(원장)명 <span class="req">*</span></label><input id="f_ceo" type="text" placeholder="대표자 성함"></div>
+            <div class="field"><label>연락처 <span class="req">*</span></label><input id="f_tel" type="tel" inputmode="tel" placeholder="010-0000-0000"></div>
+            <div class="field"><label>사업자등록번호</label><input id="f_biz" type="text" inputmode="numeric" maxlength="12" placeholder="000-00-00000"></div>
+            <div class="field full"><label>사업장 주소</label><input id="f_addr" type="text" placeholder="주소를 입력하세요"></div>
+          </div>
+
+          <h3 style="margin-top:26px;">② 계약 패키지 선택 <span class="req" style="color:var(--pink)">*</span></h3>
+          <div class="pkg-choose" id="choose">
+            <div class="choice" data-pkg="standard"><b>스탠다드 패키지</b><span>500만원 · 할인 5%</span></div>
+            <div class="choice" data-pkg="premium"><b>프리미엄 패키지</b><span>1,000만원 · 할인 10%</span></div>
+          </div>
+
+          <div class="field-grid" style="margin-top:16px;">
+            <div class="field">
+              <label>약정 금액 (원)</label>
+              <input id="f_amount" type="text" inputmode="numeric" placeholder="패키지 선택 시 자동 입력">
+            </div>
+            <div class="field">
+              <label>특약 / 요청사항</label>
+              <textarea id="f_memo" placeholder="협의 내용, 추가 요청 등"></textarea>
+            </div>
+          </div>
+
+          <div class="amount-box">
+            <div class="amount-row">
+              <span class="a-lbl">약정 금액 (VAT 별도)</span>
+              <span class="a-val" id="amountView">– <small>원</small></span>
+            </div>
+            <div class="amount-row">
+              <span class="a-lbl">할인 적용가</span>
+              <span class="a-val a-final" id="finalView">– <small>원</small></span>
+            </div>
+          </div>
+
+          <h3 style="margin-top:26px;">③ 결제 정보</h3>
+          <div class="field-grid">
+            <div class="field full">
+              <label>결제 방법</label>
+              <select id="f_pay">
+                <option value="카드결제">카드결제</option>
+                <option value="카드할부">카드할부</option>
+                <option value="무통장입금">무통장입금</option>
+                <option value="현금">현금</option>
+              </select>
+              <p id="taxNote" class="pay-note" style="display:none;">🧾 <b>현금, 무통장입금 시 부가세는 제외됩니다.</b></p>
+            </div>
+            <div class="field full bank-box" id="bankBox" style="display:none;">
+              <label>입금 계좌 안내</label>
+              <div class="bank-info">
+                <div class="bank-line"><span class="bank-bank">우리은행</span><b class="bank-acc">1006-901-450423</b></div>
+                <div class="bank-holder">예금주 · 덴탈서비스주식회사</div>
+                <button type="button" class="bank-copy" id="bankCopy">계좌 복사</button>
+              </div>
+              <p class="bank-need">※ 무통장입금 시 <b>입금자명 · 사업자등록번호 · 이메일 · 연락처</b>를 정확히 기재해주세요.</p>
+            </div>
+            <div class="field"><label>납부자명 <span class="req">*</span></label><input id="p_name" type="text" placeholder="결제자 성함"></div>
+            <div class="field"><label>휴대전화번호 <span class="req">*</span></label><input id="p_tel" type="tel" inputmode="tel" placeholder="010-0000-0000"></div>
+            <div class="field"><label>이메일</label><input id="p_email" type="email" inputmode="email" placeholder="example@email.com"></div>
+            <div class="field"><label>생년월일 / 사업자등록번호</label><input id="p_id" type="text" placeholder="YYMMDD 또는 000-00-00000"></div>
+            <div class="field card-only"><label>카드번호</label><input id="p_card" type="text" inputmode="numeric" maxlength="19" placeholder="0000-0000-0000-0000"></div>
+            <div class="field card-only"><label>유효기간 (MM/YY)</label><input id="p_exp" type="text" inputmode="numeric" maxlength="5" placeholder="MM/YY"></div>
+            <div class="field card-only">
+              <label>할부개월</label>
+              <select id="p_install">
+                <option value="일시불">일시불</option>
+                <option value="2">2개월</option>
+                <option value="3">3개월</option>
+                <option value="6">6개월</option>
+                <option value="12">12개월</option>
+                <option value="24">24개월</option>
+              </select>
+            </div>
+            <div class="field"><label>거래번호</label><input id="p_txn" type="text" placeholder="승인/거래번호 (선택)"></div>
+            <div class="field full"><label>메모</label><textarea id="p_memo" placeholder="결제 관련 메모"></textarea></div>
+          </div>
+
+          <label class="agree"><input type="checkbox" id="payAgree"> 결제 정보 수집 및 결제 진행에 동의합니다. <span class="req">*</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5) 약관 동의 + 서명 -->
+    <section class="slide" data-step="4">
+      <div class="slide-inner">
+        <p class="eyebrow">STEP 5 · 약관 동의 및 전자 서명</p>
+        <h1 class="s-title">계약 <em>확인 &amp; 서명</em></h1>
+        <p class="s-sub">아래 내용을 확인하신 후 태블릿 화면에 직접 서명해주세요</p>
+
+        <div class="contract">
+          <h3>계약 약관</h3>
+          <div class="terms">
+            <h5>덴딜 쇼핑몰 패키지 이용 계약</h5>
+            <b>제1조(목적)</b> 본 계약은 덴딜(이하 "회사")이 운영하는 치과위생사 전용 구매 플랫폼(이하 "덴딜 쇼핑몰")의 패키지 서비스 이용에 관한 사항을 정함을 목적으로 한다.<br>
+            <b>제2조(서비스의 내용)</b> 회사는 계약자(병원)에게 즐겨찾기 기반 간편 주문, 원터치 재구매, 구매 통계, 담당자 인수인계 관리 등 플랫폼 기능과 패키지 혜택을 제공한다.<br>
+            <b>제3조(패키지 및 대금)</b> ① 계약자는 선택한 패키지(스탠다드 500만원 / 프리미엄 1,000만원)의 약정 금액으로 덴딜 쇼핑몰을 이용한다. ② 컨퍼런스 한정 할인(<b>스탠다드 5%, 프리미엄 10%</b>)이 적용된다. ③ 계약 금액은 VAT 별도이며, 결제는 계약자가 선택한 결제 방법에 따른다. 카드 할부 시 카드사 정책이 적용된다.<br>
+            <b>제4조(추가 제공 혜택)</b> 쇼핑몰 패키지 이용 고객에게는 <b>200만원 상당의 마케팅 풀패키지</b>(홈페이지 제작·블로그 운영·뉴스 보도 홍보)가 무상 제공된다(패키지 이용 고객 한정).<br>
+            <b>제5조(가입비 등)</b> 덴딜 플랫폼의 <b>가입비 및 월 이용료는 무료</b>이며, 가입 즉시 사용할 수 있다.<br>
+            <b>제6조(패키지 소진 기한)</b> ① 약정 금액(충전 포함)은 계약일로부터 <b>2년 이내</b>에 사용하여야 한다. ② 기간 내 미사용 잔액의 처리 및 할인 정산은 회사 정책에 따르며, 행사 할인가는 정상가로 환산될 수 있다.<br>
+            <b>제7조(전자서명)</b> 본 계약서에 대한 계약자의 전자서명은 자필 서명과 동일한 법적 효력을 가지며, 계약 체결의 의사표시로 간주된다.<br>
+            <b>제8조(개인정보 보호)</b> 회사는 계약 이행·정산·고객지원에 필요한 범위에서 계약자의 정보를 수집·이용하며, 관련 법령에 따라 안전하게 보호한다.<br>
+            <b>제9조(기타)</b> ① 본 계약에 명시되지 아니한 사항은 관련 법령 및 상관례에 따라 당사자가 상호 협의하여 정한다. ② 본 계약은 행사 기간 한정 조건이며, 행사 종료 후에는 일반가가 적용된다.<br>
+            ※ 패키지 할인 및 마케팅 풀패키지 혜택은 컨퍼런스 이벤트 기간 한정입니다.
+          </div>
+          <label class="agree"><input type="checkbox" id="agree"> 위 계약 약관 및 내용을 모두 확인하였으며 이에 동의합니다.</label>
+
+          <div class="sign-grid">
+            <div class="sign-box">
+              <div class="s-head"><b>계약자 서명</b> <span class="who" id="signWho">병원 대표</span>
+                <button class="sign-clear" data-clear="cust">지우기</button></div>
+              <div class="pad-wrap" id="wrap-cust"><div class="pad-hint">여기에 서명해주세요</div><canvas class="pad" id="pad-cust"></canvas></div>
+            </div>
+            <div class="sign-box">
+              <div class="s-head"><b>영업사원 서명</b> <span class="who">덴딜 영업 담당자</span>
+                <button class="sign-clear" data-clear="sup">지우기</button></div>
+              <input id="sup_name" class="sign-name" type="text" placeholder="영업사원 이름을 기재해주세요">
+              <div class="pad-wrap" id="wrap-sup"><div class="pad-hint">영업사원 서명</div><canvas class="pad" id="pad-sup"></canvas></div>
+            </div>
+          </div>
+
+          <div class="party-info">
+            <b>공급자</b> · 덴딜(DENDEAL) — 치과위생사 전용 구매 플랫폼 　|　 문의 <b>010-3440-0416</b> · dendeal.kr<br>
+            <b>계약일자</b> · <span id="todayView"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6) 완료 -->
+    <section class="slide" data-step="5">
+      <div class="slide-inner">
+        <div class="done-card">
+          <div class="done-ico">✓</div>
+          <h2>계약이 완료되었습니다</h2>
+          <p>아래 계약 내역을 저장하거나 인쇄하실 수 있습니다.</p>
+
+          <div class="receipt" id="receipt">
+            <h4>계약 확인서 <small id="r_no"></small></h4>
+            <div class="r-row"><span class="rk">계약자(병원)</span><span class="rv" id="r_lab"></span></div>
+            <div class="r-row"><span class="rk">대표자</span><span class="rv" id="r_ceo"></span></div>
+            <div class="r-row"><span class="rk">연락처</span><span class="rv" id="r_tel"></span></div>
+            <div class="r-row"><span class="rk">선택 패키지</span><span class="rv" id="r_pkg"></span></div>
+            <div class="r-row"><span class="rk">할인율</span><span class="rv" id="r_rate"></span></div>
+            <div class="r-row"><span class="rk">결제 방법</span><span class="rv" id="r_pay"></span></div>
+            <div class="r-row" id="r_bankRow"><span class="rk">입금 계좌</span><span class="rv">우리은행 1006-901-450423 (덴탈서비스주식회사)</span></div>
+            <div class="r-row"><span class="rk">납부자명</span><span class="rv" id="r_payer"></span></div>
+            <div class="r-row" id="r_cardRow"><span class="rk">카드번호</span><span class="rv" id="r_card"></span></div>
+            <div class="r-row" id="r_txnRow"><span class="rk">거래번호</span><span class="rv" id="r_txn"></span></div>
+            <div class="r-row"><span class="rk">계약일자</span><span class="rv" id="r_date"></span></div>
+            <div class="r-row" id="r_memoRow"><span class="rk">특약사항</span><span class="rv" id="r_memo"></span></div>
+            <div class="r-amt"><span>할인 적용 계약 금액 (VAT 별도)</span><strong id="r_amt"></strong></div>
+            <div class="r-signs">
+              <div class="r-sign"><small>계약자 서명</small><img id="r_signCust" alt=""></div>
+              <div class="r-sign"><small id="r_supLabel">영업사원 서명</small><img id="r_signSup" alt=""></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 하단 네비 -->
+  <div class="navbar" id="navbar">
+    <button class="btn btn-ghost" id="btnPrev">이전</button>
+    <button class="btn btn-main" id="btnNext">다음 →</button>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var PKG = {
+    standard:{name:"스탠다드 패키지", price:5000000, rate:5, label:"스탠다드 패키지 · 500만원 (할인 5%)"},
+    premium:{name:"프리미엄 패키지", price:10000000, rate:10, label:"프리미엄 패키지 · 1,000만원 (할인 10%)"}
+  };
+
+  var state = { step:0, selected:null };
+  var TOTAL = 6;
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var dots = Array.prototype.slice.call(document.querySelectorAll('.step-dot'));
+  var btnPrev = document.getElementById('btnPrev');
+  var btnNext = document.getElementById('btnNext');
+
+  function won(n){ return Number(n||0).toLocaleString('ko-KR'); }
+
+  // ---- 계약일자 ----
+  var now = new Date();
+  var dateStr = now.getFullYear()+'년 '+(now.getMonth()+1)+'월 '+now.getDate()+'일';
+  document.getElementById('todayView').textContent = dateStr;
+
+  // ---- 금액 계산 ----
+  function getAmount(){
+    if(!state.selected) return 0;
+    var raw = (document.getElementById('f_amount').value||'').replace(/[^0-9]/g,'');
+    return raw ? parseInt(raw,10) : PKG[state.selected].price;
+  }
+  function getRate(){ return state.selected ? PKG[state.selected].rate : 0; }
+  function finalAmount(){ return Math.round(getAmount()*(1-getRate()/100)); }
+  function refreshAmount(){
+    var a = getAmount();
+    document.getElementById('amountView').innerHTML = a ? won(a)+' <small>원</small>' : '– <small>원</small>';
+    document.getElementById('finalView').innerHTML = a ? won(finalAmount())+' <small>원 (할인 '+getRate()+'%)</small>' : '– <small>원</small>';
+  }
+
+  // ---- 패키지 선택 (슬라이드1 + 계약서 동기화) ----
+  function selectPkg(key){
+    state.selected = key;
+    document.querySelectorAll('.pkg').forEach(function(el){ el.classList.toggle('sel', el.dataset.pkg===key); });
+    document.querySelectorAll('.choice').forEach(function(el){ el.classList.toggle('sel', el.dataset.pkg===key); });
+    document.getElementById('f_amount').value = PKG[key].price.toLocaleString('ko-KR');
+    refreshAmount();
+  }
+  document.querySelectorAll('.pkg').forEach(function(el){
+    el.addEventListener('click', function(){ selectPkg(el.dataset.pkg); });
+  });
+  document.querySelectorAll('.choice').forEach(function(el){
+    el.addEventListener('click', function(){ selectPkg(el.dataset.pkg); });
+  });
+  // 약정금액 자동 콤마 + 금액 갱신
+  document.getElementById('f_amount').addEventListener('input', function(){
+    var raw = this.value.replace(/[^0-9]/g,'');
+    this.value = raw ? parseInt(raw,10).toLocaleString('ko-KR') : '';
+    refreshAmount();
+  });
+
+  // ---- 연락처 / 사업자번호 자동 포맷 ----
+  function hyphenTel(el){
+    el.addEventListener('input', function(){
+      var v=this.value.replace(/\D/g,'').slice(0,11);
+      if(v.length<=3) this.value=v;
+      else if(v.length<=7) this.value=v.slice(0,3)+'-'+v.slice(3);
+      else this.value=v.slice(0,3)+'-'+v.slice(3,7)+'-'+v.slice(7);
+    });
+  }
+  hyphenTel(document.getElementById('f_tel'));
+  hyphenTel(document.getElementById('p_tel'));
+  document.getElementById('f_biz').addEventListener('input', function(){
+    var v=this.value.replace(/\D/g,'').slice(0,10);
+    if(v.length<=3) this.value=v;
+    else if(v.length<=5) this.value=v.slice(0,3)+'-'+v.slice(3);
+    else this.value=v.slice(0,3)+'-'+v.slice(3,5)+'-'+v.slice(5);
+  });
+
+  // ---- 카드번호 / 유효기간 자동 포맷 ----
+  var cardEl=document.getElementById('p_card');
+  cardEl.addEventListener('input', function(){
+    var v=this.value.replace(/\D/g,'').slice(0,16);
+    this.value=v.replace(/(.{4})/g,'$1-').replace(/-$/,'');
+  });
+  var expEl=document.getElementById('p_exp');
+  expEl.addEventListener('input', function(){
+    var v=this.value.replace(/\D/g,'').slice(0,4);
+    this.value = v.length>2 ? v.slice(0,2)+'/'+v.slice(2) : v;
+  });
+  // ---- 결제 방법별 표시 전환 ----
+  function applyPayMethod(){
+    var v=document.getElementById('f_pay').value;
+    var isCard=(v==='카드결제'||v==='카드할부');
+    document.getElementById('taxNote').style.display = (v==='무통장입금'||v==='현금') ? 'block' : 'none';
+    document.getElementById('bankBox').style.display = (v==='무통장입금') ? 'flex' : 'none';
+    document.querySelectorAll('.card-only').forEach(function(el){ el.style.display = isCard ? 'flex' : 'none'; });
+  }
+  document.getElementById('f_pay').addEventListener('change', applyPayMethod);
+  applyPayMethod();
+
+  // ---- 입금계좌 복사 ----
+  document.getElementById('bankCopy').addEventListener('click', function(){
+    var btn=this, txt='우리은행 1006-901-450423 (예금주 덴탈서비스주식회사)';
+    function ok(){ btn.textContent='복사됨 ✓'; setTimeout(function(){ btn.textContent='계좌 복사'; },1500); }
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(ok, ok); }
+    else { ok(); }
+  });
+
+  // ---- 서명 대표자 라벨 동기화 ----
+  document.getElementById('f_ceo').addEventListener('input', function(){
+    var v = this.value.trim();
+    document.getElementById('signWho').textContent = v ? v+' (대표)' : '병원 대표';
+  });
+
+  // ================= 서명 패드 =================
+  function SignaturePad(canvas, wrap){
+    var ctx = canvas.getContext('2d');
+    var drawing=false, dirty=false, last=null;
+    function resize(){
+      var r = canvas.getBoundingClientRect();
+      var dpr = window.devicePixelRatio || 1;
+      var data = dirty ? canvas.toDataURL() : null;
+      canvas.width = r.width*dpr; canvas.height = r.height*dpr;
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      ctx.lineWidth=2.6; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.strokeStyle='#15224a';
+      if(data){ var img=new Image(); img.onload=function(){ ctx.drawImage(img,0,0,r.width,r.height); }; img.src=data; }
+    }
+    function pos(e){
+      var r=canvas.getBoundingClientRect();
+      var t = e.touches?e.touches[0]:e;
+      return {x:t.clientX-r.left, y:t.clientY-r.top};
+    }
+    function start(e){ e.preventDefault(); drawing=true; last=pos(e); }
+    function move(e){
+      if(!drawing) return; e.preventDefault();
+      var p=pos(e);
+      ctx.beginPath(); ctx.moveTo(last.x,last.y); ctx.lineTo(p.x,p.y); ctx.stroke();
+      last=p;
+      if(!dirty){ dirty=true; wrap.classList.add('signed'); }
+    }
+    function end(){ drawing=false; }
+    canvas.addEventListener('pointerdown',start);
+    canvas.addEventListener('pointermove',move);
+    window.addEventListener('pointerup',end);
+    canvas.addEventListener('touchstart',start,{passive:false});
+    canvas.addEventListener('touchmove',move,{passive:false});
+    window.addEventListener('touchend',end);
+    window.addEventListener('resize',resize);
+    setTimeout(resize,60);
+    return {
+      clear:function(){ var r=canvas.getBoundingClientRect(); ctx.clearRect(0,0,r.width,r.height); dirty=false; wrap.classList.remove('signed'); },
+      isSigned:function(){ return dirty; },
+      data:function(){ return dirty? canvas.toDataURL('image/png') : null; },
+      resize:resize
+    };
+  }
+  var padCust = SignaturePad(document.getElementById('pad-cust'), document.getElementById('wrap-cust'));
+  var padSup  = SignaturePad(document.getElementById('pad-sup'),  document.getElementById('wrap-sup'));
+  document.querySelectorAll('.sign-clear').forEach(function(b){
+    b.addEventListener('click', function(){ (b.dataset.clear==='cust'?padCust:padSup).clear(); });
+  });
+
+  // ================= 슬라이드 이동 =================
+  function go(n){
+    if(n<0||n>=TOTAL) return;
+    if(n>state.step && !validate(state.step)) return;
+    state.step = n;
+    slides.forEach(function(s){ s.classList.toggle('active', +s.dataset.step===n); });
+    dots.forEach(function(d,i){
+      d.classList.toggle('active', i===n);
+      d.classList.toggle('done', i<n);
+    });
+    btnPrev.style.visibility = n===0 ? 'hidden':'visible';
+    if(n===3){ btnNext.textContent='서명 단계 →'; btnNext.className='btn btn-main'; }
+    else if(n===4){ btnNext.textContent='✓ 계약 완료'; btnNext.className='btn btn-pink'; }
+    else if(n===5){ setupDone(); }
+    else { btnNext.textContent='다음 →'; btnNext.className='btn btn-main'; }
+    if(n===5){ btnPrev.style.visibility='visible'; btnNext.style.display='none'; document.getElementById('navbar').appendChild(makeDoneButtons()); }
+    else { removeDoneButtons(); btnNext.style.display=''; }
+    setTimeout(function(){ padCust.resize(); padSup.resize(); }, 80);
+    var st=document.querySelector('.slide.active'); if(st) st.scrollTop=0;
+  }
+  dots.forEach(function(d){ d.addEventListener('click', function(){
+    var t=+d.dataset.go; if(t<=state.step || validateUpTo(t)) go(t);
+  }); });
+  btnPrev.addEventListener('click', function(){ go(state.step-1); });
+  btnNext.addEventListener('click', function(){
+    if(state.step===4){ if(validate(4)) go(5); return; }
+    go(state.step+1);
+  });
+
+  // ================= 검증 =================
+  function validateUpTo(target){
+    for(var i=0;i<target;i++){ if(!validate(i)) { go(i); return false; } }
+    return true;
+  }
+  function validate(step){
+    if(step===3){
+      var lab=document.getElementById('f_lab').value.trim();
+      var ceo=document.getElementById('f_ceo').value.trim();
+      var tel=document.getElementById('f_tel').value.trim();
+      if(!state.selected){ alert('계약 패키지를 선택해주세요.'); return false; }
+      if(!lab||!ceo||!tel){ alert('병원(상호)명 · 대표자명 · 연락처는 필수 입력 항목입니다.'); return false; }
+      if(getAmount()<=0){ alert('약정 금액을 입력해주세요.'); return false; }
+      var pName=document.getElementById('p_name').value.trim();
+      var pTel=document.getElementById('p_tel').value.trim();
+      if(!pName||!pTel){ alert('결제 정보의 납부자명 · 휴대전화번호는 필수 입력 항목입니다.'); return false; }
+      if(!document.getElementById('payAgree').checked){ alert('결제 정보 수집 및 결제 진행에 동의해주세요.'); return false; }
+    }
+    if(step===4){
+      if(!document.getElementById('agree').checked){ alert('계약 약관에 동의해주세요.'); return false; }
+      if(!padCust.isSigned()){ alert('계약자 서명을 받아주세요.'); return false; }
+      if(!document.getElementById('sup_name').value.trim()){ alert('영업사원 이름을 기재해주세요.'); return false; }
+      if(!padSup.isSigned()){ alert('영업사원 서명을 받아주세요.'); return false; }
+    }
+    return true;
+  }
+
+  // ================= 완료 화면 채우기 =================
+  function maskCard(v){
+    var d=(v||'').replace(/\D/g,'');
+    if(d.length<4) return '';
+    return '**** **** **** '+d.slice(-4);
+  }
+  function setupDone(){
+    var install=document.getElementById('p_install').value;
+    var pay=document.getElementById('f_pay').value;
+    if(install!=='일시불') pay+=' · '+install+'개월 할부';
+    var memo=document.getElementById('f_memo').value.trim();
+    var pMemo=document.getElementById('p_memo').value.trim();
+    if(pMemo) memo = memo ? (memo+' / '+pMemo) : pMemo;
+    var payer=document.getElementById('p_name').value.trim();
+    var cardMask=maskCard(document.getElementById('p_card').value);
+    var txn=document.getElementById('p_txn').value.trim();
+    var no='DD-'+now.getFullYear()+(''+(now.getMonth()+1)).padStart(2,'0')+(''+now.getDate()).padStart(2,'0')+'-'+(''+now.getHours()).padStart(2,'0')+(''+now.getMinutes()).padStart(2,'0');
+
+    document.getElementById('r_no').textContent='No. '+no;
+    document.getElementById('r_lab').textContent=document.getElementById('f_lab').value.trim();
+    document.getElementById('r_ceo').textContent=document.getElementById('f_ceo').value.trim();
+    document.getElementById('r_tel').textContent=document.getElementById('f_tel').value.trim();
+    document.getElementById('r_pkg').textContent=PKG[state.selected].label;
+    document.getElementById('r_rate').textContent='할인 '+getRate()+'% (약정 '+won(getAmount())+'원)';
+    document.getElementById('r_pay').textContent=pay;
+    document.getElementById('r_bankRow').style.display = (document.getElementById('f_pay').value==='무통장입금') ? 'flex' : 'none';
+    document.getElementById('r_payer').textContent=payer;
+    if(cardMask){ document.getElementById('r_card').textContent=cardMask; }
+    else { document.getElementById('r_cardRow').style.display='none'; }
+    if(txn){ document.getElementById('r_txn').textContent=txn; }
+    else { document.getElementById('r_txnRow').style.display='none'; }
+    document.getElementById('r_date').textContent=dateStr;
+    document.getElementById('r_amt').textContent=won(finalAmount())+' 원';
+    if(memo){ document.getElementById('r_memo').textContent=memo; }
+    else { document.getElementById('r_memoRow').style.display='none'; }
+    var supName=document.getElementById('sup_name').value.trim();
+    document.getElementById('r_supLabel').textContent='영업사원 서명'+(supName?' · '+supName:'');
+    if(padCust.data()) document.getElementById('r_signCust').src=padCust.data();
+    if(padSup.data()) document.getElementById('r_signSup').src=padSup.data();
+
+    // 로컬 저장 + Pantry 저장 (영업 기록)
+    var rec={ no:no, date:dateStr,
+      clinic:document.getElementById('f_lab').value.trim(),
+      director:document.getElementById('f_ceo').value.trim(),
+      phone:document.getElementById('f_tel').value.trim(),
+      bizno:document.getElementById('f_biz').value.trim(),
+      address:document.getElementById('f_addr').value.trim(),
+      pkg:PKG[state.selected].label, rate:getRate(),
+      amount:getAmount(), finalAmount:finalAmount(),
+      pay:pay, payer:payer, payerTel:document.getElementById('p_tel').value.trim(),
+      email:document.getElementById('p_email').value.trim(),
+      idNo:document.getElementById('p_id').value.trim(),
+      card:cardMask, exp:document.getElementById('p_exp').value.trim(), install:install, txn:txn,
+      memo:memo, salesRep:supName,
+      signCust:padCust.data(), signSup:padSup.data(), createdAt:now.toISOString() };
+    try{
+      var all=JSON.parse(localStorage.getItem('dendeal_contracts')||'[]');
+      all.push(rec); localStorage.setItem('dendeal_contracts',JSON.stringify(all));
+    }catch(e){}
+    // Pantry (혜택신청.html과 동일 Pantry, contracts 바스켓)
+    try{
+      var API='https://getpantry.cloud/apiv1/pantry/de6eb170-ccc2-4ba3-9363-6d2af43169a1/basket/contracts';
+      fetch(API).then(function(r){ return r.ok?r.json():{entries:[]}; }).catch(function(){ return {entries:[]}; })
+        .then(function(cur){
+          var entries=(cur&&Array.isArray(cur.entries))?cur.entries:[];
+          entries.push(Object.assign({id:'c_'+Date.now().toString(36), status:'signed'}, rec));
+          return fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({entries:entries})});
+        }).catch(function(){});
+    }catch(e){}
+  }
+
+  // 완료 화면 버튼 (인쇄 / 새 계약)
+  var doneBtns=null;
+  function makeDoneButtons(){
+    if(doneBtns) return doneBtns;
+    doneBtns=document.createElement('div');
+    doneBtns.style.cssText='display:flex;gap:12px;flex:1;';
+    var p=document.createElement('button'); p.className='btn btn-main'; p.textContent='🖨 인쇄 / PDF 저장';
+    p.onclick=function(){ window.print(); };
+    var n=document.createElement('button'); n.className='btn btn-pink'; n.textContent='＋ 새 계약 시작';
+    n.onclick=function(){ if(confirm('새 계약을 시작할까요? 현재 입력 내용은 초기화됩니다.')) location.reload(); };
+    doneBtns.appendChild(p); doneBtns.appendChild(n);
+    return doneBtns;
+  }
+  function removeDoneButtons(){ if(doneBtns&&doneBtns.parentNode) doneBtns.parentNode.removeChild(doneBtns); }
+
+  refreshAmount();
+})();
+</script>
+</body>
+</html>
